@@ -8,7 +8,7 @@
 **/.history
 **/.svn/
 **/node_modules/
-
+*.env
 # IntelliJ related
 *.iml
 *.ipr
