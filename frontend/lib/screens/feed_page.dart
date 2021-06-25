@@ -65,7 +65,7 @@ class _FeedPageState extends State<FeedPage> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            '@${widget.mural.creatorUserName}',
+                            '@${widget.mural.creatorUsername}',
                             style: TextStyle(
                               fontSize: 24,
                             ),
