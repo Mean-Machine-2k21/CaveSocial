@@ -93,7 +93,7 @@ router.get('/api/profile/:username', auth, async (req, res) => {
                 }
             },
             { $sort: { _id: 1 } },
-            { $skip: pageNumber > 0 ? ((pageNumber - 1) * nPerPage) : 0 },
+            { $skip: pageNumber * nPerPage },
             { $limit: nPerPage }
         ]);
         res.status(200).json({ msg: 'User Found', user: user[0], murals });
