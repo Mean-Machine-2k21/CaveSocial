@@ -30,6 +30,7 @@ class _CreateFrameState extends State<CreateFrame> {
     PainterController controller = new PainterController(s);
     controller.thickness = 5.0;
     controller.backgroundColor = Color(0xff1E1E2A);
+    controller.drawColor = Colors.white;
     return controller;
   }
 
