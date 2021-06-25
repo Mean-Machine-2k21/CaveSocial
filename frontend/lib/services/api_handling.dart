@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:frontend/global.dart';
 import 'package:frontend/models/mural_model.dart';
+import 'package:frontend/models/user_model.dart';
 
 class ApiHandling {
   static const String url = SERVER_IP;
@@ -34,19 +35,20 @@ class ApiHandling {
     }
   }
 
-  Future<void> fetchProfileMurals(String username, List<Mural> murals, User user, int pageNo) async {
+  Future<void> fetchProfileMurals(
+      String username, List<Mural> murals, User user, int pageNo) async {
     print('Username ---> ${username}');
 
     try {
       final token = await localRead('jwt');
-      final response = await Dio(options).post(
+      final response = await Dio(options).get(
         url + '/api/profile/' + username,
         options: Options(headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json'
         }),
-        data: {
-          
+        queryParameters: {
+          'pagenumber' : pageNo
         }
       );
     } catch (e) {}
