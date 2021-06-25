@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/create_mural_screen.dart';
 import 'package:frontend/services/add_image.dart';
 
 import 'screens/feed.dart';
@@ -95,12 +96,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                               ),
                               onPressed: () async {
-                                // await Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) =>
-                                //           ExamplePage('normal')),
-                                // );
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ExamplePage('normal')),
+                                );
                                 Navigator.pop(context);
 
                                 ///
@@ -123,12 +124,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                               ),
                               onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) =>
-                                //           ExamplePage('comic')),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ExamplePage('comic')),
+                                );
                               },
                             ),
                             ElevatedButton(
