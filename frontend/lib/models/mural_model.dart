@@ -1,15 +1,15 @@
 // To parse this JSON data, do
 //
-//     final customer = customerFromJson(jsonString);
+//     final mural = muralFromJson(jsonString);
 
 import 'dart:convert';
 
-Customer customerFromJson(String str) => Customer.fromJson(json.decode(str));
+Mural muralFromJson(String str) => Mural.fromJson(json.decode(str));
 
-String customerToJson(Customer data) => json.encode(data.toJson());
+String muralToJson(Mural data) => json.encode(data.toJson());
 
-class Customer {
-  Customer({
+class Mural {
+  Mural({
     required this.imageUrl,
     required this.isLiked,
     required this.creatorUserName,
@@ -25,7 +25,7 @@ class Customer {
   int likedCount;
   int commentCount;
 
-  factory Customer.fromJson(Map<String, dynamic> json) => Customer(
+  factory Mural.fromJson(Map<String, dynamic> json) => Mural(
         imageUrl: json["imageUrl"],
         isLiked: json["isLiked"],
         creatorUserName: json["creatorUserName"],
