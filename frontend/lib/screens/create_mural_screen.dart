@@ -4,17 +4,24 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:frontend/services/add_image_fuction.dart';
-import './painter.dart';
+import '../painter.dart';
 
-class ExamplePage extends StatefulWidget {
+class CreateMuralScreen extends StatefulWidget {
   final String mode;
-  ExamplePage(this.mode);
+
+  Function? editProfile;
+
+  CreateMuralScreen(
+    this.mode, {
+    this.editProfile,
+  });
 
   @override
-  _ExamplePageState createState() => new _ExamplePageState();
+  _CreateMuralScreenState createState() => new _CreateMuralScreenState();
 }
 
-class _ExamplePageState extends State<ExamplePage> {
+class _CreateMuralScreenState extends State<CreateMuralScreen> {
+  String muralUrl = "";
   bool _finished = false;
   late String mode;
   late PainterController _controller = _newController(mode);
@@ -240,18 +247,24 @@ class _ExamplePageState extends State<ExamplePage> {
                             .create();
                         file.writeAsBytes(aa);
 
-                        print(file);
-                        await uploadImageToFirebase(file);
                         final snackBar = SnackBar(
                           content: Text('Yay! Your Mural is posted!'),
                           duration: Duration(seconds: 5),
                           backgroundColor: Colors.red,
                         );
 
+                        print(file);
+                        uploadImageToFirebase(file).then((value) {
+                          print('Murall');
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          widget.editProfile!(value);
+                          Navigator.pop(context);
+                        });
+
+                        print('*********-> ${muralUrl}');
+
                         // Find the ScaffoldMessenger in the widget tree
                         // and use it to show a SnackBar.
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        Navigator.of(context).pop();
                       },
                       child: Text('Post Mural')),
                 ],

@@ -38,6 +38,7 @@ dependencies:
   flutter_colorpicker: ^0.4.0
   flutter_icons: ^1.1.0
   swipe_up: ^1.0.0
+  dio: ^4.0.0
 
 dev_dependencies:
   flutter_test:

@@ -1,18 +1,29 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:frontend/screens/create_mural_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
+import '../global.dart';
+import '../services/api_handling.dart';
 
-class AddImage extends StatefulWidget {
-  const AddImage({Key? key}) : super(key: key);
+class EditProfile extends StatefulWidget {
+  const EditProfile({Key? key}) : super(key: key);
 
   @override
-  _AddImageState createState() => _AddImageState();
+  _EditProfileState createState() => _EditProfileState();
 }
 
-class _AddImageState extends State<AddImage> {
+class _EditProfileState extends State<EditProfile> {
+  void getUrl(String bioUrl) {
+    this.bioUrl = bioUrl;
+    print("*******-> ${bioUrl}");
+  }
+
+  ApiHandling apiHandling = ApiHandling();
   ImagePicker _imagePicker = ImagePicker();
+  String avatarUrl = "";
+  String bioUrl = "";
   File? image;
 
   Future<void> uploadImage() async {
@@ -24,9 +35,10 @@ class _AddImageState extends State<AddImage> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
+    String username = await localRead('username');
     //String fileName = basename(_image.path);
     final firebaseStorageRef =
-        FirebaseStorage.instance.ref().child('uploads/profileImages');
+        FirebaseStorage.instance.ref().child('uploads/profileImages/username');
     final uploadTask = firebaseStorageRef.putFile(image!);
     await uploadTask.whenComplete(() => print('File Uploaded'));
     firebaseStorageRef.getDownloadURL().then((fileURL) {
@@ -35,6 +47,7 @@ class _AddImageState extends State<AddImage> {
         // //imageURLs.add(_uploadedFileURL);
         // widget.product.imageUrls.add(_uploadedFileURL);
         print(fileURL + "-------");
+        avatarUrl = fileURL;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Image Uploaded'),
@@ -78,7 +91,33 @@ class _AddImageState extends State<AddImage> {
                 );
               },
               child: Text('ADD PROFILE IMAGE'),
-            )
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CreateMuralScreen(
+                      'normal',
+                      editProfile: getUrl,
+                    ),
+                  ),
+                );
+
+                print('################ ${bioUrl}');
+              },
+              child: Text(
+                'Create Bio',
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await localWrite('avatar_url', avatarUrl);
+                await localWrite('bio_url', bioUrl);
+                apiHandling.editProfile(avatarUrl, bioUrl);
+              },
+              child: Text('Save Profile'),
+            ),
           ],
         ),
       ),
