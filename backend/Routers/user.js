@@ -1,6 +1,7 @@
 const express = require('express');
 const router = new express.Router();
 const User = require('../Models/User');
+const Mural = require('../Models/Mural');
 const auth = require('../Middleware/Auth');
 
 
@@ -76,6 +77,24 @@ router.patch('/api/editprofile', auth, async (req, res) => {
         res.status(500).send({ msg: 'Something Went Wrong' });
     }
 });
+router.get('/api/profile/:id', auth, async (req, res) => {
+    const _id = req.params.id;
 
+    if (!_id.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(404).send();
+    }
+
+    try {
+        const user = await User.findById(_id);
+        const murals = await Mural.find({ creator: req.user._id }).select('-creator').exec();
+        if (!user) {
+            return res.status(404).json({ msg: 'Not Authenticated' });
+        }
+        res.status(200).json({ msg: 'Profile Found', user, murals });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ msg: 'Something Went Wrong' });
+    }
+});
 
 module.exports = router;
