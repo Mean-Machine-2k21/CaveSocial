@@ -34,7 +34,26 @@ const MuralSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
         default: false
+    },
+    isFlipBook: {
+        type: String,
+        required: true,
+        default: 'normal'
+    },
+    flipbook: {
+        type: {
+            frames: {
+                type: Number,
+                required: true,
+            },
+            duration: {
+                type: Number,
+                required: true
+            }
+        },
+        required: false
     }
+
 }, {
     timestamps: true
 });
