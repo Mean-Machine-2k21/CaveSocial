@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:frontend/flipbook/create_flipbook_frame.dart';
 import 'package:frontend/flipbook/gif_view.dart';
+import 'package:frontend/services/add_gif_fuction.dart';
 // import 'package:top_modal_sheet/top_modal_sheet.dart';
 import 'functions.dart';
 
@@ -119,6 +122,17 @@ class _CreateFlipbookState extends State<CreateFlipbook> {
             ElevatedButton(
               onPressed: () async {
                 // TODO post gif
+
+                var aa = await getgif();
+                var aate = DateTime.now().toString();
+                final Directory systemTempDir = Directory.systemTemp;
+                final File file =
+                    await new File('${systemTempDir.path}/foo${aate}.png')
+                        .create();
+                file.writeAsBytes(aa);
+
+                print(file);
+                await uploadGifToFirebase(file);
               },
               child: Text('Post FlipBook!!'),
               style: ButtonStyle(
