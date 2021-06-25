@@ -15,6 +15,7 @@ import 'screens/feed.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  print('aaaaaaassssssssssssssss');
   runApp(MyApp());
 }
 

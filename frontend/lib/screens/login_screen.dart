@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../global.dart';
 import '../widget/app_button.dart';
 import 'auth_screen.dart';
+import 'feed.dart';
 import 'signup_screen.dart';
 import 'package:http/http.dart' as http;
 
@@ -193,7 +194,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            HomePage.fromBase64(jwt['token'])));
+                                           // HomePage.fromBase64(jwt['token'])
+                                           Feed()
+                                            )
+                                            );
                               } else {
                                 displayDialog(context, "An Error Occurred",
                                     "No account was found matching that username and password");
