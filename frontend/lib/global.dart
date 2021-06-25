@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/bloc/theme_bloc.dart';
 
 //import 'colors/color_palette.dart';
-import 'model/app_text_style.dart';
+import 'models/app_text_style.dart';
 
 //export 'import/utils.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';

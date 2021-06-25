@@ -1,6 +1,6 @@
 // @dart=2.9
 import '../bloc/theme_bloc.dart';
-import './login_screen.dart';
+import 'login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
