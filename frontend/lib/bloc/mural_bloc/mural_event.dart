@@ -2,21 +2,27 @@ import 'package:frontend/models/mural_model.dart';
 
 abstract class MuralEvent {}
 
-class FetchAllMurals extends MuralEvent {}//pagination to be done
+class FetchAllMurals extends MuralEvent {
+  int page;
+  FetchAllMurals({required this.page});
+} //pagination to be done
 
 //This is for any profile read.
 class FetchProfileMurals extends MuralEvent {
   String username;
-  FetchProfileMurals({required this.username});
-}
-class CreateMural extends MuralEvent{//no state
-    String content;
-  Flipbook? flipbook;
-  CreateMural(
-      { required this.content, this.flipbook});
+  int page;
+  FetchProfileMurals({required this.username,required this.page});
 }
 
-class LikeMural extends MuralEvent {//no state
+class CreateMural extends MuralEvent {
+  //no state
+  String content;
+  Flipbook? flipbook;
+  CreateMural({required this.content, this.flipbook});
+}
+
+class LikeMural extends MuralEvent {
+  //no state
   String muralid;
   LikeMural({required this.muralid});
 }
@@ -31,7 +37,8 @@ class FetchMuralCommentList extends MuralEvent {
   FetchMuralCommentList({required this.muralid});
 }
 
-class CommentMural extends MuralEvent {//no state
+class CommentMural extends MuralEvent {
+  //no state
   String parentMuralId;
   String content;
   Flipbook? flipbook;
