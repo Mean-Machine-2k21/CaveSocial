@@ -23,9 +23,9 @@ class MuralBloc extends Bloc<MuralEvent, MuralState> {
         yield FetchedMurals(Murals: murals);
       } else if (event is FetchProfileMurals) {
         var username = await localRead('username');
-        List<Mural> murals = [];        
+        List<Mural> murals = [];
         User user = await muralRepository.fetchProfileMurals(
-            murals: murals,  username: username, page: event.page);
+            murals: murals, username: username, page: event.page);
         yield FetchedUserProfile(murals: murals, user: user);
       } else if (event is CreateMural) {
         var token = await localRead('jwt');
@@ -56,7 +56,5 @@ class MuralBloc extends Bloc<MuralEvent, MuralState> {
     } catch (e) {
       ErrorState();
     }
-
-    //throw UnimplementedError();
   }
 }
