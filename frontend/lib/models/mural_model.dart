@@ -2,6 +2,7 @@
 //
 //     final mural = muralFromJson(jsonString);
 
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 Mural muralFromJson(String str) => Mural.fromJson(json.decode(str));
@@ -9,37 +10,65 @@ Mural muralFromJson(String str) => Mural.fromJson(json.decode(str));
 String muralToJson(Mural data) => json.encode(data.toJson());
 
 class Mural {
-  Mural({
-    required this.imageUrl,
-    required this.isLiked,
-    required this.creatorUserName,
-    required this.creatorId,
-    required this.likedCount,
-    required this.commentCount,
-  });
+    Mural({
+        required this.id,
+        required this.creatorId,
+        required this.creatorUsername,
+         this.flipbook,
+        required this.imageUrl,
+        required this.likedCount,
+        required this.commentCount,
+        required this.isLiked,
+    });
 
-  String imageUrl;
-  bool isLiked;
-  String creatorUserName;
-  String creatorId;
-  int likedCount;
-  int commentCount;
+    String id;
+    String creatorId;
+    String creatorUsername;
+    Flipbook? flipbook;
+    String imageUrl;
+    int likedCount;
+    int commentCount;
+    bool isLiked;
 
-  factory Mural.fromJson(Map<String, dynamic> json) => Mural(
-        imageUrl: json["imageUrl"],
-        isLiked: json["isLiked"],
-        creatorUserName: json["creatorUserName"],
+    factory Mural.fromJson(Map<String, dynamic> json) => Mural(
+        id: json["_id"],
         creatorId: json["creatorId"],
+        creatorUsername: json["creatorUsername"],
+        flipbook: json["flipbook"]?Flipbook.fromJson(json["flipbook"]):null,
+        imageUrl: json["imageUrl"],
         likedCount: json["likedCount"],
         commentCount: json["commentCount"],
-      );
+        isLiked: json["isLiked"],
+    );
 
-  Map<String, dynamic> toJson() => {
-        "imageUrl": imageUrl,
-        "isLiked": isLiked,
-        "creatorUserName": creatorUserName,
+    Map<String, dynamic> toJson() => {
+        "_id": id,
         "creatorId": creatorId,
+        "creatorUsername": creatorUsername,
+        "flipbook": flipbook!.toJson(),
+        "imageUrl": imageUrl,
         "likedCount": likedCount,
         "commentCount": commentCount,
-      };
+        "isLiked": isLiked,
+    };
+}
+
+class Flipbook {
+    Flipbook({
+         this.frames,
+         this.duration,
+    });
+
+    int? frames;
+    int? duration;
+
+    factory Flipbook.fromJson(Map<String, dynamic> json) => Flipbook(
+        frames: json["frames"],
+        duration: json["duration"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "frames": frames,
+        "duration": duration,
+    };
 }

@@ -20,11 +20,11 @@ class _FeedState extends State<Feed> {
           mural: Mural(
             commentCount: 12,
             creatorId: '0000',
-            creatorUserName: 'dummyUser',
+            creatorUsername: 'dummyUser',
             imageUrl:
                 "https://res.cloudinary.com/meanmachine/image/upload/v1624571586/profileImages/mwubbpf25oohhapp8vof.jpg",
             isLiked: true,
-            likedCount: 20,
+            likedCount: 20, id: '12222333333',
           ),
         );
       },
