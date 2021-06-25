@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:frontend/global.dart';
 import 'package:frontend/models/mural_model.dart';
@@ -35,22 +37,48 @@ class ApiHandling {
     }
   }
 
-  Future<void> fetchProfileMurals(
-      String username, List<Mural> murals, User user, int pageNo) async {
+  Future<User?> fetchProfileMurals(
+      String username, List<Mural> murals, int pageNo) async {
     print('Username ---> ${username}');
+
+    User? user;
 
     try {
       final token = await localRead('jwt');
-      final response = await Dio(options).get(
-        url + '/api/profile/' + username,
-        options: Options(headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json'
-        }),
-        queryParameters: {
-          'pagenumber' : pageNo
-        }
+      final response = await Dio(options).get(url + '/api/profile/' + username,
+          options: Options(headers: {
+            'Authorization': 'Bearer $token',
+          }),
+          queryParameters: {
+            'pagenumber': pageNo,
+          });
+
+      print(json.decode(response.data));
+
+      final extractedData = json.decode(response.data) as Map<String, dynamic>;
+      User user = User(
+        avatarUrl: extractedData['user']['avatar_url'],
+        bioUrl: extractedData['user']['bio_url'],
+        id: extractedData['user']['_id'],
+        username: extractedData['user']['username'],
       );
-    } catch (e) {}
+
+      extractedData['murals'].forEach((key, value) {
+        // murals.add(Mural(
+        //   commentCount: value['commentCount'],
+        //   creatorId: value['creatorId'],
+        //   creatorUsername: value['creatorUsername'],
+        //   id: value['_id'],
+        //   imageUrl: value['imageUrl'],
+        //   isLiked: value['isLiked'],
+        //   likedCount: value['likedCount'],
+        // ));
+        murals.add(muralFromJson(value));
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+
+    return user!;
   }
 }
