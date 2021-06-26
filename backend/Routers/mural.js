@@ -146,7 +146,7 @@ router.get('/api/commentsonmural/:id', auth, async (req, res) => {
                 }
             },
             { $sort: { _id: 1 } },
-            { $skip: pageNumber > 0 ? ((pageNumber - 1) * nPerPage) : 0 },
+            { $skip: pageNumber * nPerPage },
             { $limit: nPerPage }
         ]);
 
