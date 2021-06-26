@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
+import 'package:frontend/bloc/mural_bloc/mural_state.dart';
 import 'package:frontend/bloc/theme_bloc.dart';
 import 'package:frontend/screens/feed.dart';
 import 'package:frontend/screens/feed_page.dart';
@@ -62,7 +63,19 @@ class _NavigatorPageState extends State<NavigatorPage> {
       bottomNavigationBar: AppNavigationBar(
         onChange: (val) {
           if (val == 1) {
+            print('Value Changed ----------->');
             onCreate(context);
+            // BlocBuilder<ThemeBloc, ThemeData>(
+            //   builder: (context, state) {
+            //     return BlocListener<MuralBloc, MuralState>(
+            //       listener: (context, state) {
+            //         print('Lisnterrrrrrrrrrr ----------->');
+            //         // TODO: implement listener
+            //         onCreate(context);
+            //       },
+            //     );
+            //   },
+            // );
           } else {
             setState(() {
               _selectedIndex = val;
