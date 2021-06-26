@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:frontend/bloc/mural_bloc/mural_state.dart';
 import 'package:frontend/screens/create_mural_screen.dart';
 import 'package:frontend/screens/profile.dart';
+import 'package:frontend/widget/toggle_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import '../global.dart';
@@ -63,8 +64,9 @@ class _EditProfileState extends State<EditProfile> {
 
     String username = await localRead('username');
     //String fileName = basename(_image.path);
-    final firebaseStorageRef =
-        FirebaseStorage.instance.ref().child('uploads/profileImages/username');
+    final firebaseStorageRef = FirebaseStorage.instance
+        .ref()
+        .child('uploads/profileImages/${username}');
     final uploadTask = firebaseStorageRef.putFile(image!);
     await uploadTask.whenComplete(() => print('File Uploaded'));
     firebaseStorageRef.getDownloadURL().then((fileURL) {
@@ -104,9 +106,9 @@ class _EditProfileState extends State<EditProfile> {
             child: Row(
               children: [
                 Text(
-                  'Edit Your Profile!',
+                  'Edit Your Profile !',
                   style: TextStyle(
-                    fontSize: 32,
+                    fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -133,42 +135,69 @@ class _EditProfileState extends State<EditProfile> {
                             child: CircularProgressIndicator(),
                           ),
                         )
-                      : Text('Save Profile'),
+                      : Icon(
+                          Icons.save,
+                          color: Colors.red,
+                        ),
                 ),
               ],
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 16.0),
-            child: Text(
-              'Profile Pictue',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-              ),
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                    'Profile Pictue',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: color.contrast),
+                  ),
+                ),
+                Spacer(),
+                IconButton(
+                  onPressed: () {
+                    uploadImage().then(
+                      (value) => ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Profile Photo Updated'),
+                        ),
+                      ),
+                    );
+                  },
+                  icon: Icon(Icons.edit,color: Colors.red,)
+                ),
+              ],
             ),
+          ),
+          SizedBox(
+            height: 30,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text('Current Profile'),
-                  Container(
-                    height: 95,
-                    width: 95,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.blue,
-                      image: DecorationImage(
-                        image: NetworkImage(currentProfile),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.center,
+              //   children: [
+              //     Container(
+              //       height: 95,
+              //       width: 95,
+              //       decoration: BoxDecoration(
+              //         border: Border.all(color: Colors.red, width: 2),
+              //         shape: BoxShape.circle,
+              //         color: Colors.blue,
+              //         image: DecorationImage(
+              //           image: NetworkImage(currentProfile),
+              //           fit: BoxFit.cover,
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -179,51 +208,50 @@ class _EditProfileState extends State<EditProfile> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.blue,
+                            border: Border.all(color: Colors.red, width: 2),
                             image: DecorationImage(
                               image: FileImage(image!),
                               fit: BoxFit.cover,
                             ),
                           ),
                         )
-                      : Container(),
-                  ElevatedButton(
-                    onPressed: () {
-                      uploadImage().then(
-                        (value) => ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Profile Photo Updated'),
+                      : Container(
+                          height: 95,
+                          width: 95,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.red, width: 2),
+                            shape: BoxShape.circle,
+                            color: Colors.blue,
+                            image: DecorationImage(
+                              image: NetworkImage(currentProfile),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
-                      );
-                    },
-                    child: Text(
-                      'CHANGE PROFILE IMAGE',
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.red,
-                      onPrimary: Colors.white,
-                    ),
-                  ),
                 ],
               ),
             ],
           ),
+          SizedBox(
+            height: 30,
+          ),
           Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 32.0,
-              horizontal: 16.0,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'Change Your Bio',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                    'Change Your Bio',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: color.contrast),
                   ),
                 ),
                 Spacer(),
-                ElevatedButton(
+                IconButton(
                   onPressed: () async {
                     setState(() {
                       loading = true;
@@ -245,26 +273,62 @@ class _EditProfileState extends State<EditProfile> {
                     print('################ ${bioUrl}');
                     localWrite('bio_url', bioUrl);
                   },
-                  child: Text(
-                    'Create Bio',
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.red,
-                    onPrimary: Colors.white,
+                  icon: Icon(
+                    Icons.edit,
+                    color: Colors.red,
                   ),
                 ),
               ],
             ),
           ),
+          SizedBox(
+            height: 30,
+          ),
+          SizedBox(
+            height: 10,
+          ),
           Container(
             width: double.infinity,
             height: 173,
             decoration: BoxDecoration(
+              border: Border.all(color: Colors.red, width: 2),
               color: Colors.red,
               image: DecorationImage(
                 image: NetworkImage(bioUrl),
                 fit: BoxFit.cover,
               ),
+            ),
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Toggle Color Mode',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color:   color.contrast),
+                ),
+                Spacer(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Toggle(
+                    value: color.isDarkMode,
+                    onToggle: (value) {
+                      if (value) {
+                        // color.themeModeSwitch(colorMode: ColorMode.dark);
+                      } else {
+                        // color.themeModeSwitch(colorMode: ColorMode.light);
+                      }
+                    },
+                  ),
+                )
+              ],
             ),
           ),
         ],

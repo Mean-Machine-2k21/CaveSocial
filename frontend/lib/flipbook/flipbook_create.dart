@@ -9,15 +9,25 @@ import 'package:frontend/services/add_gif_fuction.dart';
 import 'functions.dart';
 
 class CreateFlipbook extends StatefulWidget {
-  CreateFlipbook({Key? key, required this.title}) : super(key: key);
+//  CreateFlipbook({Key? key, required this.title}) : super(key: key);
   final String title;
+  Function? editProfile;
+  //var frame;
+  //var time;
+  CreateFlipbook(
+  //  this.frame,
+    //this.time, 
+    {
+    this.editProfile,
+    required this.title,
+  });
   @override
   _CreateFlipbookState createState() => _CreateFlipbookState();
 }
 
 class _CreateFlipbookState extends State<CreateFlipbook> {
-  var frame = 0;
-  var time = 300;
+  var frame=0;
+var time=300;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,12 +137,32 @@ class _CreateFlipbookState extends State<CreateFlipbook> {
                 var aate = DateTime.now().toString();
                 final Directory systemTempDir = Directory.systemTemp;
                 final File file =
-                    await new File('${systemTempDir.path}/foo${aate}.png')
+                    await new File('${systemTempDir.path}/foo${aate}.gif')
                         .create();
                 file.writeAsBytes(aa);
 
+                final snackBar = SnackBar(
+                  content: Text('Yay! Your Mural is posted!'),
+                  duration: Duration(seconds: 5),
+                  backgroundColor: Colors.red,
+                );
+
+                // print(file);
+                //  await uploadGifToFirebase(file);
+
+                //  final snackBar = SnackBar(
+                //           content: Text('Yay! Your Mural is posted!'),
+                //           duration: Duration(seconds: 5),
+                //           backgroundColor: Colors.red,
+                //         );
+
                 print(file);
-                await uploadGifToFirebase(file);
+                await uploadGifToFirebase(file).then((value) {
+                  print('Murall');
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  widget.editProfile!(value,frame,time);
+                  Navigator.pop(context);
+                });
               },
               child: Text('Post FlipBook!!'),
               style: ButtonStyle(

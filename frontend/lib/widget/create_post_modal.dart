@@ -1,9 +1,31 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
+import 'package:frontend/bloc/theme_bloc.dart';
+import 'package:frontend/models/mural_model.dart';
+import 'package:frontend/repository/mural_repository.dart';
 import 'package:frontend/screens/create_mural_screen.dart';
 import '../flipbook/flipbook_create.dart';
 
+String imageUrl = "", flipUrl = "";
+int frame = 0, time = 0;
+void funct(image) {
+  imageUrl = image;
+}
+
+void flipfunct(gif, frames, times) {
+  flipUrl = gif;
+  frame = frames;
+  time = times;
+}
+
+MuralRepository muralRepository = MuralRepository();
+
 void onCreate(BuildContext context) {
+  var themeBloc = BlocProvider.of<MuralBloc>(context);
+  var muralBloc = BlocProvider.of<ThemeBloc>(context);
+
   showModalBottomSheet(
     context: context,
 
@@ -56,8 +78,14 @@ void onCreate(BuildContext context) {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => CreateMuralScreen('normal')),
+                          builder: (context) => CreateMuralScreen(
+                            'normal',
+                            editProfile: funct,
+                          ),
+                        ),
                       );
+
+                      muralRepository.createMural(content: imageUrl);
                       Navigator.pop(context);
 
                       ///
@@ -104,10 +132,20 @@ void onCreate(BuildContext context) {
                         MaterialPageRoute(
                             builder: (context) => CreateFlipbook(
                                   title: 'Flipbook',
+                                  editProfile: flipfunct,
                                 )),
                       );
+
+                      muralRepository.createMural(
+                        content: imageUrl,
+                        flipbook: Flipbook(
+                          duration: time,
+                          frames: frame,
+                        ),
+                      );
+                      Navigator.pop(context);
                     },
-                  )
+                  ),
                 ],
               ),
             ],
