@@ -61,8 +61,8 @@ router.post('/api/logoutall', auth, async (req, res) => {
 
 router.patch('/api/editprofile', auth, async (req, res) => {
     try {
-        req.user.avatar_url = req.body.avatar_url;
-        req.user.bio_url = req.body.bio_url;
+        req.user.avatar_url = req.body.avatar_url ? req.body.avatar_url : (req.user.avatar_url ? req.user.avatar_url : "");
+        req.user.bio_url = req.body.bio_url ? req.body.bio_url : (req.user.bio_url ? req.user.bio_url : "");
         console.log(req.user);
         await req.user.save();
         res.status(200).json({ msg: 'Congratulations profile updated successfully', user: req.user });
