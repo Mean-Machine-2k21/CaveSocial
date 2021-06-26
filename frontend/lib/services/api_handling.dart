@@ -94,7 +94,8 @@ class ApiHandling {
   }
 
   Future<List<Mural>> fetchAllMurals(int pageNo) async {
-    print('PageNo---> ${pageNo}');
+    print(
+        'PageNo gggggggggggggggggggggggg--------------------------> ${pageNo}');
 
     List<Mural> murals = [];
 
@@ -138,12 +139,12 @@ class ApiHandling {
   }
 
   Future<void> likeMural(String muralId) async {
-    print('MuralId ---> ${muralId}');
+    print('Likkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk MuralId ---> ${muralId}');
 
     try {
       final token = await localRead('jwt');
       final response = await Dio(options).patch(
-        url + '/api/likemural/',
+        url + '/api/likemural',
         options: Options(headers: {
           'Authorization': 'Bearer $token',
         }),
@@ -151,8 +152,6 @@ class ApiHandling {
           'muralId': muralId,
         },
       );
-
-      print(json.decode(response.data));
     } catch (e) {
       print(e.toString());
     }
@@ -172,8 +171,6 @@ class ApiHandling {
           'muralId': muralId,
         },
       );
-
-      print(json.decode(response.data));
     } catch (e) {
       print(e.toString());
     }

@@ -1,4 +1,6 @@
 // @dart=2.9;
+import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
+import 'package:frontend/repository/mural_repository.dart';
 import 'package:frontend/screens/profile.dart';
 
 import '../bloc/theme_bloc.dart';
@@ -56,6 +58,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    MuralRepository _muralRepository = MuralRepository();
+    
     //   if(themeBloc.darkMode)setState(() {});
 
     Future<Map> attemptLogIn(String username, String password) async {
@@ -199,7 +203,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                     builder: (context) =>
                                         // HomePage.fromBase64(jwt['token'])
                                         //TODO
-                                        NavigatorPage(),
+                                        BlocProvider(
+                                      create: (context) =>
+                                          MuralBloc(_muralRepository),
+                                      child: BlocProvider.value(
+                                        value: themeBloc,
+                                        child: NavigatorPage(),
+                                      ),
+                                    ),
                                   ),
                                 );
                               } else {

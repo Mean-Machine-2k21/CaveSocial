@@ -17,13 +17,14 @@ class Feed extends StatefulWidget {
 
 class _FeedState extends State<Feed> {
   List<Mural> murals = [];
+  int counter = 0;
 
   @override
   Widget build(BuildContext context) {
-     List<Mural> murals=[];
+    List<Mural> murals = [];
     var muralBloc = BlocProvider.of<MuralBloc>(context);
     var themeBloc = BlocProvider.of<ThemeBloc>(context);
-    // muralBloc.add(FetchAllMurals(page: 0));
+    muralBloc.add(FetchAllMurals(page: counter++));
     final pageController = PageController(initialPage: 0);
     return BlocBuilder<ThemeBloc, ThemeData>(
       builder: (context, state) {
@@ -35,59 +36,47 @@ class _FeedState extends State<Feed> {
                 color: themeBloc.contrast,
                 strokeWidth: 5,
               ));
-          
-            else 
-             if (state is FetchedMurals && state.Murals.length!=0) 
-            {
-             
+            else if (state is FetchedMurals && state.Murals.length != 0) {
               murals.addAll((state).Murals);
               ///////////////////////////////////////
               return PageView.builder(
                 itemCount: murals.length,
                 itemBuilder: (context, index) {
-                   if(index==murals.length-2)
-                  muralBloc.add(FetchAllMurals(page: index));
-                     
+                  if (index == murals.length - 2)
+                    muralBloc.add(FetchAllMurals(page: counter++));
+
                   //  if()
-                  return FeedPage(
-                    mural:
-                     murals[index]
-                    //   commentCount: 12,
-                    //   creatorId: '0000',
-                    //   creatorUsername: 'dummyUser',
-                    //   imageUrl:
-                    //       "https://res.cloudinary.com/meanmachine/image/upload/v1624571586/profileImages/mwubbpf25oohhapp8vof.jpg",
-                    //   isLiked: true,
-                    //   likedCount: 20,
-                    //   id: '12222333333',
-                    // ),
-                  );
+                  return FeedPage(mural: murals[index]
+                      //   commentCount: 12,
+                      //   creatorId: '0000',
+                      //   creatorUsername: 'dummyUser',
+                      //   imageUrl:
+                      //       "https://res.cloudinary.com/meanmachine/image/upload/v1624571586/profileImages/mwubbpf25oohhapp8vof.jpg",
+                      //   isLiked: true,
+                      //   likedCount: 20,
+                      //   id: '12222333333',
+                      // ),
+                      );
                 },
               );
-            }
-            else
-            {
-               return PageView.builder(
+            } else {
+              return PageView.builder(
                 itemCount: murals.length,
                 itemBuilder: (context, index) {
-                 
                   //  if()
-                  return FeedPage(
-                    mural:
-                     murals[index]
-                    //   commentCount: 12,
-                    //   creatorId: '0000',
-                    //   creatorUsername: 'dummyUser',
-                    //   imageUrl:
-                    //       "https://res.cloudinary.com/meanmachine/image/upload/v1624571586/profileImages/mwubbpf25oohhapp8vof.jpg",
-                    //   isLiked: true,
-                    //   likedCount: 20,
-                    //   id: '12222333333',
-                    // ),
-                  );
+                  return FeedPage(mural: murals[index]
+                      //   commentCount: 12,
+                      //   creatorId: '0000',
+                      //   creatorUsername: 'dummyUser',
+                      //   imageUrl:
+                      //       "https://res.cloudinary.com/meanmachine/image/upload/v1624571586/profileImages/mwubbpf25oohhapp8vof.jpg",
+                      //   isLiked: true,
+                      //   likedCount: 20,
+                      //   id: '12222333333',
+                      // ),
+                      );
                 },
               );
-        
             }
           },
         );
