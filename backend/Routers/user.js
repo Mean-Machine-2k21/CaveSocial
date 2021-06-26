@@ -76,7 +76,7 @@ router.patch('/api/editprofile', auth, async (req, res) => {
 router.get('/api/profile/:username', auth, async (req, res) => {
     const username = req.params.username;
     const pageNumber = req.query.pagenumber;
-    const nPerPage = 5;
+    const nPerPage = 6;
     try {
         const user = await User.find({ username });
         console.log(user);
