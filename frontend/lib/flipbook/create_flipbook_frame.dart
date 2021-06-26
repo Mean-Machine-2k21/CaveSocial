@@ -3,18 +3,19 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:frontend/services/add_image_fuction.dart';
-import './painter.dart';
+import '../painter.dart';
 
-class ExamplePage extends StatefulWidget {
+import 'functions.dart';
+
+class CreateFrame extends StatefulWidget {
   final String mode;
-  ExamplePage(this.mode);
+  CreateFrame(this.mode);
 
   @override
-  _ExamplePageState createState() => new _ExamplePageState();
+  _CreateFrameState createState() => new _CreateFrameState();
 }
 
-class _ExamplePageState extends State<ExamplePage> {
+class _CreateFrameState extends State<CreateFrame> {
   bool _finished = false;
   late String mode;
   late PainterController _controller = _newController(mode);
@@ -29,6 +30,7 @@ class _ExamplePageState extends State<ExamplePage> {
     PainterController controller = new PainterController(s);
     controller.thickness = 5.0;
     controller.backgroundColor = Color(0xff1E1E2A);
+    controller.drawColor = Colors.white;
     return controller;
   }
 
@@ -56,7 +58,7 @@ class _ExamplePageState extends State<ExamplePage> {
             ),
             tooltip: 'back',
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).pop(false);
             }),
         Spacer(),
         // new IconButton(
@@ -181,7 +183,7 @@ class _ExamplePageState extends State<ExamplePage> {
     setState(() {
       _finished = true;
     });
-    await Navigator.of(context)
+    var check = await Navigator.of(context)
         .push(new MaterialPageRoute(builder: (BuildContext context) {
       return new Scaffold(
         // appBar: new AppBar(
@@ -233,27 +235,24 @@ class _ExamplePageState extends State<ExamplePage> {
                         // var filee = await File.fromRawPath(aa);
 
                         // var image = MemoryImage(aa);
-                        var aate = DateTime.now().toString();
-                        final Directory systemTempDir = Directory.systemTemp;
-                        final File file = await new File(
-                                '${systemTempDir.path}/foo${aate}.png')
-                            .create();
-                        file.writeAsBytes(aa);
+                        // var aate = DateTime.now().toString();
+                        // final Directory systemTempDir = Directory.systemTemp;
+                        // final File file = await new File(
+                        //         '${systemTempDir.path}/foo${aate}.png')
+                        //     .create();
+                        // file.writeAsBytes(aa);
 
-                        print(file);
-                        await uploadImageToFirebase(file);
+                        addimage(aa);
                         final snackBar = SnackBar(
-                          content: Text('Yay! Your Mural is posted!'),
-                          duration: Duration(seconds: 5),
+                          content: Text('Frame added !!'),
+                          duration: Duration(seconds: 3),
                           backgroundColor: Colors.red,
                         );
 
-                        // Find the ScaffoldMessenger in the widget tree
-                        // and use it to show a SnackBar.
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        Navigator.of(context).pop();
+                        Navigator.of(context).pop(true);
                       },
-                      child: Text('Post Mural')),
+                      child: Text('Add Frame')),
                 ],
               ),
             ),
@@ -269,14 +268,14 @@ class _ExamplePageState extends State<ExamplePage> {
                 ),
                 tooltip: 'back',
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(false);
                 }),
           ),
         ]),
       );
     }));
 
-    Navigator.of(context).pop();
+    Navigator.of(context).pop(check);
   }
 }
 

@@ -1,4 +1,8 @@
 // @dart=2.9;
+import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
+import 'package:frontend/repository/mural_repository.dart';
+import 'package:frontend/screens/profile.dart';
+
 import '../bloc/theme_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../global.dart';
 import '../widget/app_button.dart';
 import 'auth_screen.dart';
+import 'feed.dart';
+import 'navigator_screen.dart';
 import 'signup_screen.dart';
 import 'package:http/http.dart' as http;
 
@@ -52,6 +58,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    MuralRepository _muralRepository = MuralRepository();
+    
     //   if(themeBloc.darkMode)setState(() {});
 
     Future<Map> attemptLogIn(String username, String password) async {
@@ -190,10 +198,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                 localInsertLoginIn(jwt);
                                 //storage.write(key: key, value: value)
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            HomePage.fromBase64(jwt['token'])));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        // HomePage.fromBase64(jwt['token'])
+                                        //TODO
+                                        BlocProvider(
+                                      create: (context) =>
+                                          MuralBloc(_muralRepository),
+                                      child: BlocProvider.value(
+                                        value: themeBloc,
+                                        child: NavigatorPage(),
+                                      ),
+                                    ),
+                                  ),
+                                );
                               } else {
                                 displayDialog(context, "An Error Occurred",
                                     "No account was found matching that username and password");
