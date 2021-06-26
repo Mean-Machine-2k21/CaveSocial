@@ -191,21 +191,8 @@ class _FeedPageState extends State<FeedPage> {
                                 '${widget.mural.commentCount}',
                                 style: TextStyle(color: Colors.white),
                               ),
-                              SizedBox(height: 20),
-                              IconButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => BlocProvider.value(
-                                        value: themeBloc,
-                                        child: Profile(),
-                                      ),
-                                    ),
-                                  );
-                                },
-                                icon: Icon(Ionicons.md_person,
-                                    color: Colors.white),
-                              ),
+                              
+                             
                               SizedBox(height: 20),
                             ],
                           ),
