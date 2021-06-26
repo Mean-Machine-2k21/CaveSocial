@@ -92,7 +92,7 @@ router.get('/api/profile/:username', auth, async (req, res) => {
                     isLiked: { $in: [req.user.username, "$likes.likedByUserName"] }
                 }
             },
-            { $sort: { _id: 1 } },
+            { $sort: { _id: -1 } },
             { $skip: pageNumber * nPerPage },
             { $limit: nPerPage }
         ]);

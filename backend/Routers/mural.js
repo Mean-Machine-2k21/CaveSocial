@@ -111,7 +111,7 @@ router.get('/api/murals', auth, async (req, res) => {
                     isLiked: { $in: [req.user.username, "$likes.likedByUserName"] }
                 }
             },
-            { $sort: { _id: 1 } },
+            { $sort: { _id: -1 } },
             { $skip: pageNumber * nPerPage },
             { $limit: nPerPage }
         ]);
@@ -145,7 +145,7 @@ router.get('/api/commentsonmural/:id', auth, async (req, res) => {
                     isLiked: { $in: [req.user.username, "$likes.likedByUserName"] }
                 }
             },
-            { $sort: { _id: 1 } },
+            { $sort: { _id: -1 } },
             { $skip: pageNumber * nPerPage },
             { $limit: nPerPage }
         ]);
