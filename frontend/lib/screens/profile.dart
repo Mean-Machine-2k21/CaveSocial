@@ -11,7 +11,9 @@ import '../global.dart';
 import '../services/api_handling.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+  static const routeName = '/profile';
+  String? otherUsername;
+  Profile({Key? key, this.otherUsername}) : super(key: key);
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -29,7 +31,13 @@ class _ProfileState extends State<Profile> {
     setState(() {
       loading = true;
     });
-    username = await localRead('username');
+
+    if (widget.otherUsername == null) {
+      username = await localRead('username');
+    } else {
+      username = widget.otherUsername!;
+    }
+
     final apiRepository = ApiHandling();
     user = await apiRepository.fetchProfileMurals(username, murals, 0);
     print('username --> ${user!.username}');
@@ -76,9 +84,11 @@ class _ProfileState extends State<Profile> {
                             padding: const EdgeInsets.all(24.0),
                             child: IconButton(
                               onPressed: () {
-                                Navigator.of(context).push(
+                                Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                    builder: (context) => EditProfile(),
+                                    builder: (context) => EditProfile(
+                                      key: widget.key,
+                                    ),
                                   ),
                                 );
                               },
@@ -97,10 +107,13 @@ class _ProfileState extends State<Profile> {
                             height: 95,
                             width: 95,
                             decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.blue,
-                                image: DecorationImage(
-                                    image: NetworkImage(user!.avatarUrl))),
+                              shape: BoxShape.circle,
+                              color: Colors.blue,
+                              image: DecorationImage(
+                                image: NetworkImage(user!.avatarUrl),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
                         )
                       ],

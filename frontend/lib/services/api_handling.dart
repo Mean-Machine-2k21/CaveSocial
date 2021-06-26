@@ -17,22 +17,45 @@ class ApiHandling {
     );
   }
 
-  Future<void> editProfile(String avatarUrl, String bioUrl) async {
-    print('Avatar Url ---> ${avatarUrl}');
-    print('Bio Url ----> ${bioUrl}');
+  Future<void> editProfile({
+    required String avatarUrl,
+    required String bioUrl,
+  }) async {
     try {
       final token = await localRead('jwt');
       //final token =
       //'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGQ2M2NlMzk2YjdiODNjNzgzY2M3YjQiLCJpYXQiOjE2MjQ2NTcwODZ9.FvPveb4RpYtHshxKZdzArrOr5n9pHMkJQaX4XPC-zYg';
-      final response = await Dio(options).patch(url + '/api/editprofile',
-          options: Options(headers: {
-            'Authorization': 'Bearer $token',
-            'Content-Type': 'application/json'
-          }),
-          data: {
-            'avatar_url': avatarUrl,
-            'bio_url': bioUrl,
-          });
+
+      final response;
+      if (avatarUrl == "") {
+        response = await Dio(options).patch(url + '/api/editprofile',
+            options: Options(headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'application/json'
+            }),
+            data: {
+              'bio_url': bioUrl,
+            });
+      } else if (bioUrl == "") {
+        response = await Dio(options).patch(url + '/api/editprofile',
+            options: Options(headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'application/json'
+            }),
+            data: {
+              'avatar_url': avatarUrl,
+            });
+      } else {
+        response = await Dio(options).patch(url + '/api/editprofile',
+            options: Options(headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'application/json'
+            }),
+            data: {
+              'avatar_url': avatarUrl,
+              'bio_url': bioUrl,
+            });
+      }
     } catch (e) {
       print(e.toString());
     }
