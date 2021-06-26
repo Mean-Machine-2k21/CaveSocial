@@ -41,12 +41,12 @@ class MuralBloc extends Bloc<MuralEvent, MuralState> {
       } else if (event is FetchMuralLikeList) {
         List<String> usernames = [];
         usernames =
-            await muralRepository.fetchMuralLikeList(muralid: event.muralid);
+            await muralRepository.fetchMuralLikeList(muralid: event.muralid,page:event.page);
         yield FetchedMuralLikeList(usernames: usernames);
       } else if (event is FetchMuralCommentList) {
         List<Mural> muralCommentList = [];
         muralCommentList =
-            await muralRepository.fetchMuralCommentList(muralid: event.muralid);
+            await muralRepository.fetchMuralCommentList(muralid: event.muralid,page:event.page);
         yield FetchedMuralCommentList(muralCommentList: muralCommentList);
       } else if (event is CommentMural) {
         await muralRepository.commentMural(

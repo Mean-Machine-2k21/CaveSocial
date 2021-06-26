@@ -12,7 +12,7 @@ class CreateMuralScreen extends StatefulWidget {
   Function? editProfile;
 
   CreateMuralScreen(
-    this.mode, {
+    this.mode,  {
     this.editProfile,
   });
 

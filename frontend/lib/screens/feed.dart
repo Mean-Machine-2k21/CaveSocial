@@ -35,6 +35,7 @@ class _FeedState extends State<Feed> {
                 color: themeBloc.contrast,
                 strokeWidth: 5,
               ));
+          
             else 
              if (state is FetchedMurals && state.Murals.length!=0) 
             {
