@@ -191,9 +191,9 @@ class _ProfileState extends State<Profile> {
                                     itemBuilder: (context, index) {
                                       print("____________________" +
                                           index.toString());
-                                      if (index == muralsFeed.length-2)
-                                        muralBloc.add(FetchProfileMurals(
-                                            username: username, page: cnt++));
+                                      // if (index == muralsFeed.length-2)
+                                      //   muralBloc.add(FetchProfileMurals(
+                                      //       username: username, page: cnt++));
                                       return Container(
                                         width: 107,
                                         height: 332,
