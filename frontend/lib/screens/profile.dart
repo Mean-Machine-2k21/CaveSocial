@@ -11,6 +11,7 @@ import '../global.dart';
 import '../services/api_handling.dart';
 
 class Profile extends StatefulWidget {
+  static const routeName = '/profile';
   const Profile({Key? key}) : super(key: key);
 
   @override
@@ -78,7 +79,7 @@ class _ProfileState extends State<Profile> {
                               onPressed: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => EditProfile(),
+                                    builder: (context) => EditProfile(key: widget.key,),
                                   ),
                                 );
                               },
@@ -97,10 +98,13 @@ class _ProfileState extends State<Profile> {
                             height: 95,
                             width: 95,
                             decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.blue,
-                                image: DecorationImage(
-                                    image: NetworkImage(user!.avatarUrl))),
+                              shape: BoxShape.circle,
+                              color: Colors.blue,
+                              image: DecorationImage(
+                                image: NetworkImage(user!.avatarUrl),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
                         )
                       ],

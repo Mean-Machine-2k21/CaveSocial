@@ -8,6 +8,7 @@ import '../global.dart';
 import '../services/api_handling.dart';
 
 class EditProfile extends StatefulWidget {
+  static const routeName = '/editProfile';
   const EditProfile({Key? key}) : super(key: key);
 
   @override
@@ -25,6 +26,7 @@ class _EditProfileState extends State<EditProfile> {
   String avatarUrl = "";
   String bioUrl = "";
   File? image;
+  bool loading = false;
 
   Future<void> uploadImage() async {
     final pickedFile = await _imagePicker.getImage(source: ImageSource.gallery);
@@ -35,6 +37,10 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
+    setState(() {
+      loading = true;
+    });
+
     String username = await localRead('username');
     //String fileName = basename(_image.path);
     final firebaseStorageRef =
@@ -59,6 +65,10 @@ class _EditProfileState extends State<EditProfile> {
       //       (value) => print("Done: $value"),
       //     );
     });
+
+    setState(() {
+      loading = false;
+    });
   }
 
   @override
@@ -66,8 +76,15 @@ class _EditProfileState extends State<EditProfile> {
     return Scaffold(
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            Text(
+              'Edit Your Profile!',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             image != null
                 ? Container(
                     height: 95,
@@ -76,7 +93,9 @@ class _EditProfileState extends State<EditProfile> {
                       shape: BoxShape.circle,
                       color: Colors.blue,
                       image: DecorationImage(
-                          image: FileImage(image!), fit: BoxFit.cover),
+                        image: FileImage(image!),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   )
                 : Container(),
@@ -90,10 +109,19 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                 );
               },
-              child: Text('ADD PROFILE IMAGE'),
+              child: Text(
+                'ADD PROFILE IMAGE',
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red,
+                onPrimary: Colors.white,
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
+                setState(() {
+                  loading = true;
+                });
                 await Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -104,19 +132,33 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                 );
 
+                setState(() {
+                  loading = false;
+                });
+
                 print('################ ${bioUrl}');
               },
               child: Text(
                 'Create Bio',
               ),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red,
+                onPrimary: Colors.white,
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
-                await localWrite('avatar_url', avatarUrl);
-                await localWrite('bio_url', bioUrl);
-                apiHandling.editProfile(avatarUrl, bioUrl);
+                await apiHandling.editProfile(
+                  avatarUrl: avatarUrl,
+                  bioUrl: bioUrl,
+                );
+                Navigator.of(context).pop();
               },
-              child: Text('Save Profile'),
+              child: loading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Text('Save Profile'),
             ),
           ],
         ),
