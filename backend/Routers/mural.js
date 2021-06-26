@@ -38,7 +38,7 @@ router.post('/api/createmural', auth, async (req, res) => {
         res.status(400).json({ msg: 'Something went wrong' });
     }
 });
-router.patch('/api/likemural/:id', auth, async (req, res) => {
+router.patch('/api/likemural', auth, async (req, res) => {
 
 
     // console.log(req.user);
@@ -58,7 +58,7 @@ router.patch('/api/likemural/:id', auth, async (req, res) => {
         res.status(400).json({ msg: 'Something went wrong' });
     }
 });
-router.patch('/api/unlikemural/:id', auth, async (req, res) => {
+router.patch('/api/unlikemural', auth, async (req, res) => {
 
     try {
         const _id = req.body.muralId;
@@ -146,7 +146,7 @@ router.get('/api/commentsonmural/:id', auth, async (req, res) => {
                 }
             },
             { $sort: { _id: 1 } },
-            { $skip: pageNumber > 0 ? ((pageNumber - 1) * nPerPage) : 0 },
+            { $skip: pageNumber * nPerPage },
             { $limit: nPerPage }
         ]);
 
