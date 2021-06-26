@@ -12,7 +12,8 @@ import '../services/api_handling.dart';
 
 class Profile extends StatefulWidget {
   static const routeName = '/profile';
-  const Profile({Key? key}) : super(key: key);
+  String? otherUsername;
+  Profile({Key? key, this.otherUsername}) : super(key: key);
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -30,7 +31,13 @@ class _ProfileState extends State<Profile> {
     setState(() {
       loading = true;
     });
-    username = await localRead('username');
+
+    if (widget.otherUsername == null) {
+      username = await localRead('username');
+    } else {
+      username = widget.otherUsername!;
+    }
+
     final apiRepository = ApiHandling();
     user = await apiRepository.fetchProfileMurals(username, murals, 0);
     print('username --> ${user!.username}');
