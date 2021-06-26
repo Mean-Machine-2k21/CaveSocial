@@ -92,9 +92,7 @@ router.get('/api/profile/:username', auth, async (req, res) => {
                     isLiked: { $in: [req.user.username, "$likes.likedByUserName"] }
                 }
             },
-            { $sort: { _id: -1 } },
-            { $skip: pageNumber * nPerPage },
-            { $limit: nPerPage }
+            { $sort: { _id: -1 } }
         ]);
         res.status(200).json({ msg: 'User Found', user: user[0], murals });
     } catch (error) {
