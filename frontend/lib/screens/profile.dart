@@ -77,9 +77,11 @@ class _ProfileState extends State<Profile> {
                             padding: const EdgeInsets.all(24.0),
                             child: IconButton(
                               onPressed: () {
-                                Navigator.of(context).push(
+                                Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                    builder: (context) => EditProfile(key: widget.key,),
+                                    builder: (context) => EditProfile(
+                                      key: widget.key,
+                                    ),
                                   ),
                                 );
                               },
