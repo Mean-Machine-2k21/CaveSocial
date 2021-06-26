@@ -38,11 +38,12 @@ router.post('/api/createmural', auth, async (req, res) => {
         res.status(400).json({ msg: 'Something went wrong' });
     }
 });
-router.get('/api/likemural/:id', auth, async (req, res) => {
-    const _id = req.params.id;
+router.patch('/api/likemural/:id', auth, async (req, res) => {
+
 
     // console.log(req.user);
     try {
+        const _id = req.body.muralId;
         const mural = await Mural.findById(_id);
         const alreadyLiked = mural.likes.some(like => like.likedByUserId.toString() === req.user._id.toString());
         if (alreadyLiked)
@@ -57,11 +58,10 @@ router.get('/api/likemural/:id', auth, async (req, res) => {
         res.status(400).json({ msg: 'Something went wrong' });
     }
 });
-router.get('/api/unlikemural/:id', auth, async (req, res) => {
-    const _id = req.params.id;
+router.patch('/api/unlikemural/:id', auth, async (req, res) => {
 
-    // console.log(req.user);
     try {
+        const _id = req.body.muralId;
         const mural = await Mural.findById(_id);
         const likes = mural.likes.filter(like => like.likedByUserId.toString() !== req.user._id.toString());
         mural.likes = likes;
