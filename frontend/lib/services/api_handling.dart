@@ -93,6 +93,51 @@ class ApiHandling {
     }
   }
 
+  Future<List<Mural>> fetchMuralCommentList(String muralId, int pageNo) async {
+    print(
+        'PageNo gggggggggggggggggggggggg--------------------------> ${pageNo}');
+
+    List<Mural> murals = [];
+
+    try {
+      final token = await localRead('jwt');
+      final response = await Dio(options).get(url + '/api/commentonmural/muralId',
+          options: Options(headers: {
+            'Authorization': 'Bearer $token',
+          }),
+          queryParameters: {
+            'pagenumber': pageNo,
+          });
+
+      ////print(json.decode(response.data));
+
+      //final extractedData = json.decode(response.data) as Map<String, dynamic>;
+      final vari = Map<String, dynamic>.from(response.data);
+
+      final muralMap = vari.values.elementAt(0);
+      muralMap.forEach((element) {
+        print('Mural ---> ${element.values.elementAt(0)}');
+        murals.add(Mural(
+          id: element.values.elementAt(0),
+          creatorId: element.values.elementAt(1),
+          creatorUsername: element.values.elementAt(2),
+          imageUrl: element.values.elementAt(3),
+          likedCount: element.values.elementAt(4),
+          commentCount: element.values.elementAt(5),
+          isLiked: element.values.elementAt(6),
+        ));
+      });
+
+      // extractedData.forEach((key, value) {
+      //   murals.add(muralFromJson(value));
+      // });
+    } catch (e) {
+      print(e.toString());
+    }
+
+    return murals;
+  }
+
   Future<List<Mural>> fetchAllMurals(int pageNo) async {
     print(
         'PageNo gggggggggggggggggggggggg--------------------------> ${pageNo}');

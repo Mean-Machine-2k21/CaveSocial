@@ -28,9 +28,11 @@ class MuralRepository {
     return await _apiHandling.unLikeMural(muralId);
   }
 
-  fetchMuralLikeList({required String muralid,required int page}) {}
+  fetchMuralLikeList({required String muralid, required int page}) {}
 
-  fetchMuralCommentList({required String muralid,required int page}) {}
+  fetchMuralCommentList({required String muralid, required int page}) async {
+    return await _apiHandling.fetchMuralCommentList(muralid, page);
+  }
 
   commentMural(
       {required String parentMuralId,
