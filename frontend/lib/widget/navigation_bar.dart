@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import '../global.dart';
 
 class AppNavigationBar extends StatefulWidget {
@@ -32,7 +33,7 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
       {
         'name': 'Create',
         'child': Icon(
-          Icons.add,
+          Ionicons.md_create,
           color: _selectedIndex == 1 ? color.style : color.contrast,
         ),
       },
@@ -44,9 +45,9 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
         ),
       },
     ];
-
+    var itemWidth = MediaQuery.of(context).size.width / 3;
     return Container(
-      height: MediaQuery.of(context).size.height * 0.1,
+      height: MediaQuery.of(context).size.height * 0.07,
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
           color: color.black
@@ -54,21 +55,63 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
           blurRadius: MediaQuery.of(context).size.height / 4,
         ),
       ], color: color.main),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      child: Column(
         children: [
-          for (int i = 0; i < _items.length; i++)
-            NavigationBarItem(
-              label: _items[i]['name'] as String,
-              child: _items[i]['child'] as Widget,
-              onSelect: () {
-                widget.onChange(i);
-                setState(() {
-                  _selectedIndex = i;
-                });
-              },
-              textColor: (_selectedIndex == i) ? color.style : color.contrast,
-            ),
+          Row(
+            children: <Widget>[
+              AnimatedContainer(
+                duration: Duration(milliseconds: 200),
+                curve: Curves.ease,
+                color: Colors.transparent,
+                width: _selectedIndex == 0
+                    ? MediaQuery.of(context).size.width * 0.0
+                    : itemWidth * _selectedIndex,
+                height: 4.0,
+              ),
+              Flexible(
+                child: AnimatedContainer(
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.ease,
+                  width: itemWidth,
+                  height: 4.0,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.vertical(bottom: Radius.circular(4)),
+                      child: Container(
+                        height: 4,
+                        color: color.style,
+                      ),
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius:
+                        BorderRadius.vertical(bottom: Radius.circular(4)),
+                  ),
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              for (int i = 0; i < _items.length; i++)
+                NavigationBarItem(
+                  label: _items[i]['name'] as String,
+                  child: _items[i]['child'] as Widget,
+                  onSelect: () {
+                    widget.onChange(i);
+                    setState(() {
+                      _selectedIndex = i;
+                    });
+                  },
+                  textColor:
+                      (_selectedIndex == i) ? color.style : color.contrast,
+                ),
+            ],
+          ),
         ],
       ),
     );

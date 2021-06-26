@@ -127,7 +127,7 @@ class _CreateFlipbookState extends State<CreateFlipbook> {
                 var aate = DateTime.now().toString();
                 final Directory systemTempDir = Directory.systemTemp;
                 final File file =
-                    await new File('${systemTempDir.path}/foo${aate}.png')
+                    await new File('${systemTempDir.path}/foo${aate}.gif')
                         .create();
                 file.writeAsBytes(aa);
 
