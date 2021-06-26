@@ -39,11 +39,12 @@ class _FeedCommentState extends State<FeedComment> {
           floatingActionButton: FloatingActionButton(
             onPressed: () async {
               await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        CreateMuralScreen('normal', editProfile: fun),
-                  ));
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      CreateMuralScreen('normal', editProfile: fun),
+                ),
+              );
 
               muralBloc.add(
                 CommentMural(
