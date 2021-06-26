@@ -8,6 +8,7 @@ import 'package:frontend/bloc/theme_bloc.dart';
 import 'package:frontend/global.dart';
 import 'package:frontend/models/mural_model.dart';
 import 'package:frontend/models/user_model.dart';
+import 'package:frontend/screens/feed_page.dart';
 
 import './edit_profile.dart';
 import 'package:flutter/material.dart';
@@ -171,6 +172,7 @@ class _ProfileState extends State<Profile> {
                               state.murals.length != muralsFeed.length) {
                             //pre = state.murals.length;
                             muralsFeed = state.murals;
+                            pre = state.murals.length;
                             //  muralsFeed.addAll(state.murals);
 
                             //  FetchedUserProfile(murals: murals, user: user)
@@ -189,24 +191,40 @@ class _ProfileState extends State<Profile> {
                                     ),
                                     itemCount: muralsFeed.length,
                                     itemBuilder: (context, index) {
+                                      print(
+                                          'Lenggggggggg---> ${muralsFeed.length}');
+                                      print(
+                                          'Lenggggghhhh---> ${state.murals.length}');
                                       print("____________________" +
                                           index.toString());
-                                      if (index == muralsFeed.length-2)
+                                      if (index == muralsFeed.length - 2) {
                                         muralBloc.add(FetchProfileMurals(
                                             username: username, page: cnt++));
-                                      return Container(
-                                        width: 107,
-                                        height: 332,
-                                        decoration: BoxDecoration(
-                                          color: themeBloc.contrast,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          border:
-                                              Border.all(color: Colors.black),
-                                          image: DecorationImage(
-                                            image: NetworkImage(
-                                                muralsFeed[index].imageUrl),
-                                            fit: BoxFit.cover,
+                                      }
+
+                                      return InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) => FeedPage(
+                                                  mural: muralsFeed[index]),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 107,
+                                          height: 332,
+                                          decoration: BoxDecoration(
+                                            color: themeBloc.contrast,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border:
+                                                Border.all(color: Colors.black),
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                  muralsFeed[index].imageUrl),
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
                                       );

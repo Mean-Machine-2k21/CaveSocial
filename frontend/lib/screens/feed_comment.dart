@@ -37,15 +37,18 @@ class _FeedCommentState extends State<FeedComment> {
       builder: (context, state) {
         return Scaffold(
           floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              await Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          CreateMuralScreen('normal', editProfile: fun)));
+                    builder: (context) =>
+                        CreateMuralScreen('normal', editProfile: fun),
+                  ));
 
-              muralBloc.add(CommentMural(
-                  parentMuralId: widget.parentMuralid, content: comment));
+              muralBloc.add(
+                CommentMural(
+                    parentMuralId: widget.parentMuralid, content: comment),
+              );
             },
             child: Icon(Icons.add),
           ),
@@ -106,9 +109,12 @@ class _FeedCommentState extends State<FeedComment> {
                               itemCount: muralComments.length,
                               itemBuilder: (context, index) {
                                 if (index == muralComments.length - 2)
-                                  muralBloc.add(FetchMuralCommentList(
+                                  muralBloc.add(
+                                    FetchMuralCommentList(
                                       muralid: widget.parentMuralid,
-                                      page: counter++));
+                                      page: counter++,
+                                    ),
+                                  );
                                 return Container(
                                   child: Column(
                                     children: [

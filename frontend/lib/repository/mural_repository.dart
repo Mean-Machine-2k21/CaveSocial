@@ -37,5 +37,7 @@ class MuralRepository {
   commentMural(
       {required String parentMuralId,
       required String content,
-      Flipbook? flipbook}) {}
+      Flipbook? flipbook}) {
+    _apiHandling.commentMural(content, parentMuralId, flipbook);
+  }
 }
