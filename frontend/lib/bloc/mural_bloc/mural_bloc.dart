@@ -18,6 +18,7 @@ class MuralBloc extends Bloc<MuralEvent, MuralState> {
     yield FetchingMurals();
     try {
       if (event is FetchAllMurals) {
+        yield FetchingMurals();
         List<Mural> murals = [];
         murals = await muralRepository.fetchAllMurals(event.page);
         yield FetchedMurals(Murals: murals);
@@ -37,7 +38,7 @@ class MuralBloc extends Bloc<MuralEvent, MuralState> {
       } else if (event is UnLikeMural) {
         await muralRepository.unLikeMural(muralId: event.muralid);
         yield NoReqState();
-      }else if (event is FetchMuralLikeList) {
+      } else if (event is FetchMuralLikeList) {
         List<String> usernames = [];
         usernames =
             await muralRepository.fetchMuralLikeList(muralid: event.muralid);
@@ -59,5 +60,3 @@ class MuralBloc extends Bloc<MuralEvent, MuralState> {
     }
   }
 }
-
-
