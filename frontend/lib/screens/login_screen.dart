@@ -9,6 +9,7 @@ import '../global.dart';
 import '../widget/app_button.dart';
 import 'auth_screen.dart';
 import 'feed.dart';
+import 'navigator_screen.dart';
 import 'signup_screen.dart';
 import 'package:http/http.dart' as http;
 
@@ -197,7 +198,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         // HomePage.fromBase64(jwt['token'])
-                                        Profile(),
+                                        //TODO
+                                        NavigatorPage(),
                                   ),
                                 );
                               } else {
