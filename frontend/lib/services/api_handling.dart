@@ -156,15 +156,27 @@ class ApiHandling {
       final muralMap = vari.values.elementAt(0);
       muralMap.forEach((element) {
         print('Mural ---> ${element.values.elementAt(0)}');
-        murals.add(Mural(
-          id: element.values.elementAt(0),
-          creatorId: element.values.elementAt(1),
-          creatorUsername: element.values.elementAt(2),
-          imageUrl: element.values.elementAt(3),
-          likedCount: element.values.elementAt(4),
-          commentCount: element.values.elementAt(5),
-          isLiked: element.values.elementAt(6),
-        ));
+        murals.add(
+          element.values.length == 7
+              ? Mural(
+                  id: element.values.elementAt(0),
+                  creatorId: element.values.elementAt(1),
+                  creatorUsername: element.values.elementAt(2),
+                  imageUrl: element.values.elementAt(3),
+                  likedCount: element.values.elementAt(4),
+                  commentCount: element.values.elementAt(5),
+                  isLiked: element.values.elementAt(6),
+                )
+              : Mural(
+                  id: element.values.elementAt(0),
+                  creatorId: element.values.elementAt(1),
+                  creatorUsername: element.values.elementAt(2),
+                  imageUrl: element.values.elementAt(4),
+                  likedCount: element.values.elementAt(5),
+                  commentCount: element.values.elementAt(6),
+                  isLiked: element.values.elementAt(7),
+                ),
+        );
       });
 
       // extractedData.forEach((key, value) {
