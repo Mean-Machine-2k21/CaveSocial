@@ -168,6 +168,7 @@ class _ProfileState extends State<Profile> {
                               state.murals.length != muralsFeed.length) {
                             //pre = state.murals.length;
                             muralsFeed = state.murals;
+                            pre = state.murals.length;
                             //  muralsFeed.addAll(state.murals);
 
                             //  FetchedUserProfile(murals: murals, user: user)
@@ -186,6 +187,10 @@ class _ProfileState extends State<Profile> {
                                     ),
                                     itemCount: muralsFeed.length,
                                     itemBuilder: (context, index) {
+                                      print(
+                                          'Lenggggggggg---> ${muralsFeed.length}');
+                                      print(
+                                          'Lenggggghhhh---> ${state.murals.length}');
                                       print("____________________" +
                                           index.toString());
                                       // if (index == muralsFeed.length-2)

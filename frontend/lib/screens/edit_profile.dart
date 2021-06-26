@@ -64,8 +64,9 @@ class _EditProfileState extends State<EditProfile> {
 
     String username = await localRead('username');
     //String fileName = basename(_image.path);
-    final firebaseStorageRef =
-        FirebaseStorage.instance.ref().child('uploads/profileImages/username');
+    final firebaseStorageRef = FirebaseStorage.instance
+        .ref()
+        .child('uploads/profileImages/${username}');
     final uploadTask = firebaseStorageRef.putFile(image!);
     await uploadTask.whenComplete(() => print('File Uploaded'));
     firebaseStorageRef.getDownloadURL().then((fileURL) {
