@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:frontend/screens/feed.dart';
+import 'package:frontend/screens/navigator_screen.dart';
 import 'package:frontend/widget/app_button.dart';
 
 import '../bloc/theme_bloc.dart';
@@ -71,7 +73,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           body: json.encode({"username": username, "password": password}));
       print('gggggggggggghhhhgggggggggggggggggggggghhhhhhhh');
       print(json.decode(res.body));
-      if (res.statusCode == 200) return json.decode(res.body);
+      if (res.statusCode == 201) return json.decode(res.body);
 
       print('res+' + res.statusCode.toString());
 
@@ -274,15 +276,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   //   displayDialog(context, "Error",
                                   //       "An unknown error occurred.");
                                   // }
-
-                                  if (jwt['res'] == 0) {
+                                  print('ppppppp');
+                                  print(jwt['res']);
+                                  if (jwt['res'] == null) {
                                     localInsertSignUp(jwt);
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                HomePage.fromBase64(jwt[
-                                                    'token']))); //To change path here
+                                                NavigatorPage () // Todo
+                                                // HomePage.fromBase64(jwt[
+                                                //     'token'])
+                                                    )
+                                                    ); //To change path here
                                   } else {
                                     if (jwt['res'] == '400') {
                                       displayDialog(
