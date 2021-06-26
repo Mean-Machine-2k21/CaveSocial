@@ -9,6 +9,8 @@ class InitialState extends MuralState {
 
 class FetchingMurals extends MuralState {}
 
+class FetchingProfileMurals extends MuralState {}
+
 class FetchedMurals extends MuralState {
   List<Mural> Murals;
   FetchedMurals({required this.Murals});
