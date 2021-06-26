@@ -18,6 +18,7 @@ class Feed extends StatefulWidget {
 class _FeedState extends State<Feed> {
   List<Mural> murals = [];
   int counter = 0;
+  int pageNo = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +26,12 @@ class _FeedState extends State<Feed> {
     var muralBloc = BlocProvider.of<MuralBloc>(context);
     var themeBloc = BlocProvider.of<ThemeBloc>(context);
     muralBloc.add(FetchAllMurals(page: counter++));
-    final pageController = PageController(initialPage: 0);
+
     return BlocBuilder<ThemeBloc, ThemeData>(
       builder: (context, state) {
         return BlocBuilder<MuralBloc, MuralState>(
           builder: (context, state) {
+            final pageController = PageController(initialPage: pageNo);
             if (state is FetchingMurals)
               return Center(
                   child: CircularProgressIndicator(
@@ -40,10 +42,17 @@ class _FeedState extends State<Feed> {
               murals.addAll((state).Murals);
               ///////////////////////////////////////
               return PageView.builder(
+                controller: pageController,
                 itemCount: murals.length,
                 itemBuilder: (context, index) {
-                  if (index == murals.length - 2)
+                  print('Indexxxxxxxxxxxxxxxxxxxx->>>> ${index}');
+                  if (index == murals.length - 2) {
+                    pageNo = murals.length - 2;
+                    print('Pagggggeeeeeeeee----> ${pageNo}');
                     muralBloc.add(FetchAllMurals(page: counter++));
+                    print('Pagggggeeeeeeeee2222222222----> ${pageNo}');
+                    pageController.jumpToPage(pageNo);
+                  }
 
                   //  if()
                   return FeedPage(mural: murals[index]

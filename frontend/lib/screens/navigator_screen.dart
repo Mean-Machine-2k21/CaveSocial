@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
+import 'package:frontend/bloc/mural_bloc/mural_state.dart';
 import 'package:frontend/bloc/theme_bloc.dart';
 import 'package:frontend/screens/feed.dart';
 import 'package:frontend/screens/feed_page.dart';
@@ -59,17 +60,20 @@ class _NavigatorPageState extends State<NavigatorPage> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: AppNavigationBar(
-        onChange: (val) {
-          if (val == 1) {
-            onCreate(context);
-          } else {
-            setState(() {
-              _selectedIndex = val;
-            });
-          }
-        },
-        defaultIndex: 0,
+      bottomNavigationBar: SizedBox(
+        height:50,
+        child: AppNavigationBar(
+          onChange: (val) {
+            if (val == 1) {
+              onCreate(context);
+            } else {
+              setState(() {
+                _selectedIndex = val;
+              });
+            }
+          },
+          defaultIndex: 0,
+        ),
       ),
     );
   }

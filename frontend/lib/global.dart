@@ -7,7 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 ThemeBloc color = ThemeBloc();
 AppTextStyle style = AppTextStyle();
-const SERVER_IP = 'https://cavesocial.herokuapp.com';
+const SERVER_IP = 'https://cave-social.herokuapp.com';
 final storage = FlutterSecureStorage();
 String colorString(Color colorValue) {
   return colorValue.toString().substring(10, 16);
