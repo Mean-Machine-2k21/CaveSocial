@@ -5,6 +5,7 @@ import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
 import 'package:frontend/bloc/mural_bloc/mural_event.dart';
 import 'package:frontend/bloc/mural_bloc/mural_state.dart';
 import 'package:frontend/bloc/theme_bloc.dart';
+import 'package:frontend/global.dart';
 import 'package:frontend/repository/mural_repository.dart';
 import 'package:frontend/screens/feed_comment.dart';
 import 'package:frontend/screens/profile.dart';
@@ -96,17 +97,24 @@ class _FeedPageState extends State<FeedPage> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                '@${widget.mural.creatorUsername}',
-                                style: TextStyle(
-                                  fontSize: 24,
+                          Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(5),
+                              child: Container(
+                                color: Colors.red,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(6.0),
+                                  child: Text(
+                                    '@${widget.mural.creatorUsername}',
+                                    style: TextStyle(
+                                        fontSize: 14, color: Colors.white),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
+                          Spacer(),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -115,6 +123,7 @@ class _FeedPageState extends State<FeedPage> {
 
                                 // },
                                 child: IconButton(
+                                  color: Colors.white,
                                   onPressed: () {
                                     if (!widget.mural.isLiked) {
                                       setState(() {
@@ -151,7 +160,11 @@ class _FeedPageState extends State<FeedPage> {
                                         ),
                                 ),
                               ),
-                              Text('${widget.mural.likedCount}'),
+                              Text(
+                                '${widget.mural.likedCount}',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              SizedBox(height: 20),
                               IconButton(
                                 onPressed: () {
                                   Navigator.of(context).push(
@@ -171,9 +184,14 @@ class _FeedPageState extends State<FeedPage> {
                                 },
                                 icon: Icon(
                                   FontAwesome.comment_o,
+                                  color: Colors.white,
                                 ),
                               ),
-                              Text('${widget.mural.commentCount}'),
+                              Text(
+                                '${widget.mural.commentCount}',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              SizedBox(height: 20),
                               IconButton(
                                 onPressed: () {
                                   Navigator.of(context).push(
@@ -185,10 +203,10 @@ class _FeedPageState extends State<FeedPage> {
                                     ),
                                   );
                                 },
-                                icon: Icon(
-                                  Ionicons.md_person,
-                                ),
-                              )
+                                icon: Icon(Ionicons.md_person,
+                                    color: Colors.white),
+                              ),
+                              SizedBox(height: 20),
                             ],
                           ),
                         ],
