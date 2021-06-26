@@ -76,7 +76,7 @@ router.patch('/api/editprofile', auth, async (req, res) => {
 router.get('/api/profile/:username', auth, async (req, res) => {
     const username = req.params.username;
     const pageNumber = req.query.pagenumber;
-    const nPerPage = 5;
+    const nPerPage = 6;
     try {
         const user = await User.find({ username });
         console.log(user);
@@ -92,9 +92,7 @@ router.get('/api/profile/:username', auth, async (req, res) => {
                     isLiked: { $in: [req.user.username, "$likes.likedByUserName"] }
                 }
             },
-            { $sort: { _id: 1 } },
-            { $skip: pageNumber * nPerPage },
-            { $limit: nPerPage }
+            { $sort: { _id: -1 } }
         ]);
         res.status(200).json({ msg: 'User Found', user: user[0], murals });
     } catch (error) {
