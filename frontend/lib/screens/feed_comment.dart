@@ -8,6 +8,7 @@ import 'package:frontend/bloc/theme_bloc.dart';
 import 'package:frontend/models/mural_model.dart';
 import 'package:frontend/screens/create_mural_screen.dart';
 import 'package:frontend/screens/edit_profile.dart';
+import 'package:frontend/screens/feed_page.dart';
 
 class FeedComment extends StatefulWidget {
   const FeedComment({Key? key, required this.parentMuralid}) : super(key: key);
@@ -116,87 +117,107 @@ class _FeedCommentState extends State<FeedComment> {
                                       page: counter++,
                                     ),
                                   );
-                                return Container(
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          CircleAvatar(
-                                            radius: 20,
-                                            backgroundImage: NetworkImage(
-                                                'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Alia_Bhatt_grace_the_screening_of_Netflix%E2%80%99s_film_Guilty_%282%29_%28cropped%29.jpg/220px-Alia_Bhatt_grace_the_screening_of_Netflix%E2%80%99s_film_Guilty_%282%29_%28cropped%29.jpg'),
-                                          ),
-                                          SizedBox(
-                                            width: 20,
-                                          ),
-                                          Text(
-                                            muralComments[index]
-                                                .creatorUsername,
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
+                                return InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            BlocProvider<ThemeBloc>.value(
+                                          value: themeBloc,
+                                          child: BlocProvider<MuralBloc>.value(
+                                            value: muralBloc,
+                                            child: FeedPage(
+                                              mural: muralComments[index],
                                             ),
                                           ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                      Stack(
-                                        alignment: Alignment.topRight,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                              top: 12.0,
-                                              right: 16.0,
+                                    );
+                                  },
+                                  child: Container(
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            CircleAvatar(
+                                              radius: 20,
+                                              backgroundImage: NetworkImage(
+                                                  'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Alia_Bhatt_grace_the_screening_of_Netflix%E2%80%99s_film_Guilty_%282%29_%28cropped%29.jpg/220px-Alia_Bhatt_grace_the_screening_of_Netflix%E2%80%99s_film_Guilty_%282%29_%28cropped%29.jpg'),
                                             ),
-                                            child: Container(
-                                              width: 307,
-                                              height: 432,
-                                              decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  image: DecorationImage(
-                                                    image: NetworkImage(
-                                                      muralComments[index]
-                                                          .imageUrl,
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Text(
+                                              muralComments[index]
+                                                  .creatorUsername,
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                          ],
+                                        ),
+                                        Stack(
+                                          alignment: Alignment.topRight,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                top: 12.0,
+                                                right: 16.0,
+                                              ),
+                                              child: Container(
+                                                width: 307,
+                                                height: 432,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(
+                                                        muralComments[index]
+                                                            .imageUrl,
+                                                      ),
+                                                      fit: BoxFit.cover,
                                                     ),
-                                                    fit: BoxFit.cover,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30),
+                                                    border: Border.all(
+                                                        color: Colors.black)),
+                                              ),
+                                            ),
+                                            Container(
+                                              width: 60,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            4.0),
+                                                    child: Icon(
+                                                      MaterialIcons.favorite,
+                                                      color: Colors.red,
+                                                    ),
                                                   ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(30),
-                                                  border: Border.all(
-                                                      color: Colors.black)),
-                                            ),
-                                          ),
-                                          Container(
-                                            width: 60,
-                                            height: 30,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(4.0),
-                                                  child: Icon(
-                                                    MaterialIcons.favorite,
-                                                    color: Colors.red,
-                                                  ),
-                                                ),
-                                                Text(muralComments[index]
-                                                    .likedCount
-                                                    .toString()),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ],
+                                                  Text(muralComments[index]
+                                                      .likedCount
+                                                      .toString()),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 );
                               },
@@ -219,87 +240,107 @@ class _FeedCommentState extends State<FeedComment> {
                               ),
                               itemCount: muralComments.length,
                               itemBuilder: (context, index) {
-                                return Container(
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          CircleAvatar(
-                                            radius: 20,
-                                            backgroundImage: NetworkImage(
-                                                'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Alia_Bhatt_grace_the_screening_of_Netflix%E2%80%99s_film_Guilty_%282%29_%28cropped%29.jpg/220px-Alia_Bhatt_grace_the_screening_of_Netflix%E2%80%99s_film_Guilty_%282%29_%28cropped%29.jpg'),
-                                          ),
-                                          SizedBox(
-                                            width: 20,
-                                          ),
-                                          Text(
-                                            muralComments[index]
-                                                .creatorUsername,
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
+                                return InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            BlocProvider<ThemeBloc>.value(
+                                          value: themeBloc,
+                                          child: BlocProvider<MuralBloc>.value(
+                                            value: muralBloc,
+                                            child: FeedPage(
+                                              mural: muralComments[index],
                                             ),
                                           ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                      Stack(
-                                        alignment: Alignment.topRight,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                              top: 12.0,
-                                              right: 16.0,
+                                    );
+                                  },
+                                  child: Container(
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            CircleAvatar(
+                                              radius: 20,
+                                              backgroundImage: NetworkImage(
+                                                  'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Alia_Bhatt_grace_the_screening_of_Netflix%E2%80%99s_film_Guilty_%282%29_%28cropped%29.jpg/220px-Alia_Bhatt_grace_the_screening_of_Netflix%E2%80%99s_film_Guilty_%282%29_%28cropped%29.jpg'),
                                             ),
-                                            child: Container(
-                                              width: 307,
-                                              height: 432,
-                                              decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  image: DecorationImage(
-                                                    image: NetworkImage(
-                                                      muralComments[index]
-                                                          .imageUrl,
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Text(
+                                              muralComments[index]
+                                                  .creatorUsername,
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                          ],
+                                        ),
+                                        Stack(
+                                          alignment: Alignment.topRight,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                top: 12.0,
+                                                right: 16.0,
+                                              ),
+                                              child: Container(
+                                                width: 307,
+                                                height: 432,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(
+                                                        muralComments[index]
+                                                            .imageUrl,
+                                                      ),
+                                                      fit: BoxFit.cover,
                                                     ),
-                                                    fit: BoxFit.cover,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30),
+                                                    border: Border.all(
+                                                        color: Colors.black)),
+                                              ),
+                                            ),
+                                            Container(
+                                              width: 60,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            4.0),
+                                                    child: Icon(
+                                                      MaterialIcons.favorite,
+                                                      color: Colors.red,
+                                                    ),
                                                   ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(30),
-                                                  border: Border.all(
-                                                      color: Colors.black)),
-                                            ),
-                                          ),
-                                          Container(
-                                            width: 60,
-                                            height: 30,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(4.0),
-                                                  child: Icon(
-                                                    MaterialIcons.favorite,
-                                                    color: Colors.red,
-                                                  ),
-                                                ),
-                                                Text(muralComments[index]
-                                                    .likedCount
-                                                    .toString()),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ],
+                                                  Text(muralComments[index]
+                                                      .likedCount
+                                                      .toString()),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 );
                               },

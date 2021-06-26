@@ -206,8 +206,16 @@ class _ProfileState extends State<Profile> {
                                         onTap: () {
                                           Navigator.of(context).push(
                                             MaterialPageRoute(
-                                              builder: (context) => FeedPage(
-                                                  mural: muralsFeed[index]),
+                                              builder: (context) =>
+                                                  BlocProvider<ThemeBloc>.value(
+                                                value: themeBloc,
+                                                child: BlocProvider<
+                                                    MuralBloc>.value(
+                                                  value: muralBloc,
+                                                  child: FeedPage(
+                                                      mural: muralsFeed[index]),
+                                                ),
+                                              ),
                                             ),
                                           );
                                         },
@@ -250,19 +258,37 @@ class _ProfileState extends State<Profile> {
                                     ),
                                     itemCount: muralsFeed.length,
                                     itemBuilder: (context, index) {
-                                      return Container(
-                                        width: 107,
-                                        height: 332,
-                                        decoration: BoxDecoration(
-                                          color: themeBloc.contrast,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          border:
-                                              Border.all(color: Colors.black),
-                                          image: DecorationImage(
-                                            image: NetworkImage(
-                                                muralsFeed[index].imageUrl),
-                                            fit: BoxFit.cover,
+                                      return InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  BlocProvider<ThemeBloc>.value(
+                                                value: themeBloc,
+                                                child: BlocProvider<
+                                                    MuralBloc>.value(
+                                                  value: muralBloc,
+                                                  child: FeedPage(
+                                                      mural: muralsFeed[index]),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 107,
+                                          height: 332,
+                                          decoration: BoxDecoration(
+                                            color: themeBloc.contrast,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border:
+                                                Border.all(color: Colors.black),
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                  muralsFeed[index].imageUrl),
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
                                       );
