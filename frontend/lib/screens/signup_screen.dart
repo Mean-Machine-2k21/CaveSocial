@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:frontend/screens/feed.dart';
+import 'package:frontend/screens/navigator_screen.dart';
 import 'package:frontend/widget/app_button.dart';
 
 import '../bloc/theme_bloc.dart';
@@ -283,7 +284,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                Feed()
+                                                NavigatorPage () // Todo
                                                 // HomePage.fromBase64(jwt[
                                                 //     'token'])
                                                     )
