@@ -3,25 +3,19 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:frontend/services/add_image_fuction.dart';
 import '../painter.dart';
 
-class CreateMuralScreen extends StatefulWidget {
+import 'functions.dart';
+
+class CreateFrame extends StatefulWidget {
   final String mode;
-
-  Function? editProfile;
-
-  CreateMuralScreen(
-    this.mode, {
-    this.editProfile,
-  });
+  CreateFrame(this.mode);
 
   @override
-  _CreateMuralScreenState createState() => new _CreateMuralScreenState();
+  _CreateFrameState createState() => new _CreateFrameState();
 }
 
-class _CreateMuralScreenState extends State<CreateMuralScreen> {
-  String muralUrl = "";
+class _CreateFrameState extends State<CreateFrame> {
   bool _finished = false;
   late String mode;
   late PainterController _controller = _newController(mode);
@@ -64,7 +58,7 @@ class _CreateMuralScreenState extends State<CreateMuralScreen> {
             ),
             tooltip: 'back',
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).pop(false);
             }),
         Spacer(),
         // new IconButton(
@@ -189,7 +183,7 @@ class _CreateMuralScreenState extends State<CreateMuralScreen> {
     setState(() {
       _finished = true;
     });
-    await Navigator.of(context)
+    var check = await Navigator.of(context)
         .push(new MaterialPageRoute(builder: (BuildContext context) {
       return new Scaffold(
         // appBar: new AppBar(
@@ -241,33 +235,24 @@ class _CreateMuralScreenState extends State<CreateMuralScreen> {
                         // var filee = await File.fromRawPath(aa);
 
                         // var image = MemoryImage(aa);
-                        var aate = DateTime.now().toString();
-                        final Directory systemTempDir = Directory.systemTemp;
-                        final File file = await new File(
-                                '${systemTempDir.path}/foo${aate}.png')
-                            .create();
-                        file.writeAsBytes(aa);
+                        // var aate = DateTime.now().toString();
+                        // final Directory systemTempDir = Directory.systemTemp;
+                        // final File file = await new File(
+                        //         '${systemTempDir.path}/foo${aate}.png')
+                        //     .create();
+                        // file.writeAsBytes(aa);
 
+                        addimage(aa);
                         final snackBar = SnackBar(
-                          content: Text('Yay! Your Mural is posted!'),
-                          duration: Duration(seconds: 5),
+                          content: Text('Frame added !!'),
+                          duration: Duration(seconds: 3),
                           backgroundColor: Colors.red,
                         );
 
-                        print(file);
-                        uploadImageToFirebase(file).then((value) {
-                          print('Murall');
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          widget.editProfile!(value);
-                          Navigator.pop(context);
-                        });
-
-                        print('*********-> ${muralUrl}');
-
-                        // Find the ScaffoldMessenger in the widget tree
-                        // and use it to show a SnackBar.
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        Navigator.of(context).pop(true);
                       },
-                      child: Text('Post Mural')),
+                      child: Text('Add Frame')),
                 ],
               ),
             ),
@@ -283,14 +268,14 @@ class _CreateMuralScreenState extends State<CreateMuralScreen> {
                 ),
                 tooltip: 'back',
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(false);
                 }),
           ),
         ]),
       );
     }));
 
-    Navigator.of(context).pop();
+    Navigator.of(context).pop(check);
   }
 }
 

@@ -29,4 +29,10 @@ Future<String> uploadImageToFirebase(File image) async {
   // });
 
   return url;
+      
+  // final uploadTask = firebaseStorageRef.putFile(image);
+  // await uploadTask.whenComplete(() => print('File Uploaded'));
+  // firebaseStorageRef.getDownloadURL().then((fileURL) {
+  //   print(fileURL + "-------");
+  // });
 }

@@ -17,7 +17,8 @@ class _FeedPageState extends State<FeedPage> {
     double cwidth = MediaQuery.of(context).size.width;
     double cheight = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: GestureDetector(
+      body:
+       GestureDetector(
         onVerticalDragUpdate: (details) {
           print('heloooo');
           print('Swiped Up');
