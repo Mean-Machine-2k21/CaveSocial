@@ -1,4 +1,6 @@
 // @dart=2.9;
+import 'package:frontend/screens/profile.dart';
+
 import '../bloc/theme_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -191,13 +193,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 localInsertLoginIn(jwt);
                                 //storage.write(key: key, value: value)
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                           // HomePage.fromBase64(jwt['token'])
-                                           Feed()
-                                            )
-                                            );
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        // HomePage.fromBase64(jwt['token'])
+                                        Profile(),
+                                  ),
+                                );
                               } else {
                                 displayDialog(context, "An Error Occurred",
                                     "No account was found matching that username and password");

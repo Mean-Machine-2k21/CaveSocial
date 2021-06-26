@@ -27,6 +27,12 @@ class LikeMural extends MuralEvent {
   LikeMural({required this.muralid});
 }
 
+class UnLikeMural extends MuralEvent {
+  //no state
+  String muralid;
+  UnLikeMural({required this.muralid});
+}
+
 class FetchMuralLikeList extends MuralEvent {
   String muralid;
   FetchMuralLikeList({required this.muralid});

@@ -23,20 +23,21 @@ class MuralBloc extends Bloc<MuralEvent, MuralState> {
         yield FetchedMurals(Murals: murals);
       } else if (event is FetchProfileMurals) {
         var username = await localRead('username');
-        List<Mural> murals = [];        
+        List<Mural> murals = [];
         User user = await muralRepository.fetchProfileMurals(
-            murals: murals,  username: username, page: event.page);
+            murals: murals, username: username, page: event.page);
         yield FetchedUserProfile(murals: murals, user: user);
       } else if (event is CreateMural) {
-        var token = await localRead('jwt');
         await muralRepository.createMural(
-            content: event.content, flipbook: event.flipbook, token: token);
+            content: event.content, flipbook: event.flipbook);
         yield NoReqState();
       } else if (event is LikeMural) {
-        var token = await localRead('jwt');
-        await muralRepository.likeMural(muralid: event.muralid, token: token);
+        await muralRepository.likeMural(muralId: event.muralid);
         yield NoReqState();
-      } else if (event is FetchMuralLikeList) {
+      } else if (event is UnLikeMural) {
+        await muralRepository.unLikeMural(muralId: event.muralid);
+        yield NoReqState();
+      }else if (event is FetchMuralLikeList) {
         List<String> usernames = [];
         usernames =
             await muralRepository.fetchMuralLikeList(muralid: event.muralid);
@@ -56,7 +57,7 @@ class MuralBloc extends Bloc<MuralEvent, MuralState> {
     } catch (e) {
       ErrorState();
     }
-
-    //throw UnimplementedError();
   }
 }
+
+
