@@ -20,6 +20,7 @@ class _FeedCommentState extends State<FeedComment> {
   @override
   //String parentMuralid = '';
   String comment = ' ';
+  int counter = 0;
   void fun(String s) {
     comment = s;
   }
@@ -28,6 +29,10 @@ class _FeedCommentState extends State<FeedComment> {
     var muralBloc = BlocProvider.of<MuralBloc>(context);
     var themeBloc = BlocProvider.of<ThemeBloc>(context);
     List<Mural> muralComments = [];
+
+    muralBloc.add(
+      FetchMuralCommentList(muralid: widget.parentMuralid, page: counter++),
+    );
     return BlocBuilder<ThemeBloc, ThemeData>(
       builder: (context, state) {
         return Scaffold(
@@ -75,15 +80,17 @@ class _FeedCommentState extends State<FeedComment> {
                 ),
                 BlocBuilder<MuralBloc, MuralState>(
                   builder: (context, state) {
-                       if (state is FetchingMurals)
-              return Center(
-                  child: CircularProgressIndicator(
-                color: themeBloc.contrast,
-                strokeWidth: 5,
-              ));
-        
-                   else if (state is FetchedMuralCommentList && state.muralCommentList.length!=0) {
+                    if (state is MuralCommentLoading)
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: themeBloc.contrast,
+                          strokeWidth: 5,
+                        ),
+                      );
+                    else if (state is FetchedMuralCommentList &&
+                        state.muralCommentList.length != 0) {
                       muralComments.addAll(state.muralCommentList);
+                      print('mural Commentssssss---> ${muralComments.length}');
                       return Expanded(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -101,7 +108,7 @@ class _FeedCommentState extends State<FeedComment> {
                                 if (index == muralComments.length - 2)
                                   muralBloc.add(FetchMuralCommentList(
                                       muralid: widget.parentMuralid,
-                                      page: index));
+                                      page: counter++));
                                 return Container(
                                   child: Column(
                                     children: [
@@ -118,7 +125,8 @@ class _FeedCommentState extends State<FeedComment> {
                                             width: 20,
                                           ),
                                           Text(
-                                           muralComments[index].creatorUsername,
+                                            muralComments[index]
+                                                .creatorUsername,
                                             style: TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold,
@@ -127,7 +135,6 @@ class _FeedCommentState extends State<FeedComment> {
                                           SizedBox(
                                             width: 10,
                                           ),
-                                          
                                         ],
                                       ),
                                       Stack(
@@ -145,8 +152,9 @@ class _FeedCommentState extends State<FeedComment> {
                                                   color: Colors.white,
                                                   image: DecorationImage(
                                                     image: NetworkImage(
-                                                   muralComments[index].imageUrl,
-                                                      ),
+                                                      muralComments[index]
+                                                          .imageUrl,
+                                                    ),
                                                     fit: BoxFit.cover,
                                                   ),
                                                   borderRadius:
@@ -173,7 +181,9 @@ class _FeedCommentState extends State<FeedComment> {
                                                     color: Colors.red,
                                                   ),
                                                 ),
-                                                Text(muralComments[index].likedCount.toString()),
+                                                Text(muralComments[index]
+                                                    .likedCount
+                                                    .toString()),
                                               ],
                                             ),
                                           )
@@ -187,10 +197,8 @@ class _FeedCommentState extends State<FeedComment> {
                           ),
                         ),
                       );
-                  
-                    }
-                  else{
-                    return Expanded(
+                    } else {
+                      return Expanded(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
@@ -204,7 +212,6 @@ class _FeedCommentState extends State<FeedComment> {
                               ),
                               itemCount: muralComments.length,
                               itemBuilder: (context, index) {
-                               
                                 return Container(
                                   child: Column(
                                     children: [
@@ -221,7 +228,8 @@ class _FeedCommentState extends State<FeedComment> {
                                             width: 20,
                                           ),
                                           Text(
-                                           muralComments[index].creatorUsername,
+                                            muralComments[index]
+                                                .creatorUsername,
                                             style: TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold,
@@ -230,7 +238,6 @@ class _FeedCommentState extends State<FeedComment> {
                                           SizedBox(
                                             width: 10,
                                           ),
-                                          
                                         ],
                                       ),
                                       Stack(
@@ -248,8 +255,9 @@ class _FeedCommentState extends State<FeedComment> {
                                                   color: Colors.white,
                                                   image: DecorationImage(
                                                     image: NetworkImage(
-                                                   muralComments[index].imageUrl,
-                                                      ),
+                                                      muralComments[index]
+                                                          .imageUrl,
+                                                    ),
                                                     fit: BoxFit.cover,
                                                   ),
                                                   borderRadius:
@@ -276,7 +284,9 @@ class _FeedCommentState extends State<FeedComment> {
                                                     color: Colors.red,
                                                   ),
                                                 ),
-                                                Text(muralComments[index].likedCount.toString()),
+                                                Text(muralComments[index]
+                                                    .likedCount
+                                                    .toString()),
                                               ],
                                             ),
                                           )
@@ -290,7 +300,6 @@ class _FeedCommentState extends State<FeedComment> {
                           ),
                         ),
                       );
-                  
                     }
                   },
                 ),

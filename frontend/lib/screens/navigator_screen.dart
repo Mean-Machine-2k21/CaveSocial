@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
+import 'package:frontend/bloc/mural_bloc/mural_state.dart';
 import 'package:frontend/bloc/theme_bloc.dart';
 import 'package:frontend/screens/feed.dart';
 import 'package:frontend/screens/feed_page.dart';

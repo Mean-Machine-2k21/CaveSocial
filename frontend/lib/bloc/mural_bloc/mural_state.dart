@@ -27,6 +27,8 @@ class FetchedMuralLikeList extends MuralState {
   FetchedMuralLikeList({required this.usernames});
 }
 
+class MuralCommentLoading extends MuralState {}
+
 class FetchedMuralCommentList extends MuralState {
   List<Mural> muralCommentList;
   FetchedMuralCommentList({required this.muralCommentList});

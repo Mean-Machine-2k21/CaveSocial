@@ -88,6 +88,7 @@ class ApiHandling {
               : null,
         },
       );
+      print(response.data);
     } catch (e) {
       print(e.toString());
     }
@@ -95,17 +96,20 @@ class ApiHandling {
 
   Future<List<Mural>> fetchMuralCommentList(String muralId, int pageNo) async {
     print(
-        'PageNo gggggggggggggggggggggggg--------------------------> ${pageNo}');
+        'PageNo ggggggggggggggggeeeeeeeeeeeeeee--------------------------> ${pageNo}');
 
     List<Mural> murals = [];
 
     try {
       final token = await localRead('jwt');
-      final response = await Dio(options).get(url + '/api/commentonmural/muralId',
-          options: Options(headers: {
-            'Authorization': 'Bearer $token',
-          }),
-          queryParameters: {
+      print('tokennn -----> ${token}');
+      print('muralId -----> ${muralId}');
+      final response =
+          await Dio(options).get(url + '/api/commentsonmural/${muralId}',
+              options: Options(headers: {
+                'Authorization': 'Bearer $token',
+              }),
+              queryParameters: {
             'pagenumber': pageNo,
           });
 
@@ -134,6 +138,8 @@ class ApiHandling {
     } catch (e) {
       print(e.toString());
     }
+
+    print('Lengthhhh----> ${murals.length}');
 
     return murals;
   }
