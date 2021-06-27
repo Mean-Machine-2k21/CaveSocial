@@ -7,7 +7,12 @@ const auth = require('../Middleware/Auth');
 
 router.post('/api/signup', async (req, res, next) => {
     try {
-        const user = new User(req.body);
+        const user = new User(
+            {
+                ...req.body,
+                avatar_url: 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png',
+                bio_url: 'https://empire-s3-production.bobvila.com/articles/wp-content/uploads/2020/04/Types-of-Wall-Texture-sand-swirl.jpg'
+            });
         await user.save();
         const token = await user.generateAuthToken();
         res.status(201).send({ user, token });
