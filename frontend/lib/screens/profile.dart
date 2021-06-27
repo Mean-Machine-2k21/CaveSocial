@@ -9,6 +9,7 @@ import 'package:frontend/global.dart';
 import 'package:frontend/models/mural_model.dart';
 import 'package:frontend/models/user_model.dart';
 import 'package:frontend/screens/feed_page.dart';
+import 'package:frontend/widget/shimmer_image.dart';
 
 import './edit_profile.dart';
 import 'package:flutter/material.dart';
@@ -103,10 +104,11 @@ class _ProfileState extends State<Profile> {
                                   border: Border(
                                       bottom: BorderSide(
                                           color: Colors.red, width: 5)),
-                                  image: DecorationImage(
-                                      image: NetworkImage(user!.bioUrl),
-                                      fit: BoxFit.cover),
+                                  // image: DecorationImage(
+                                  //     image: NetworkImage(user!.bioUrl),
+                                  //     fit: BoxFit.cover),
                                 ),
+                                child: ShimmerNetworkImage(user!.bioUrl),
                               ),
                             ),
                             !isOther
