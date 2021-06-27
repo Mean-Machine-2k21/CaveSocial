@@ -7,6 +7,7 @@ import 'package:frontend/bloc/mural_bloc/mural_state.dart';
 import 'package:frontend/bloc/theme_bloc.dart';
 import 'package:frontend/screens/create_bio_screen.dart';
 import 'package:frontend/screens/create_mural_screen.dart';
+import 'package:frontend/screens/login_screen.dart';
 import 'package:frontend/screens/profile.dart';
 import 'package:frontend/widget/toggle_button.dart';
 import 'package:image_picker/image_picker.dart';
@@ -34,6 +35,7 @@ class _EditProfileState extends State<EditProfile> {
   String bioUrl = "";
   File? image;
   bool loading = false;
+  ApiHandling _apiHandling = ApiHandling();
 
   String currentProfile = "";
   String currentBio = "";
@@ -129,9 +131,7 @@ class _EditProfileState extends State<EditProfile> {
                           avatarUrl: avatarUrl,
                           bioUrl: bioUrl,
                         );
-                        Navigator.of(context).pop(
-                         
-                        );
+                        Navigator.of(context).pop();
                       },
                       child: loading
                           ? SizedBox(
@@ -189,25 +189,6 @@ class _EditProfileState extends State<EditProfile> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  // Column(
-                  //   crossAxisAlignment: CrossAxisAlignment.center,
-                  //   children: [
-                  //     Container(
-                  //       height: 95,
-                  //       width: 95,
-                  //       decoration: BoxDecoration(
-                  //         border: Border.all(color: Colors.red, width: 2),
-                  //         shape: BoxShape.circle,
-                  //         color: Colors.blue,
-                  //         image: DecorationImage(
-                  //           image: NetworkImage(currentProfile),
-                  //           fit: BoxFit.cover,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -325,15 +306,33 @@ class _EditProfileState extends State<EditProfile> {
               ),
               Padding(
                 padding: const EdgeInsets.all(32.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Column(
                   children: [
-                    Text(
-                      'Toggle Color Mode',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: themeBloc.contrast),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Toggle Color Mode',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color: themeBloc.contrast),
+                        ),
+                        Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Toggle(
+                            value: themeBloc.isDarkMode,
+                            onToggle: (value) {
+                              // if (value) {
+                              //   // color.themeModeSwitch(colorMode: ColorMode.dark);
+                              // } else {
+                              //   // color.themeModeSwitch(colorMode: ColorMode.light);
+                              themeBloc.toggleTheTheme();
+                            },
+                          ),
+                        )
+                      ],
                     ),
                     Spacer(),
                     Padding(
@@ -353,6 +352,27 @@ class _EditProfileState extends State<EditProfile> {
                   ],
                 ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 32.0),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        await _apiHandling.signOut();
+                        localDelete();
+                        Navigator.of(context)
+                            .pushReplacementNamed(LoginScreen.routeName);
+                      },
+                      child: Text('Sign Out'),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.red,
+                        onPrimary: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
         );
