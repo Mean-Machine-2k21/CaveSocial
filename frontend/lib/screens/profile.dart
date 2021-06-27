@@ -95,7 +95,7 @@ class _ProfileState extends State<Profile> {
                                   border: Border(
                                       bottom: BorderSide(
                                           color: themeBloc.materialStyle.shade800, width: 6)),
-                                  color: Colors.red,
+                              //    color: Colors.red,
                                   image: DecorationImage(
                                       image: NetworkImage(user!.bioUrl),
                                       fit: BoxFit.cover),
@@ -125,7 +125,7 @@ class _ProfileState extends State<Profile> {
                                   },
                                   icon: Icon(
                                     Icons.menu,
-                                    color: Colors.red,
+                                    color: Colors.white,
                                     size: 36.0,
                                   ),
                                 ),
@@ -141,7 +141,7 @@ class _ProfileState extends State<Profile> {
                                   shape: BoxShape.circle,
                                   border:
                                       Border.all(color: Colors.red, width: 3),
-                                  color: Colors.blue,
+                               //   color: Colors.blue,
                                   image: DecorationImage(
                                     image: NetworkImage(user!.avatarUrl),
                                     fit: BoxFit.cover,
@@ -201,11 +201,28 @@ class _ProfileState extends State<Profile> {
                                           'Lenggggghhhh---> ${state.murals.length}');
                                       print("____________________" +
                                           index.toString());
-                                      // if (index == muralsFeed.length-2)
+                                      // if (index == muralsFeed.length - 2) {
                                       //   muralBloc.add(FetchProfileMurals(
                                       //       username: username, page: cnt++));
+                                      // }
+
                                       return InkWell(
-                                        onTap: () async {},
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  BlocProvider<ThemeBloc>.value(
+                                                value: themeBloc,
+                                                child: BlocProvider<
+                                                    MuralBloc>.value(
+                                                  value: muralBloc,
+                                                  child: FeedPage(
+                                                      mural: muralsFeed[index]),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
                                         child: Container(
                                           width: 107,
                                           height: 332,
@@ -245,19 +262,37 @@ class _ProfileState extends State<Profile> {
                                     ),
                                     itemCount: muralsFeed.length,
                                     itemBuilder: (context, index) {
-                                      return Container(
-                                        width: 107,
-                                        height: 332,
-                                        decoration: BoxDecoration(
-                                          color: themeBloc.style,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          border:
-                                              Border.all(color:  themeBloc.contrast),
-                                          image: DecorationImage(
-                                            image: NetworkImage(
-                                                muralsFeed[index].imageUrl),
-                                            fit: BoxFit.cover,
+                                      return InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  BlocProvider<ThemeBloc>.value(
+                                                value: themeBloc,
+                                                child: BlocProvider<
+                                                    MuralBloc>.value(
+                                                  value: muralBloc,
+                                                  child: FeedPage(
+                                                      mural: muralsFeed[index]),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 107,
+                                          height: 332,
+                                          decoration: BoxDecoration(
+                                            color: themeBloc.style,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border:
+                                                Border.all(color: themeBloc.contrast),
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                  muralsFeed[index].imageUrl),
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
                                       );
