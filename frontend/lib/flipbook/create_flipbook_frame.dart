@@ -2,7 +2,10 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
+import 'package:frontend/bloc/theme_bloc.dart';
 import '../painter.dart';
 
 import 'functions.dart';
@@ -36,6 +39,7 @@ class _CreateFrameState extends State<CreateFrame> {
 
   @override
   Widget build(BuildContext context) {
+    
     List<Widget> actions;
     if (_finished) {
       actions = <Widget>[

@@ -167,6 +167,7 @@ class _ProfileState extends State<Profile> {
                         child: Text(
                           '@' + user!.username,
                           style: TextStyle(
+                            color:themeBloc.materialStyle.shade600,
                             fontSize: 20,
                           ),
                         ),

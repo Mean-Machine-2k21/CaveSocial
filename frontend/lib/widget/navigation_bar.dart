@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:frontend/bloc/theme_bloc.dart';
 import '../global.dart';
 
 class AppNavigationBar extends StatefulWidget {
@@ -22,26 +24,27 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
+    var themeBloc = BlocProvider.of<ThemeBloc>(context);
     List<Map<String, dynamic>> _items = [
       {
         'name': 'Feed',
         'child': Icon(
           Icons.home,
-          color: _selectedIndex == 0 ? color.style : color.contrast,
+          color: _selectedIndex == 0 ? themeBloc.style : themeBloc.contrast,
         ),
       },
       {
         'name': 'Create',
         'child': Icon(
           Ionicons.md_create,
-          color: _selectedIndex == 1 ? color.style : color.contrast,
+          color: _selectedIndex == 1 ? themeBloc.style : themeBloc.contrast,
         ),
       },
       {
         'name': 'Profile',
         'child': Icon(
           Icons.person,
-          color: _selectedIndex == 2 ? color.style : color.contrast,
+          color: _selectedIndex == 2 ? themeBloc.style : themeBloc.contrast,
         ),
       },
     ];
@@ -50,11 +53,11 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
       height: MediaQuery.of(context).size.height * 0.07,
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
-          color: color.black
+          color: themeBloc.contrast
               .withOpacity(color.chooser(lightMode: 0.2, darkMode: 0.4)),
           blurRadius: MediaQuery.of(context).size.height / 4,
         ),
-      ], color: color.main),
+      ], color: themeBloc.main),
       child: Column(
         children: [
           Row(
@@ -107,8 +110,10 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
                       _selectedIndex = i;
                     });
                   },
-                  textColor:
-                      (_selectedIndex == i) ? color.style : color.contrast,
+                  textColor: (_selectedIndex == i)
+                      ? themeBloc.style
+                      : themeBloc.contrast,
+                back:themeBloc.main,
                 ),
             ],
           ),
@@ -123,23 +128,26 @@ class NavigationBarItem extends StatelessWidget {
   final VoidCallback onSelect;
   final Widget child;
   final Color? textColor;
+  final Color? back;
 
   NavigationBarItem({
     this.label,
     required this.child,
     required this.onSelect,
     this.textColor,
+    this.back,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+     // color: back,
       width: MediaQuery.of(context).size.width / (5),
       padding: EdgeInsets.all(5),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: Material(
-          color: color.main,
+          color: back,
           child: InkWell(
             onTap: onSelect,
             child: Container(
