@@ -27,6 +27,12 @@ class _FeedCommentState extends State<FeedComment> {
     comment = s;
   }
 
+  String usernameUrl(username) {
+    return 'https://firebasestorage.googleapis.com/v0/b/cavesocial-78776.appspot.com/o/uploads%2fprofileImages%2f' +
+        username +
+        '?alt=media&token=c2033fb1-2be9-4616-adfd-2996c5c13749';
+  }
+
   Widget build(BuildContext context) {
     var muralBloc = BlocProvider.of<MuralBloc>(context);
     var themeBloc = BlocProvider.of<ThemeBloc>(context);
@@ -147,7 +153,9 @@ class _FeedCommentState extends State<FeedComment> {
                                             CircleAvatar(
                                               radius: 20,
                                               backgroundImage: NetworkImage(
-                                                  'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Alia_Bhatt_grace_the_screening_of_Netflix%E2%80%99s_film_Guilty_%282%29_%28cropped%29.jpg/220px-Alia_Bhatt_grace_the_screening_of_Netflix%E2%80%99s_film_Guilty_%282%29_%28cropped%29.jpg'),
+                                                  usernameUrl(
+                                                      muralComments[index]
+                                                          .creatorUsername)),
                                             ),
                                             SizedBox(
                                               width: 20,
@@ -279,7 +287,9 @@ class _FeedCommentState extends State<FeedComment> {
                                             CircleAvatar(
                                               radius: 20,
                                               backgroundImage: NetworkImage(
-                                                  'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Alia_Bhatt_grace_the_screening_of_Netflix%E2%80%99s_film_Guilty_%282%29_%28cropped%29.jpg/220px-Alia_Bhatt_grace_the_screening_of_Netflix%E2%80%99s_film_Guilty_%282%29_%28cropped%29.jpg'),
+                                                  usernameUrl(
+                                                      muralComments[index]
+                                                          .creatorUsername)),
                                             ),
                                             SizedBox(
                                               width: 20,
