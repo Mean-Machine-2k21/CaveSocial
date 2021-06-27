@@ -15,21 +15,20 @@ import 'package:flutter/material.dart';
 import '../global.dart';
 import '../services/api_handling.dart';
 
-class Profile extends StatefulWidget {
-  static const routeName = '/profile';
-  String? otherUsername;
-  Profile({Key? key, this.otherUsername}) : super(key: key);
+class OtherProfile extends StatefulWidget {
+  static const routeName = '/OtherProfile';
+  String otherUsername;
+  OtherProfile({Key? key, required this.otherUsername}) : super(key: key);
 
   @override
-  _ProfileState createState() => _ProfileState();
+  _OtherProfileState createState() => _OtherProfileState();
 }
 
-class _ProfileState extends State<Profile> {
+class _OtherProfileState extends State<OtherProfile> {
   List<Mural> murals = [];
   User? user;
   bool loading = true;
   bool isInit = true;
-  bool isOther = false;
 
   late String username;
   var themeBloc, muralBloc;
@@ -43,17 +42,15 @@ class _ProfileState extends State<Profile> {
         loading = true;
       });
       print("YYYYYYYYYther Username ---> ${widget.otherUsername}");
-      if (widget.otherUsername == null) {
-        username = await localRead('username');
-      } else {
-        username = widget.otherUsername!;
-        isOther = true;
-      }
+
+      username = widget.otherUsername;
 
       print("OOOOOOOOOOther Username ---> ${username}");
 
       final apiRepository = ApiHandling();
       muralBloc.add(FetchProfileMurals(username: username, page: cnt++));
+
+      print('CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCc');
       user = await apiRepository.fetchProfileMurals(username, murals, 0);
       print('username --> ${user!.username}');
 
@@ -109,38 +106,6 @@ class _ProfileState extends State<Profile> {
                                 ),
                               ),
                             ),
-                            !isOther
-                                ? Positioned(
-                                    right: 0,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(24.0),
-                                      child: IconButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pushReplacement(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  BlocProvider<ThemeBloc>.value(
-                                                value: themeBloc,
-                                                child: BlocProvider<
-                                                    MuralBloc>.value(
-                                                  value: muralBloc,
-                                                  child: EditProfile(
-                                                    key: widget.key,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        icon: Icon(
-                                          Icons.menu,
-                                          color: Colors.red,
-                                          size: 36.0,
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                : Container(),
                             Positioned(
                               top: 120,
                               left: MediaQuery.of(context).size.width / 2.7,
