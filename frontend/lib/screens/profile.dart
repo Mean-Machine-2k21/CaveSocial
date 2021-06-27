@@ -28,6 +28,8 @@ class _ProfileState extends State<Profile> {
   List<Mural> murals = [];
   User? user;
   bool loading = true;
+  bool isInit = true;
+  bool isOther = false;
 
   late String username;
   var themeBloc, muralBloc;
@@ -36,26 +38,32 @@ class _ProfileState extends State<Profile> {
   Future<void> didChangeDependencies() async {
     themeBloc = BlocProvider.of<ThemeBloc>(context);
     muralBloc = BlocProvider.of<MuralBloc>(context);
-    setState(() {
-      loading = true;
-    });
+    if (isInit) {
+      setState(() {
+        loading = true;
+      });
+      print("YYYYYYYYYther Username ---> ${widget.otherUsername}");
+      if (widget.otherUsername == null) {
+        username = await localRead('username');
+      } else {
+        username = widget.otherUsername!;
+        isOther = true;
+      }
 
-    if (widget.otherUsername == null) {
-      username = await localRead('username');
-    } else {
-      username = widget.otherUsername!;
+      print("OOOOOOOOOOther Username ---> ${username}");
+
+      final apiRepository = ApiHandling();
+      muralBloc.add(FetchProfileMurals(username: username, page: cnt++));
+      user = await apiRepository.fetchProfileMurals(username, murals, 0);
+      print('username --> ${user!.username}');
+
+      print('mural Length ${murals.length}');
+
+      isInit = false;
+      setState(() {
+        loading = false;
+      });
     }
-
-    final apiRepository = ApiHandling();
-    muralBloc.add(FetchProfileMurals(username: username, page: cnt++));
-    user = await apiRepository.fetchProfileMurals(username, murals, 0);
-    print('username --> ${user!.username}');
-
-    print('mural Length ${murals.length}');
-
-    setState(() {
-      loading = false;
-    });
 
     super.didChangeDependencies();
   }
@@ -101,35 +109,38 @@ class _ProfileState extends State<Profile> {
                                 ),
                               ),
                             ),
-                            Positioned(
-                              right: 0,
-                              child: Padding(
-                                padding: const EdgeInsets.all(24.0),
-                                child: IconButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            BlocProvider<ThemeBloc>.value(
-                                          value: themeBloc,
-                                          child: BlocProvider<MuralBloc>.value(
-                                            value: muralBloc,
-                                            child: EditProfile(
-                                              key: widget.key,
+                            !isOther
+                                ? Positioned(
+                                    right: 0,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(24.0),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  BlocProvider<ThemeBloc>.value(
+                                                value: themeBloc,
+                                                child: BlocProvider<
+                                                    MuralBloc>.value(
+                                                  value: muralBloc,
+                                                  child: EditProfile(
+                                                    key: widget.key,
+                                                  ),
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                          );
+                                        },
+                                        icon: Icon(
+                                          Icons.menu,
+                                          color: Colors.red,
+                                          size: 36.0,
                                         ),
                                       ),
-                                    );
-                                  },
-                                  icon: Icon(
-                                    Icons.menu,
-                                    color: Colors.red,
-                                    size: 36.0,
-                                  ),
-                                ),
-                              ),
-                            ),
+                                    ),
+                                  )
+                                : Container(),
                             Positioned(
                               top: 120,
                               left: MediaQuery.of(context).size.width / 2.7,

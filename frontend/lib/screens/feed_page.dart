@@ -8,6 +8,7 @@ import 'package:frontend/bloc/theme_bloc.dart';
 import 'package:frontend/global.dart';
 import 'package:frontend/repository/mural_repository.dart';
 import 'package:frontend/screens/feed_comment.dart';
+
 import 'package:frontend/screens/profile.dart';
 import 'package:frontend/services/api_handling.dart';
 import 'package:frontend/widget/showflip_book.dart';
@@ -109,16 +110,35 @@ class _FeedPageState extends State<FeedPage> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(18.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
-                              child: Container(
-                                color: Colors.red,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: Text(
-                                    '@${widget.mural.creatorUsername}',
-                                    style: TextStyle(
-                                        fontSize: 14, color: Colors.white),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        BlocProvider<ThemeBloc>.value(
+                                      value: themeBloc,
+                                      child: BlocProvider<MuralBloc>.value(
+                                        value: muralBloc,
+                                        child: Profile(
+                                          otherUsername:
+                                              widget.mural.creatorUsername,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Container(
+                                  color: Colors.red,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: Text(
+                                      '@${widget.mural.creatorUsername}',
+                                      style: TextStyle(
+                                          fontSize: 14, color: Colors.white),
+                                    ),
                                   ),
                                 ),
                               ),
