@@ -137,7 +137,7 @@ void onCreate(BuildContext context) {
                       );
 
                       muralRepository.createMural(
-                        content: imageUrl,
+                        content: flipUrl,
                         flipbook: Flipbook(
                           duration: time,
                           frames: frame,

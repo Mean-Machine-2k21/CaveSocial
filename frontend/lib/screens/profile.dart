@@ -269,7 +269,8 @@ class _ProfileState extends State<Profile> {
                                                     MuralBloc>.value(
                                                   value: muralBloc,
                                                   child: FeedPage(
-                                                      mural: muralsFeed[index]),
+                                                    mural: muralsFeed[index],
+                                                  ),
                                                 ),
                                               ),
                                             ),

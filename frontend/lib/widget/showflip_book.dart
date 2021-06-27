@@ -8,16 +8,17 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_gifimage/flutter_gifimage.dart';
 
-class GifView extends StatefulWidget {
-  final int frames;
-  final int time;
+class ShowFlipBook extends StatefulWidget {
+  int? frames;
+  int? time;
   final String flipbookUrl;
-  GifView(this.frames, this.time, this.flipbookUrl);
+  ShowFlipBook(this.flipbookUrl, {this.frames, this.time});
   @override
-  _GifViewState createState() => _GifViewState();
+  _ShowFlipBookState createState() => _ShowFlipBookState();
 }
 
-class _GifViewState extends State<GifView> with TickerProviderStateMixin {
+class _ShowFlipBookState extends State<ShowFlipBook>
+    with TickerProviderStateMixin {
   late GifController controller3;
 
   @override
@@ -35,8 +36,8 @@ class _GifViewState extends State<GifView> with TickerProviderStateMixin {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       controller3.repeat(
           min: 0,
-          max: widget.frames.toDouble(),
-          period: Duration(milliseconds: widget.frames * widget.time));
+          max: widget.frames!.toDouble(),
+          period: Duration(milliseconds: widget.frames! * widget.time!));
     });
     super.initState();
   }
@@ -57,6 +58,8 @@ class _GifViewState extends State<GifView> with TickerProviderStateMixin {
         // ),
         body: Center(
             child: GifImage(
+          width: MediaQuery.of(context).size.width,
+          fit: BoxFit.cover,
           controller: controller3,
           image: NetworkImage(widget.flipbookUrl),
         )

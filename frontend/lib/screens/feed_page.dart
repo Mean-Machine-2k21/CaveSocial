@@ -10,6 +10,7 @@ import 'package:frontend/repository/mural_repository.dart';
 import 'package:frontend/screens/feed_comment.dart';
 import 'package:frontend/screens/profile.dart';
 import 'package:frontend/services/api_handling.dart';
+import 'package:frontend/widget/showflip_book.dart';
 import 'package:swipe_up/swipe_up.dart';
 import '../models/mural_model.dart';
 
@@ -78,13 +79,22 @@ class _FeedPageState extends State<FeedPage> {
                       width: cwidth,
                       decoration: BoxDecoration(
                         color: Colors.blue,
-                        image: DecorationImage(
-                          image: NetworkImage(
-                            widget.mural.imageUrl,
-                          ),
-                          fit: BoxFit.cover,
-                        ),
+                        image: widget.mural.flipbook == null
+                            ? DecorationImage(
+                                image: NetworkImage(
+                                  widget.mural.imageUrl,
+                                ),
+                                fit: BoxFit.cover,
+                              )
+                            : null,
                       ),
+                      child: widget.mural.flipbook != null
+                          ? ShowFlipBook(
+                              widget.mural.imageUrl,
+                              frames: widget.mural.flipbook!.frames,
+                              time: widget.mural.flipbook!.duration,
+                            )
+                          : null,
                     ),
                     Container(
                       height: cheight,

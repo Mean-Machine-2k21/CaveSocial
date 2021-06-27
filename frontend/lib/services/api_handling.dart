@@ -72,21 +72,26 @@ class ApiHandling {
       final token = await localRead('jwt');
       //final token =
       //'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGQ2M2NlMzk2YjdiODNjNzgzY2M3YjQiLCJpYXQiOjE2MjQ2NTcwODZ9.FvPveb4RpYtHshxKZdzArrOr5n9pHMkJQaX4XPC-zYg';
+
+      Map<String, dynamic> data = {
+        'content': content,
+      };
+      if (flipbook != null) {
+        data['flipbook'] = {
+          'frames': flipbook.frames,
+          'duration': flipbook.duration,
+        };
+      }
+
+      print(data);
+
       final response = await Dio(options).post(
         url + '/api/createmural',
         options: Options(headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json'
         }),
-        data: {
-          'content': content,
-          'flipbook': flipbook != null
-              ? {
-                  'frames': flipbook.frames,
-                  'duration': flipbook.duration,
-                }
-              : null,
-        },
+        data: data,
       );
       print(response.data);
     } catch (e) {
@@ -156,6 +161,9 @@ class ApiHandling {
       final muralMap = vari.values.elementAt(0);
       muralMap.forEach((element) {
         print('Mural ---> ${element.values.elementAt(0)}');
+        if (element.murals.length == 8) {
+          print('Flipbook ---> ${element.values.elementAt(3)}');
+        }
         murals.add(
           element.values.length == 7
               ? Mural(
@@ -175,6 +183,10 @@ class ApiHandling {
                   likedCount: element.values.elementAt(5),
                   commentCount: element.values.elementAt(6),
                   isLiked: element.values.elementAt(7),
+                  flipbook: Flipbook(
+                    duration: element.values.elementAt(3).values.elementAt(1),
+                    frames: element.values.elementAt(3).values.elementAt(0),
+                  ),
                 ),
         );
       });
@@ -234,6 +246,10 @@ class ApiHandling {
                   likedCount: element.values.elementAt(5),
                   commentCount: element.values.elementAt(6),
                   isLiked: element.values.elementAt(7),
+                  flipbook: Flipbook(
+                    duration: element.values.elementAt(3).values.elementAt(1),
+                    frames: element.values.elementAt(3).values.elementAt(0),
+                  ),
                 ),
         );
       });
@@ -371,6 +387,10 @@ class ApiHandling {
                   likedCount: element.values.elementAt(5),
                   commentCount: element.values.elementAt(6),
                   isLiked: element.values.elementAt(7),
+                  flipbook: Flipbook(
+                    duration: element.values.elementAt(3).values.elementAt(1),
+                    frames: element.values.elementAt(3).values.elementAt(0),
+                  ),
                 ),
         );
 
