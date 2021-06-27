@@ -26,15 +26,16 @@ class _FeedCommentState extends State<FeedComment> {
     comment = s;
   }
 
+  String usernameUrl(username) {
+    return 'https://firebasestorage.googleapis.com/v0/b/cavesocial-78776.appspot.com/o/uploads%2fprofileImages%2f' +
+        username +
+        '?alt=media&token=c2033fb1-2be9-4616-adfd-2996c5c13749';
+  }
+
   Widget build(BuildContext context) {
     var muralBloc = BlocProvider.of<MuralBloc>(context);
     var themeBloc = BlocProvider.of<ThemeBloc>(context);
     List<Mural> muralComments = [];
-    String usernameUrl(username) {
-      return 'https://firebasestorage.googleapis.com/v0/b/cavesocial-78776.appspot.com/o/uploads%2fprofileImages%2f' +
-          username +
-          '?alt=media&token=c2033fb1-2be9-4616-adfd-2996c5c13749';
-    }
 
     muralBloc.add(
       FetchMuralCommentList(muralid: widget.parentMuralid, page: counter++),
@@ -162,10 +163,9 @@ class _FeedCommentState extends State<FeedComment> {
                                               muralComments[index]
                                                   .creatorUsername,
                                               style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                                color:themeBloc.style
-                                              ),
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: themeBloc.style),
                                             ),
                                             SizedBox(
                                               width: 10,
@@ -187,9 +187,8 @@ class _FeedCommentState extends State<FeedComment> {
                                                     color: Colors.white,
                                                     image: DecorationImage(
                                                       image: NetworkImage(
-                                                        usernameUrl(
-                                                            muralComments[index]
-                                                                .imageUrl),
+                                                        muralComments[index]
+                                                            .imageUrl,
                                                       ),
                                                       fit: BoxFit.cover,
                                                     ),
@@ -197,7 +196,8 @@ class _FeedCommentState extends State<FeedComment> {
                                                         BorderRadius.circular(
                                                             30),
                                                     border: Border.all(
-                                                        color: themeBloc.contrast)),
+                                                        color: themeBloc
+                                                            .contrast)),
                                               ),
                                             ),
                                             Container(
@@ -280,7 +280,7 @@ class _FeedCommentState extends State<FeedComment> {
                                               backgroundImage: NetworkImage(
                                                   usernameUrl(
                                                       muralComments[index]
-                                                          .imageUrl)),
+                                                          .creatorUsername)),
                                             ),
                                             SizedBox(
                                               width: 20,
