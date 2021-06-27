@@ -37,6 +37,7 @@ class _FeedCommentState extends State<FeedComment> {
     return BlocBuilder<ThemeBloc, ThemeData>(
       builder: (context, state) {
         return Scaffold(
+          backgroundColor: themeBloc.main,
           floatingActionButton: FloatingActionButton(
             onPressed: () async {
               await Navigator.push(
@@ -78,6 +79,7 @@ class _FeedCommentState extends State<FeedComment> {
                         style: TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
+                          color: themeBloc.contrast,
                         ),
                       ),
                     ],
@@ -145,6 +147,7 @@ class _FeedCommentState extends State<FeedComment> {
                                               radius: 20,
                                               backgroundImage: NetworkImage(
                                                   'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Alia_Bhatt_grace_the_screening_of_Netflix%E2%80%99s_film_Guilty_%282%29_%28cropped%29.jpg/220px-Alia_Bhatt_grace_the_screening_of_Netflix%E2%80%99s_film_Guilty_%282%29_%28cropped%29.jpg'),
+                                           
                                             ),
                                             SizedBox(
                                               width: 20,
@@ -155,6 +158,7 @@ class _FeedCommentState extends State<FeedComment> {
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
+                                                color:themeBloc.style
                                               ),
                                             ),
                                             SizedBox(
@@ -186,7 +190,7 @@ class _FeedCommentState extends State<FeedComment> {
                                                         BorderRadius.circular(
                                                             30),
                                                     border: Border.all(
-                                                        color: Colors.black)),
+                                                        color: themeBloc.contrast)),
                                               ),
                                             ),
                                             Container(
