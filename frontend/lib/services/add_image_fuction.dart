@@ -11,28 +11,11 @@ Future<String> uploadImageToFirebase(File image) async {
 
   String time = DateTime.now().toString();
   final firebaseStorageRef =
-      FirebaseStorage.instance.ref().child('uploads/mural${time}');
+      FirebaseStorage.instance.ref().child('uploads/murals/mural${time}');
 
   await firebaseStorageRef.putFile(image);
 
   String url = await firebaseStorageRef.getDownloadURL();
 
-  // final storageTaskSnapshot = await uploadTask.;
-  // String downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
-  // await uploadTask.whenComplete(() {
-  //   print('File Uploaded');
-  //   firebaseStorageRef.getDownloadURL().then((fileURL) {
-  //     print(fileURL + "-------");
-  //     imageurl = fileURL;
-  //     return imageurl;
-  //   });
-  // });
-
   return url;
-      
-  // final uploadTask = firebaseStorageRef.putFile(image);
-  // await uploadTask.whenComplete(() => print('File Uploaded'));
-  // firebaseStorageRef.getDownloadURL().then((fileURL) {
-  //   print(fileURL + "-------");
-  // });
 }

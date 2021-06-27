@@ -15,9 +15,9 @@ class CreateFlipbook extends StatefulWidget {
   //var frame;
   //var time;
   CreateFlipbook(
-  //  this.frame,
-    //this.time, 
-    {
+      //  this.frame,
+      //this.time,
+      {
     this.editProfile,
     required this.title,
   });
@@ -26,8 +26,15 @@ class CreateFlipbook extends StatefulWidget {
 }
 
 class _CreateFlipbookState extends State<CreateFlipbook> {
-  var frame=0;
-var time=300;
+  @override
+  void initState() {
+    // TODO: implement initState
+    clear();
+    super.initState();
+  }
+
+  var frame = 0;
+  var time = 300;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,8 +166,9 @@ var time=300;
                 print(file);
                 await uploadGifToFirebase(file).then((value) {
                   print('Murall');
+                  print(value);
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  widget.editProfile!(value,frame,time);
+                  widget.editProfile!(value, frame, time);
                   Navigator.pop(context);
                 });
               },
