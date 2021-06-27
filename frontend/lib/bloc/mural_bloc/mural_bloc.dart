@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/bloc/mural_bloc/mural_event.dart';
 import 'package:frontend/bloc/mural_bloc/mural_state.dart';
+import 'package:frontend/models/liked_user.dart';
 import 'package:frontend/models/mural_model.dart';
 import 'package:frontend/models/user_model.dart';
 import 'package:frontend/repository/mural_repository.dart';
@@ -40,9 +41,12 @@ class MuralBloc extends Bloc<MuralEvent, MuralState> {
         await muralRepository.unLikeMural(muralId: event.muralid);
         yield NoReqState();
       } else if (event is FetchMuralLikeList) {
-        List<String> usernames = [];
+        yield FetchingMuralLikeList();
+        List<LikedUsers> usernames = [];
         usernames = await muralRepository.fetchMuralLikeList(
             muralid: event.muralid, page: event.page);
+        print('commmmmmmmmmmmiiiiiiiinnnnnnnnnnnnnnnnnngggggggggggggg');
+        print(usernames.length);
         yield FetchedMuralLikeList(usernames: usernames);
       } else if (event is FetchMuralCommentList) {
         yield MuralCommentLoading();

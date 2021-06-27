@@ -161,7 +161,7 @@ class _FeedPageState extends State<FeedPage> {
                                         value: themeBloc,
                                         child: BlocProvider.value(
                                           value: muralBloc,
-                                          child: LikedByScreen(items: ['ssf']),
+                                          child: LikedByScreen( muralid: widget.mural.id,),
                                         ),
                                         //FeedComment(parentMuralid: widget.mural.id,),
                                       ),

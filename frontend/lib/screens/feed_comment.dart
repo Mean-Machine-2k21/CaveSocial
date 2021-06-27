@@ -42,6 +42,7 @@ class _FeedCommentState extends State<FeedComment> {
     return BlocBuilder<ThemeBloc, ThemeData>(
       builder: (context, state) {
         return Scaffold(
+          backgroundColor: themeBloc.main,
           floatingActionButton: FloatingActionButton(
             onPressed: () async {
               await Navigator.push(
@@ -83,6 +84,7 @@ class _FeedCommentState extends State<FeedComment> {
                         style: TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
+                          color: themeBloc.contrast,
                         ),
                       ),
                     ],
@@ -162,6 +164,7 @@ class _FeedCommentState extends State<FeedComment> {
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
+                                                color:themeBloc.style
                                               ),
                                             ),
                                             SizedBox(
@@ -194,7 +197,7 @@ class _FeedCommentState extends State<FeedComment> {
                                                         BorderRadius.circular(
                                                             30),
                                                     border: Border.all(
-                                                        color: Colors.black)),
+                                                        color: themeBloc.contrast)),
                                               ),
                                             ),
                                             Container(
