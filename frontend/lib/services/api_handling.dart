@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:frontend/bloc/mural_bloc/mural_event.dart';
 import 'package:frontend/global.dart';
+import 'package:frontend/models/liked_user.dart';
 import 'package:frontend/models/mural_model.dart';
 import 'package:frontend/models/user_model.dart';
 
@@ -61,18 +62,51 @@ class ApiHandling {
     }
   }
 
+  Future<List<LikedUsers>> fetchLikesonMural(String muralId) async {
+    List<LikedUsers> likedUsers = [];
+
+    try {
+      final token = await localRead('jwt');
+      print('tokennn -----> ${token}');
+      print('muralId -----> ${muralId}');
+      final response = await Dio(options).get(
+        url + '/api/likesonmural/${muralId}',
+        options: Options(headers: {
+          'Authorization': 'Bearer $token',
+        }),
+      );
+
+      final vari = Map<String, dynamic>.from(response.data);
+
+      final likedList = vari.values.elementAt(0);
+      likedList.forEach((element) {
+        print(element.values.elementAt(0));
+
+        likedUsers.add(
+          LikedUsers(
+            element.values.elementAt(1),
+            element.values.elementAt(2),
+          ),
+        );
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+
+    print('Liked Users Length ---> ${likedUsers.length}');
+    return likedUsers;
+  }
+
   Future<void> signOut() async {
     try {
       final token = await localRead('jwt');
 
       final response = await Dio(options).post(
         url + '/api/logout',
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-            'Content-Type': 'application/json'
-          },
-        ),
+        options: Options(headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json'
+        }),
       );
     } catch (e) {}
   }
@@ -170,41 +204,24 @@ class ApiHandling {
           });
 
       ////print(json.decode(response.data));
-
       //final extractedData = json.decode(response.data) as Map<String, dynamic>;
       final vari = Map<String, dynamic>.from(response.data);
+
+      print(response.data);
 
       final muralMap = vari.values.elementAt(0);
       muralMap.forEach((element) {
         print('Mural ---> ${element.values.elementAt(0)}');
-        if (element.murals.length == 8) {
-          print('Flipbook ---> ${element.values.elementAt(3)}');
-        }
-        murals.add(
-          element.values.length == 7
-              ? Mural(
-                  id: element.values.elementAt(0),
-                  creatorId: element.values.elementAt(1),
-                  creatorUsername: element.values.elementAt(2),
-                  imageUrl: element.values.elementAt(3),
-                  likedCount: element.values.elementAt(4),
-                  commentCount: element.values.elementAt(5),
-                  isLiked: element.values.elementAt(6),
-                )
-              : Mural(
-                  id: element.values.elementAt(0),
-                  creatorId: element.values.elementAt(1),
-                  creatorUsername: element.values.elementAt(2),
-                  imageUrl: element.values.elementAt(4),
-                  likedCount: element.values.elementAt(5),
-                  commentCount: element.values.elementAt(6),
-                  isLiked: element.values.elementAt(7),
-                  flipbook: Flipbook(
-                    duration: element.values.elementAt(3).values.elementAt(1),
-                    frames: element.values.elementAt(3).values.elementAt(0),
-                  ),
-                ),
-        );
+
+        murals.add(Mural(
+          id: element.values.elementAt(0),
+          creatorId: element.values.elementAt(1),
+          creatorUsername: element.values.elementAt(2),
+          imageUrl: element.values.elementAt(3),
+          likedCount: element.values.elementAt(4),
+          commentCount: element.values.elementAt(5),
+          isLiked: element.values.elementAt(6),
+        ));
       });
 
       // extractedData.forEach((key, value) {
@@ -239,6 +256,10 @@ class ApiHandling {
 
       //final extractedData = json.decode(response.data) as Map<String, dynamic>;
       final vari = Map<String, dynamic>.from(response.data);
+
+      final likedList = vari.values.elementAt(0);
+
+      likedList.forEach((element) {});
 
       final muralMap = vari.values.elementAt(0);
       muralMap.forEach((element) {
