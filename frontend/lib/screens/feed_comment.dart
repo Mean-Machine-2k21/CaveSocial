@@ -9,6 +9,7 @@ import 'package:frontend/models/mural_model.dart';
 import 'package:frontend/screens/create_mural_screen.dart';
 import 'package:frontend/screens/edit_profile.dart';
 import 'package:frontend/screens/feed_page.dart';
+import 'package:frontend/widget/shimmer_image.dart';
 
 class FeedComment extends StatefulWidget {
   const FeedComment({Key? key, required this.parentMuralid}) : super(key: key);
@@ -147,7 +148,6 @@ class _FeedCommentState extends State<FeedComment> {
                                               radius: 20,
                                               backgroundImage: NetworkImage(
                                                   'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Alia_Bhatt_grace_the_screening_of_Netflix%E2%80%99s_film_Guilty_%282%29_%28cropped%29.jpg/220px-Alia_Bhatt_grace_the_screening_of_Netflix%E2%80%99s_film_Guilty_%282%29_%28cropped%29.jpg'),
-                                           
                                             ),
                                             SizedBox(
                                               width: 20,
@@ -156,10 +156,9 @@ class _FeedCommentState extends State<FeedComment> {
                                               muralComments[index]
                                                   .creatorUsername,
                                               style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                                color:themeBloc.style
-                                              ),
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: themeBloc.style),
                                             ),
                                             SizedBox(
                                               width: 10,
@@ -178,19 +177,28 @@ class _FeedCommentState extends State<FeedComment> {
                                                 width: 307,
                                                 height: 432,
                                                 decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    image: DecorationImage(
-                                                      image: NetworkImage(
-                                                        muralComments[index]
-                                                            .imageUrl,
-                                                      ),
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            30),
-                                                    border: Border.all(
-                                                        color: themeBloc.contrast)),
+                                                  color: Colors.white,
+                                                  // image: DecorationImage(
+                                                  //   image: NetworkImage(
+                                                  // muralComments[index]
+                                                  //     .imageUrl,
+                                                  //   ),
+                                                  //   fit: BoxFit.cover,
+                                                  // ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(30),
+                                                  border: Border.all(
+                                                      color:
+                                                          themeBloc.contrast),
+                                                ),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(30),
+                                                  child: ShimmerNetworkImage(
+                                                    muralComments[index]
+                                                        .imageUrl,
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                             Container(
@@ -301,19 +309,27 @@ class _FeedCommentState extends State<FeedComment> {
                                                 width: 307,
                                                 height: 432,
                                                 decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    image: DecorationImage(
-                                                      image: NetworkImage(
-                                                        muralComments[index]
-                                                            .imageUrl,
-                                                      ),
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            30),
-                                                    border: Border.all(
-                                                        color: Colors.black)),
+                                                  color: Colors.white,
+                                                  // image: DecorationImage(
+                                                  //   image: NetworkImage(
+                                                  // muralComments[index]
+                                                  //     .imageUrl,
+                                                  //   ),
+                                                  //   fit: BoxFit.cover,
+                                                  // ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(30),
+                                                  border: Border.all(
+                                                      color: Colors.black),
+                                                ),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(30),
+                                                  child: ShimmerNetworkImage(
+                                                    muralComments[index]
+                                                        .imageUrl,
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                             Container(

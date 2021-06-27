@@ -159,6 +159,12 @@ class _ProfileState extends State<Profile> {
                                     fit: BoxFit.cover,
                                   ),
                                 ),
+                                // child: ShimmerNetworkImage(
+                                //   user!.avatarUrl,
+                                //   boxFit: BoxFit.cover,
+                                //   height: 30,
+                                //   width: 30,
+                                // ),
                               ),
                             )
                           ],
@@ -169,7 +175,7 @@ class _ProfileState extends State<Profile> {
                         child: Text(
                           '@' + user!.username,
                           style: TextStyle(
-                            color:themeBloc.materialStyle.shade600,
+                            color: themeBloc.materialStyle.shade600,
                             fontSize: 20,
                           ),
                         ),
@@ -243,10 +249,17 @@ class _ProfileState extends State<Profile> {
                                                 BorderRadius.circular(10),
                                             border: Border.all(
                                                 color: themeBloc.contrast),
-                                            image: DecorationImage(
-                                              image: NetworkImage(
-                                                  muralsFeed[index].imageUrl),
-                                              fit: BoxFit.cover,
+                                            // image: DecorationImage(
+                                            //   image: NetworkImage(
+                                            //       muralsFeed[index].imageUrl),
+                                            //   fit: BoxFit.cover,
+                                            // ),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: ShimmerNetworkImage(
+                                              muralsFeed[index].imageUrl,
                                             ),
                                           ),
                                         ),
@@ -300,11 +313,17 @@ class _ProfileState extends State<Profile> {
                                                 BorderRadius.circular(10),
                                             border: Border.all(
                                                 color: themeBloc.contrast),
-                                            image: DecorationImage(
-                                              image: NetworkImage(
-                                                  muralsFeed[index].imageUrl),
-                                              fit: BoxFit.cover,
-                                            ),
+                                            // image: DecorationImage(
+                                            //   image: NetworkImage(
+                                            //       muralsFeed[index].imageUrl),
+                                            //   fit: BoxFit.cover,
+                                            // ),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: ShimmerNetworkImage(
+                                                muralsFeed[index].imageUrl),
                                           ),
                                         ),
                                       );

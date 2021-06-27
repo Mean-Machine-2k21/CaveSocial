@@ -101,6 +101,7 @@ class _FeedPageState extends State<FeedPage> {
                               )
                             : ShimmerNetworkImage(
                                 widget.mural.imageUrl,
+                                boxFit: BoxFit.cover,
                               )
                         // : FancyShimmerImage(
                         //     imageUrl: widget.mural.imageUrl,
@@ -170,7 +171,9 @@ class _FeedPageState extends State<FeedPage> {
                                         value: themeBloc,
                                         child: BlocProvider.value(
                                           value: muralBloc,
-                                          child: LikedByScreen( muralid: widget.mural.id,),
+                                          child: LikedByScreen(
+                                            muralid: widget.mural.id,
+                                          ),
                                         ),
                                         //FeedComment(parentMuralid: widget.mural.id,),
                                       ),
