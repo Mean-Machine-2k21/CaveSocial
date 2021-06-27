@@ -169,11 +169,8 @@ class _CreateFrameState extends State<CreateFrame> {
               child: Container(
                 height: 40,
                 width: MediaQuery.of(context).size.width,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: actions,
-                  ),
+                child: Row(
+                  children: actions,
                 ),
               ),
             ),

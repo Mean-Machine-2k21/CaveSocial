@@ -12,7 +12,7 @@ class CreateMuralScreen extends StatefulWidget {
   Function? editProfile;
 
   CreateMuralScreen(
-    this.mode,  {
+    this.mode, {
     this.editProfile,
   });
 
@@ -56,7 +56,7 @@ class _CreateMuralScreenState extends State<CreateMuralScreen> {
       ];
     } else {
       actions = <Widget>[
-        new IconButton(
+        IconButton(
             icon: new Icon(
               Icons.arrow_back,
               color: Colors.red,
@@ -72,13 +72,14 @@ class _CreateMuralScreenState extends State<CreateMuralScreen> {
         //     tooltip: 'Clear',
         //     onPressed: _controller.clear),
 
-        new IconButton(
-            icon: new Icon(
-              Icons.check,
-              color: Colors.red,
-              size: 32,
-            ),
-            onPressed: () => _show(_controller.finish(), context)),
+        IconButton(
+          icon: new Icon(
+            Icons.check,
+            color: Colors.red,
+            size: 32,
+          ),
+          onPressed: () => _show(_controller.finish(), context),
+        ),
       ];
     }
     return new Scaffold(
@@ -107,6 +108,7 @@ class _CreateMuralScreenState extends State<CreateMuralScreen> {
                           (BuildContext context, StateSetter setState) {
                         return new Container(
                             child: new Slider(
+                          
                           value: _controller.thickness,
                           onChanged: (double value) => setState(() {
                             _controller.thickness = value;
@@ -171,11 +173,8 @@ class _CreateMuralScreenState extends State<CreateMuralScreen> {
               child: Container(
                 height: 40,
                 width: MediaQuery.of(context).size.width,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: actions,
-                  ),
+                child: Row(
+                  children: actions,
                 ),
               ),
             ),
