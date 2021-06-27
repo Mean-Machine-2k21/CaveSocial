@@ -116,9 +116,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Row(
                           children: [
                             Text(
-                              'Sign Up to your account',
-                              style: style.heading
-                                  .copyWith(color: themeBloc.contrast),
+                              'Welcome To CaveSocial',
+                              style: style.heading.copyWith(
+                                  color: themeBloc.contrast,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: height * 0.02,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'Lets get Primitive !',
+                              style: style.heading.copyWith(
+                                color: Colors.red,
+                                fontSize: 26,
+                                fontWeight: FontWeight.w900,
+                              ),
                             ),
                           ],
                         ),
@@ -130,12 +147,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           decoration: InputDecoration(
                             contentPadding:
                                 EdgeInsets.symmetric(horizontal: 20),
-                            labelText: 'Email',
+                            labelText: 'Username',
                             labelStyle: TextStyle(
                               color: themeBloc.contrast,
                             ),
                             prefixIcon: Icon(
-                              Icons.mail,
+                              Icons.person,
                               color: themeBloc.contrast.withOpacity(0.8),
                               size: 25,
                             ),
@@ -284,11 +301,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                NavigatorPage () // Todo
-                                                // HomePage.fromBase64(jwt[
-                                                //     'token'])
-                                                    )
-                                                    ); //To change path here
+                                                NavigatorPage() // Todo
+                                            // HomePage.fromBase64(jwt[
+                                            //     'token'])
+                                            )); //To change path here
                                   } else {
                                     if (jwt['res'] == '400') {
                                       displayDialog(
