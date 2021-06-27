@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
 import 'package:frontend/bloc/mural_bloc/mural_state.dart';
 import 'package:frontend/bloc/theme_bloc.dart';
+import 'package:frontend/screens/create_bio_screen.dart';
 import 'package:frontend/screens/create_mural_screen.dart';
 import 'package:frontend/screens/profile.dart';
 import 'package:frontend/widget/toggle_button.dart';
@@ -118,7 +119,7 @@ class _EditProfileState extends State<EditProfile> {
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color:themeBloc.contrast,
+                        color: themeBloc.contrast,
                       ),
                     ),
                     Spacer(),
@@ -285,7 +286,7 @@ class _EditProfileState extends State<EditProfile> {
                               value: themeBloc,
                               child: BlocProvider.value(
                                 value: muralBloc,
-                                child: CreateMuralScreen(
+                                child: CreateBioScreen(
                                   'normal',
                                   editProfile: getUrl,
                                 ),

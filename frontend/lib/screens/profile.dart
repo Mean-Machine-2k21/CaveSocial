@@ -92,10 +92,10 @@ class _ProfileState extends State<Profile> {
                                 width: double.infinity,
                                 height: 173,
                                 decoration: BoxDecoration(
+                                  color: Colors.red,
                                   border: Border(
                                       bottom: BorderSide(
-                                          color: themeBloc.materialStyle.shade800, width: 6)),
-                              //    color: Colors.red,
+                                          color: Colors.red, width: 5)),
                                   image: DecorationImage(
                                       image: NetworkImage(user!.bioUrl),
                                       fit: BoxFit.cover),
@@ -125,7 +125,7 @@ class _ProfileState extends State<Profile> {
                                   },
                                   icon: Icon(
                                     Icons.menu,
-                                    color: Colors.white,
+                                    color: Colors.red,
                                     size: 36.0,
                                   ),
                                 ),
@@ -139,9 +139,9 @@ class _ProfileState extends State<Profile> {
                                 width: 95,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
+                                  color: Colors.blue,
                                   border:
                                       Border.all(color: Colors.red, width: 3),
-                               //   color: Colors.blue,
                                   image: DecorationImage(
                                     image: NetworkImage(user!.avatarUrl),
                                     fit: BoxFit.cover,
@@ -153,15 +153,13 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(2.0),
                         child: Text(
                           '@' + user!.username,
                           style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w500,color:themeBloc.style),
+                            fontSize: 20,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 20,
                       ),
                       BlocBuilder<MuralBloc, MuralState>(
                         builder: (context, state) {
