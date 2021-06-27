@@ -23,15 +23,18 @@ void flipfunct(gif, frames, times) {
 MuralRepository muralRepository = MuralRepository();
 
 void onCreate(BuildContext context) {
-  var themeBloc = BlocProvider.of<MuralBloc>(context);
-  var muralBloc = BlocProvider.of<ThemeBloc>(context);
+  var themeBloc = BlocProvider.of<ThemeBloc>(context);
+  var muralBloc = BlocProvider.of<MuralBloc>(context);
+
+  // BlocListener<ThemeBloc, ThemeData>(listener: (context, state) {
+  // TODO: implement listener
 
   showModalBottomSheet(
     context: context,
 
     barrierColor: Colors.black.withOpacity(0.2),
 
-    backgroundColor: Color(0xff1E1E2A),
+    backgroundColor: themeBloc.main,
 
     elevation: 100,
 
@@ -71,7 +74,8 @@ void onCreate(BuildContext context) {
                       decoration: BoxDecoration(shape: BoxShape.circle),
                       child: Text(
                         'Normal',
-                        style: TextStyle(fontSize: 14),
+                        style:
+                            TextStyle(fontSize: 14, color: themeBloc.contrast),
                       ),
                     ),
                     onPressed: () async {
@@ -102,14 +106,22 @@ void onCreate(BuildContext context) {
                       decoration: BoxDecoration(shape: BoxShape.circle),
                       child: Text(
                         'Comic',
-                        style: TextStyle(fontSize: 14),
+                        style:
+                            TextStyle(fontSize: 14, color: themeBloc.contrast),
                       ),
                     ),
                     onPressed: () {
                       Navigator.push(
                         context,
+                        //CreateMuralScreen('comic');
                         MaterialPageRoute(
-                            builder: (context) => CreateMuralScreen('comic')),
+                          builder: (context) => BlocProvider.value(
+                            value: themeBloc,
+                            child: BlocProvider.value(
+                                value: muralBloc,
+                                child: CreateMuralScreen('comic')),
+                          ),
+                        ),
                       );
                     },
                   ),
@@ -123,16 +135,23 @@ void onCreate(BuildContext context) {
                       decoration: BoxDecoration(shape: BoxShape.circle),
                       child: Text(
                         'Flipbook',
-                        style: TextStyle(fontSize: 14),
+                        style:
+                            TextStyle(fontSize: 14, color: themeBloc.contrast),
                       ),
                     ),
                     onPressed: () async {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => CreateFlipbook(
-                                  title: 'Flipbook',
-                                  editProfile: flipfunct,
+                            builder: (context) => BlocProvider.value(
+                                  value: themeBloc,
+                                  child: BlocProvider.value(
+                                    value: muralBloc,
+                                    child: CreateFlipbook(
+                                      title: 'Flipbook',
+                                      editProfile: flipfunct,
+                                    ),
+                                  ),
                                 )),
                       );
 
@@ -154,4 +173,6 @@ void onCreate(BuildContext context) {
       );
     },
   );
+
+  //});
 }
