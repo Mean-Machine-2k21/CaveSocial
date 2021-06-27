@@ -1,3 +1,4 @@
+
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -26,7 +27,7 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   void getUrl(String bioUrl) {
     this.bioUrl = bioUrl;
-    print("*******-> ${bioUrl}");
+    print("***-> ${bioUrl}");
   }
 
   ApiHandling apiHandling = ApiHandling();
@@ -35,7 +36,6 @@ class _EditProfileState extends State<EditProfile> {
   String bioUrl = "";
   File? image;
   bool loading = false;
-  ApiHandling _apiHandling = ApiHandling();
 
   String currentProfile = "";
   String currentBio = "";
@@ -54,6 +54,8 @@ class _EditProfileState extends State<EditProfile> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
   }
+
+  ApiHandling _apiHandling = ApiHandling();
 
   Future<void> uploadImage() async {
     final pickedFile = await _imagePicker.getImage(source: ImageSource.gallery);
@@ -107,257 +109,259 @@ class _EditProfileState extends State<EditProfile> {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: themeBloc.main,
-          body: Column(
-            //mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 32.0, horizontal: 16.0),
-                child: Row(
-                  children: [
-                    Text(
-                      'Edit Your Profile !',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: themeBloc.contrast,
-                      ),
-                    ),
-                    Spacer(),
-                    TextButton(
-                      onPressed: () async {
-                        await apiHandling.editProfile(
-                          avatarUrl: avatarUrl,
-                          bioUrl: bioUrl,
-                        );
-                        Navigator.of(context).pop();
-                      },
-                      child: loading
-                          ? SizedBox(
-                              height: 50,
-                              width: 50,
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            )
-                          : Icon(
-                              Icons.save,
-                              color: themeBloc.contrast,
-                            ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text(
-                        'Profile Pictue',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                            color: themeBloc.style),
-                      ),
-                    ),
-                    Spacer(),
-                    IconButton(
-                        onPressed: () {
-                          uploadImage().then(
-                            (value) =>
-                                ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Profile Photo Updated'),
-                              ),
-                            ),
-                          );
-                        },
-                        icon: Icon(
-                          Icons.edit,
-                          color: themeBloc.style, //to expp
-                        )),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+          body: SingleChildScrollView(
+            child: Column(
+              //mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 32.0, horizontal: 16.0),
+                  child: Row(
                     children: [
-                      image != null
-                          ?
-                          // CircularProgressIndicator(
-                          //     color: themeBloc.contrast,
-                          //     strokeWidth: 5.0,
-                          //   )
-                          Container(
-                              height: 95,
-                              width: 95,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.blue,
-                                border: Border.all(color: Colors.red, width: 2),
-                                image: DecorationImage(
-                                  image: FileImage(image!),
-                                  fit: BoxFit.cover,
+                      Text(
+                        'Edit Your Profile !',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: themeBloc.contrast,
+                        ),
+                      ),
+                      Spacer(),
+                      TextButton(
+                        onPressed: () async {
+                          await apiHandling.editProfile(
+                            avatarUrl: avatarUrl,
+                            bioUrl: bioUrl,
+                          );
+                          Navigator.of(context).pop();
+                        },
+                        child: loading
+                            ? SizedBox(
+                                height: 50,
+                                width: 50,
+                                child: Center(
+                                  child: CircularProgressIndicator(),
                                 ),
+                              )
+                            : Icon(
+                                Icons.save,
+                                color: themeBloc.contrast,
                               ),
-                            )
-                          : Container(
-                              height: 95,
-                              width: 95,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.red, width: 2),
-                                shape: BoxShape.circle,
-                                color: Colors.blue,
-                                image: DecorationImage(
-                                  image: NetworkImage(currentProfile),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
+                      ),
                     ],
                   ),
-                ],
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text(
-                        'Change Your Bio',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                            color: themeBloc.style),
-                      ),
-                    ),
-                    Spacer(),
-                    IconButton(
-                      onPressed: () async {
-                        setState(() {
-                          loading = true;
-                        });
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => BlocProvider.value(
-                              value: themeBloc,
-                              child: BlocProvider.value(
-                                value: muralBloc,
-                                child: CreateBioScreen(
-                                  'normal',
-                                  editProfile: getUrl,
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-
-                        setState(() {
-                          loading = false;
-                        });
-
-                        print('################ ');
-                        localWrite('bio_url', bioUrl);
-                      },
-                      icon: Icon(
-                        Icons.edit,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ],
                 ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                width: double.infinity,
-                height: 173,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.red, width: 2),
-                  color: themeBloc.materialStyle.shade800,
-                  image: DecorationImage(
-                    image: NetworkImage(bioUrl),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(32.0),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Toggle Color Mode',
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(
+                          'Profile Pictue',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
-                              color: themeBloc.contrast),
+                              color: themeBloc.style),
                         ),
-                        Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Toggle(
-                            value: themeBloc.isDarkMode,
-                            onToggle: (value) {
-                              // if (value) {
-                              //   // color.themeModeSwitch(colorMode: ColorMode.dark);
-                              // } else {
-                              //   // color.themeModeSwitch(colorMode: ColorMode.light);
-                              themeBloc.toggleTheTheme();
-                            },
-                          ),
-                        )
+                      ),
+                      Spacer(),
+                      IconButton(
+                          onPressed: () {
+                            uploadImage().then(
+                              (value) =>
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Profile Photo Updated'),
+                                ),
+                              ),
+                            );
+                          },
+                          icon: Icon(
+                            Icons.edit,
+                            color: themeBloc.style, //to expp
+                          )),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    // Column(
+                    //   crossAxisAlignment: CrossAxisAlignment.center,
+                    //   children: [
+                    //     Container(
+                    //       height: 95,
+                    //       width: 95,
+                    //       decoration: BoxDecoration(
+                    //         border: Border.all(color: Colors.red, width: 2),
+                    //         shape: BoxShape.circle,
+                    //         color: Colors.blue,
+                    //         image: DecorationImage(
+                    //           image: NetworkImage(currentProfile),
+                    //           fit: BoxFit.cover,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        image != null
+                            ?
+                            // CircularProgressIndicator(
+                            //     color: themeBloc.contrast,
+                            //     strokeWidth: 5.0,
+                            //   )
+                            Container(
+                                height: 95,
+                                width: 95,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.blue,
+                                  border:
+                                      Border.all(color: Colors.red, width: 2),
+                                  image: DecorationImage(
+                                    image: FileImage(image!),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              )
+                            : Container(
+                                height: 95,
+                                width: 95,
+                                decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Colors.red, width: 2),
+                                  shape: BoxShape.circle,
+                                  color: Colors.blue,
+                                  image: DecorationImage(
+                                    image: NetworkImage(currentProfile),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
                       ],
                     ),
-                    Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Toggle(
-                        value: themeBloc.isDarkMode,
-                        
-                        onToggle: (val) {
-                          // if (value) {
-                          //   // color.themeModeSwitch(colorMode: ColorMode.dark);
-                          // } else {
-                          //   // color.themeModeSwitch(colorMode: ColorMode.light);
-                          themeBloc.toggleTheTheme();
-                        },
-                      ),
-                    )
                   ],
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 32.0),
-                    child: ElevatedButton(
+                SizedBox(
+                  height: 30,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(
+                          'Change Your Bio',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color: themeBloc.style),
+                        ),
+                      ),
+                      Spacer(),
+                      IconButton(
+                        onPressed: () async {
+                          setState(() {
+                            loading = true;
+                          });
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BlocProvider.value(
+                                value: themeBloc,
+                                child: BlocProvider.value(
+                                  value: muralBloc,
+                                  child: CreateBioScreen(
+                                    'normal',
+                                    editProfile: getUrl,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+
+                          setState(() {
+                            loading = false;
+                          });
+
+                          print('################ ');
+                          localWrite('bio_url', bioUrl);
+                        },
+                        icon: Icon(
+                          Icons.edit,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 173,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.red, width: 2),
+                    color: themeBloc.materialStyle.shade800,
+                    image: DecorationImage(
+                      image: NetworkImage(bioUrl),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(32.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Toggle Color Mode',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: themeBloc.contrast),
+                      ),
+                      Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Toggle(
+                          value: themeBloc.isDarkMode,
+                          onToggle: (val) {
+                            // if (value) {
+                            //   // color.themeModeSwitch(colorMode: ColorMode.dark);
+                            // } else {
+                            //   // color.themeModeSwitch(colorMode: ColorMode.light);
+                            themeBloc.toggleTheTheme();
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Spacer(),
+                    ElevatedButton(
                       onPressed: () async {
                         await _apiHandling.signOut();
                         localDelete();
@@ -370,10 +374,11 @@ class _EditProfileState extends State<EditProfile> {
                         onPrimary: Colors.white,
                       ),
                     ),
-                  ),
-                ],
-              )
-            ],
+                    Spacer(),
+                  ],
+                )
+              ],
+            ),
           ),
         );
       },
