@@ -69,7 +69,6 @@ class _ProfileState extends State<Profile> {
     //List<Mural> murals=[];
     return BlocBuilder<ThemeBloc, ThemeData>(
       builder: (context, state) {
-
         return Scaffold(
           backgroundColor: themeBloc.main,
           body: loading
@@ -108,13 +107,13 @@ class _ProfileState extends State<Profile> {
                                 padding: const EdgeInsets.all(24.0),
                                 child: IconButton(
                                   onPressed: () {
-                                    Navigator.of(context).pushReplacement(
+                                    Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) =>
                                             BlocProvider<ThemeBloc>.value(
                                           value: themeBloc,
                                           child: BlocProvider<MuralBloc>.value(
-                                            value:muralBloc,
+                                            value: muralBloc,
                                             child: EditProfile(
                                               key: widget.key,
                                             ),
@@ -285,8 +284,8 @@ class _ProfileState extends State<Profile> {
                                             color: themeBloc.style,
                                             borderRadius:
                                                 BorderRadius.circular(10),
-                                            border:
-                                                Border.all(color: themeBloc.contrast),
+                                            border: Border.all(
+                                                color: themeBloc.contrast),
                                             image: DecorationImage(
                                               image: NetworkImage(
                                                   muralsFeed[index].imageUrl),

@@ -35,7 +35,6 @@ class _FeedPageState extends State<FeedPage> {
         // if(state is NoReqState)
         //{
         return Scaffold(
-          
           body: GestureDetector(
             onVerticalDragUpdate: (details) {
               print('heloooo');
@@ -101,7 +100,7 @@ class _FeedPageState extends State<FeedPage> {
                       height: cheight,
                       width: cwidth,
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
+                        color: Colors.black.withOpacity(0.1),
                       ),
                     ),
                     Container(
@@ -202,8 +201,6 @@ class _FeedPageState extends State<FeedPage> {
                                 '${widget.mural.commentCount}',
                                 style: TextStyle(color: Colors.white),
                               ),
-                              
-                             
                               SizedBox(height: 20),
                             ],
                           ),
