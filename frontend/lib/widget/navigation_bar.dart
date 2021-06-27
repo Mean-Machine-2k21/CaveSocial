@@ -102,6 +102,7 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
             children: [
               for (int i = 0; i < _items.length; i++)
                 NavigationBarItem(
+                  
                   label: _items[i]['name'] as String,
                   child: _items[i]['child'] as Widget,
                   onSelect: () {
