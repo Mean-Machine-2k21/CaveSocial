@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
+import 'package:frontend/bloc/theme_bloc.dart';
 import 'package:frontend/flipbook/create_flipbook_frame.dart';
 import 'package:frontend/flipbook/gif_view.dart';
 import 'package:frontend/services/add_gif_fuction.dart';
@@ -37,8 +40,11 @@ class _CreateFlipbookState extends State<CreateFlipbook> {
   var time = 300;
   @override
   Widget build(BuildContext context) {
+      var themeBloc = BlocProvider.of<ThemeBloc>(context);
+  //  var muralBloc = BlocProvider.of<MuralBloc>(context);
+
     return Scaffold(
-      backgroundColor: Color(0xff1E1E2A),
+      backgroundColor: themeBloc.main,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -59,7 +65,7 @@ class _CreateFlipbookState extends State<CreateFlipbook> {
                   });
                 }
               },
-              child: Text('Add frame'),
+              child: Text('Add frame',style: TextStyle(color:themeBloc.contrast)),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red),
               ),
@@ -68,7 +74,7 @@ class _CreateFlipbookState extends State<CreateFlipbook> {
               onPressed: () async {
                 if (frame == 0) {
                   final snackBar = SnackBar(
-                    content: Text('First create something to view !!'),
+                    content: Text('First create something to view !!',style: TextStyle(color:themeBloc.contrast)),
                     duration: Duration(seconds: 3),
                     backgroundColor: Colors.red,
                   );
@@ -82,7 +88,7 @@ class _CreateFlipbookState extends State<CreateFlipbook> {
                   );
                 }
               },
-              child: Text('See GIF'),
+              child: Text('See GIF',style: TextStyle(color:themeBloc.contrast)),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red),
               ),
@@ -103,7 +109,7 @@ class _CreateFlipbookState extends State<CreateFlipbook> {
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 } else {
                   final snackBar = SnackBar(
-                    content: Text('No Frames to undo'),
+                    content: Text('No Frames to undo',style: TextStyle(color:themeBloc.contrast)),
                     duration: Duration(seconds: 3),
                     backgroundColor: Colors.red,
                   );
@@ -111,7 +117,7 @@ class _CreateFlipbookState extends State<CreateFlipbook> {
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 }
               },
-              child: Text('Undo Frame'),
+              child: Text('Undo Frame',style: TextStyle(color:themeBloc.contrast)),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red),
               ),
@@ -124,14 +130,14 @@ class _CreateFlipbookState extends State<CreateFlipbook> {
                 });
 
                 final snackBar = SnackBar(
-                  content: Text('Cleared FlipBook Done !!'),
+                  content: Text('Cleared FlipBook Done !!',style: TextStyle(color:themeBloc.contrast)),
                   duration: Duration(seconds: 3),
                   backgroundColor: Colors.red,
                 );
 
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
-              child: Text('Clear Flipbook'),
+              child: Text('Clear Flipbook',style: TextStyle(color:themeBloc.contrast)),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red),
               ),
@@ -172,7 +178,7 @@ class _CreateFlipbookState extends State<CreateFlipbook> {
                   Navigator.pop(context);
                 });
               },
-              child: Text('Post FlipBook!!'),
+              child: Text('Post FlipBook!!',style: TextStyle(color:themeBloc.contrast)),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red),
               ),

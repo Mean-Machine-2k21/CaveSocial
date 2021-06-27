@@ -122,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(color: themeBloc.contrast),
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                          labelText: 'Email',
+                          labelText: 'Username',
                           labelStyle: TextStyle(
                             color: themeBloc.contrast,
                           ),

@@ -334,6 +334,21 @@ class _EditProfileState extends State<EditProfile> {
                         )
                       ],
                     ),
+                    Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Toggle(
+                        value: themeBloc.isDarkMode,
+                        
+                        onToggle: (val) {
+                          // if (value) {
+                          //   // color.themeModeSwitch(colorMode: ColorMode.dark);
+                          // } else {
+                          //   // color.themeModeSwitch(colorMode: ColorMode.light);
+                          themeBloc.toggleTheTheme();
+                        },
+                      ),
+                    )
                   ],
                 ),
               ),

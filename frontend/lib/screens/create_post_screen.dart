@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/bloc/theme_bloc.dart';
 import 'package:frontend/screens/create_mural_screen.dart';
 import '../flipbook/flipbook_create.dart';
 
@@ -12,7 +14,10 @@ class CreatePostScreen extends StatefulWidget {
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
   @override
+
   Widget build(BuildContext context) {
+  var themeBloc = BlocProvider.of<ThemeBloc>(context);
+    //var themeBloc = BlocProvider.of<MuralBloc>(context);
     return Scaffold(
       backgroundColor: Color(0xff1E1E2A),
       body: Center(
@@ -24,7 +29,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
               barrierColor: Colors.black.withOpacity(0.2),
 
-              backgroundColor: Color(0xff1E1E2A),
+              backgroundColor: themeBloc.main,
 
               elevation: 100,
 

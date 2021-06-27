@@ -56,21 +56,25 @@ class _NavigatorPageState extends State<NavigatorPage> {
 
   @override
   Widget build(BuildContext context) {
+   // theme
     return Scaffold(
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: AppNavigationBar(
-        onChange: (val) {
-          if (val == 1) {
-            onCreate(context);
-          } else {
-            setState(() {
-              _selectedIndex = val;
-            });
-          }
-        },
-        defaultIndex: 0,
+      bottomNavigationBar: BlocProvider<ThemeBloc>.value(
+        value: BlocProvider.of<ThemeBloc>(context),
+        child: AppNavigationBar(
+          onChange: (val) {
+            if (val == 1) {
+              onCreate(context);
+            } else {
+              setState(() {
+                _selectedIndex = val;
+              });
+            }
+          },
+          defaultIndex: 0,
+        ),
       ),
     );
   }

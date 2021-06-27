@@ -8,6 +8,7 @@ import 'package:frontend/bloc/theme_bloc.dart';
 import 'package:frontend/global.dart';
 import 'package:frontend/repository/mural_repository.dart';
 import 'package:frontend/screens/feed_comment.dart';
+import 'package:frontend/screens/liked_by_screen.dart';
 
 import 'package:frontend/screens/profile.dart';
 import 'package:frontend/services/api_handling.dart';
@@ -152,42 +153,57 @@ class _FeedPageState extends State<FeedPage> {
                                 // onLongPress: (){
 
                                 // },
-                                child: IconButton(
-                                  color: Colors.white,
-                                  onPressed: () {
-                                    if (!widget.mural.isLiked) {
-                                      setState(() {
-                                        widget.mural.isLiked =
-                                            !widget.mural.isLiked;
-                                        widget.mural.likedCount++;
-                                      });
-
-                                      // muralBloc.add(
-                                      //     LikeMural(muralid: widget.mural.id));
-                                      muralRepository.likeMural(
-                                          muralId: widget.mural.id);
-                                    } else {
-                                      setState(() {
-                                        widget.mural.isLiked =
-                                            !widget.mural.isLiked;
-                                        widget.mural.likedCount--;
-                                      });
-
-                                      // muralBloc.add(UnLikeMural(
-                                      //     muralid: widget.mural.id));
-                                      muralRepository.unLikeMural(
-                                          muralId: widget.mural.id);
-                                    }
-                                  },
-                                  icon: widget.mural.isLiked
-                                      ? Icon(
-                                          MaterialIcons.favorite,
-                                          color: Colors.red,
-                                        )
-                                      : Icon(
-                                          MaterialIcons.favorite_border,
-                                          color: Colors.red,
+                                child: InkWell(
+                                  onLongPress: () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) => BlocProvider.value(
+                                        value: themeBloc,
+                                        child: BlocProvider.value(
+                                          value: muralBloc,
+                                          child: LikedByScreen(items: ['ssf']),
                                         ),
+                                        //FeedComment(parentMuralid: widget.mural.id,),
+                                      ),
+                                    ));
+                                  },
+                                  child: IconButton(
+                                    color: Colors.white,
+                                    onPressed: () {
+                                      if (!widget.mural.isLiked) {
+                                        setState(() {
+                                          widget.mural.isLiked =
+                                              !widget.mural.isLiked;
+                                          widget.mural.likedCount++;
+                                        });
+
+                                        // muralBloc.add(
+                                        //     LikeMural(muralid: widget.mural.id));
+                                        muralRepository.likeMural(
+                                            muralId: widget.mural.id);
+                                      } else {
+                                        setState(() {
+                                          widget.mural.isLiked =
+                                              !widget.mural.isLiked;
+                                          widget.mural.likedCount--;
+                                        });
+
+                                        // muralBloc.add(UnLikeMural(
+                                        //     muralid: widget.mural.id));
+                                        muralRepository.unLikeMural(
+                                            muralId: widget.mural.id);
+                                      }
+                                    },
+                                    icon: widget.mural.isLiked
+                                        ? Icon(
+                                            MaterialIcons.favorite,
+                                            color: Colors.red,
+                                          )
+                                        : Icon(
+                                            MaterialIcons.favorite_border,
+                                            color: Colors.red,
+                                          ),
+                                  ),
                                 ),
                               ),
                               Text(
