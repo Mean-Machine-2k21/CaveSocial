@@ -8,7 +8,7 @@ import 'package:frontend/bloc/theme_bloc.dart';
 import 'package:frontend/global.dart';
 import 'package:frontend/repository/mural_repository.dart';
 import 'package:frontend/screens/feed_comment.dart';
-import 'package:frontend/screens/other_profile.dart';
+
 import 'package:frontend/screens/profile.dart';
 import 'package:frontend/services/api_handling.dart';
 import 'package:frontend/widget/showflip_book.dart';
