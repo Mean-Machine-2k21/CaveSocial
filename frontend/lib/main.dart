@@ -49,11 +49,12 @@ class MyHomePage extends StatelessWidget {
         return MaterialApp(
           // theme: state,
           debugShowCheckedModeBanner: false,
-          home:LoginScreen(),
+          home: LoginScreen(),
+          routes: {
+            LoginScreen.routeName: (ctx) => LoginScreen(),
+          },
         );
       },
     );
   }
 }
-
-
