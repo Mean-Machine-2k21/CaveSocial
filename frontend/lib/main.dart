@@ -49,93 +49,11 @@ class MyHomePage extends StatelessWidget {
         return MaterialApp(
           // theme: state,
           debugShowCheckedModeBanner: false,
-          home:
-              //LoginScreen(),
-              Scaffold(
-            backgroundColor:
-                // themeBloc.currentThemeEnum == ThemeEvent.dark
-                //     ? Colors.black
-                //     : Colors.white,
-                themeBloc.main,
-            appBar: AppBar(
-              title: Text(
-                "hi",
-                style: TextStyle(
-                  color: color.contrast,
-                  fontSize: 25,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    themeBloc.toggleTheTheme();
-                  },
-                  icon: Icon(
-                    themeBloc.currentTheme == ThemeEvent.dark
-                        ? Icons.light_mode_outlined
-                        : Icons.dark_mode_outlined,
-                    color: themeBloc.currentTheme == ThemeEvent.dark
-                        ? Colors.white
-                        : Colors.black,
-                  ),
-                ),
-              ],
-            ),
-            body: Column(
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (ctx) => BlocProvider.value(
-                            value: themeBloc,
-                            child: LoginScreen(),
-                          ),
-                        ));
-                  },
-                  child: Text('Kick Me'),
-                )
-              ],
-            ),
-          ),
+          home:LoginScreen(),
         );
       },
     );
   }
 }
 
-class MuralHome extends StatefulWidget {
-  MuralHome({Key? key, required this.title}) : super(key: key);
-  final String title;
-  @override
-  _MuralHomeState createState() => _MuralHomeState();
-}
 
-class _MuralHomeState extends State<MuralHome> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xff1E1E2A),
-      body: Center(
-        child: 
-        ElevatedButton(
-          onPressed: () async {
-            await Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => CreatePostScreen(
-                        title: 'Flipbook',
-                      )),
-            );
-          },
-          child: Text('Create Post'),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.red),
-          ),
-        ),
-      ),
-    );
-  }
-}

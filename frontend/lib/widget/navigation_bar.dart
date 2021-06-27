@@ -38,7 +38,7 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
         ),
       },
       {
-        'name': 'Message',
+        'name': 'Profile',
         'child': Icon(
           Icons.person,
           color: _selectedIndex == 2 ? color.style : color.contrast,
