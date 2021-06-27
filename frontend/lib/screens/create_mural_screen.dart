@@ -108,6 +108,7 @@ class _CreateMuralScreenState extends State<CreateMuralScreen> {
                           (BuildContext context, StateSetter setState) {
                         return new Container(
                             child: new Slider(
+                          
                           value: _controller.thickness,
                           onChanged: (double value) => setState(() {
                             _controller.thickness = value;
