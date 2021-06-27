@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
 import 'package:frontend/screens/create_mural_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -40,6 +41,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var themeBloc = BlocProvider.of<ThemeBloc>(context);
+    var muralBloc = BlocProvider.of<MuralBloc>(context);
 
     print('aaaaaaaaaaaaaaaaaaaaaaa');
     print(themeBloc.darkMode);
@@ -49,7 +51,13 @@ class MyHomePage extends StatelessWidget {
         return MaterialApp(
           // theme: state,
           debugShowCheckedModeBanner: false,
-          home: LoginScreen(),
+          home: BlocProvider.value(
+            value: themeBloc,
+            child: BlocProvider.value(
+              value: muralBloc,
+              child: LoginScreen(),
+            ),
+          ),
           routes: {
             LoginScreen.routeName: (ctx) => LoginScreen(),
           },

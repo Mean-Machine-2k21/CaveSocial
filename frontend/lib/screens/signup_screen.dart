@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
 import 'package:frontend/screens/feed.dart';
 import 'package:frontend/screens/navigator_screen.dart';
 import 'package:frontend/widget/app_button.dart';
@@ -53,6 +54,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //var themeBloc = BlocProvider.of<ThemeBloc>(context);
+    var muralBloc = BlocProvider.of<MuralBloc>(context);
     //   if(themeBloc.darkMode)setState(() {});
 
     // Future<int> attemptSignUp(String username, String password) async {
@@ -284,11 +287,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                NavigatorPage () // Todo
-                                                // HomePage.fromBase64(jwt[
-                                                //     'token'])
-                                                    )
-                                                    ); //To change path here
+                                                NavigatorPage() // Todo
+                                            // HomePage.fromBase64(jwt[
+                                            //     'token'])
+                                            )); //To change path here
                                   } else {
                                     if (jwt['res'] == '400') {
                                       displayDialog(

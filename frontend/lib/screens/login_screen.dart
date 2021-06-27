@@ -78,6 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     double height = MediaQuery.of(context).size.height;
     var themeBloc = BlocProvider.of<ThemeBloc>(context);
+    var muralBloc = BlocProvider.of<MuralBloc>(context);
     //  themeBloc.add(ThemeEvent.change);
     print('heyyyyyyyyy');
     print(themeBloc.darkMode);
@@ -251,7 +252,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               MaterialPageRoute(
                                 builder: (ctx) => BlocProvider.value(
                                   value: themeBloc,
-                                  child: SignUpScreen(),
+                                  child: BlocProvider<MuralBloc>.value(
+                                    value: muralBloc,
+                                    child: SignUpScreen(),
+                                  ),
                                 ),
                               ));
                         },

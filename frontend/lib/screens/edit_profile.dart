@@ -130,6 +130,14 @@ class _EditProfileState extends State<EditProfile> {
                       Spacer(),
                       TextButton(
                         onPressed: () async {
+                          await storage.write(
+                            key: "avatar_url",
+                            value: avatarUrl,
+                          );
+                          await storage.write(
+                            key: "bio_url",
+                            value: bioUrl,
+                          );
                           await apiHandling.editProfile(
                             avatarUrl: avatarUrl,
                             bioUrl: bioUrl,
