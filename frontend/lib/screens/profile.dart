@@ -91,6 +91,9 @@ class _ProfileState extends State<Profile> {
                                 height: 173,
                                 decoration: BoxDecoration(
                                   color: Colors.red,
+                                  border: Border(
+                                      bottom: BorderSide(
+                                          color: Colors.red, width: 5)),
                                   image: DecorationImage(
                                       image: NetworkImage(user!.bioUrl),
                                       fit: BoxFit.cover),
@@ -113,7 +116,7 @@ class _ProfileState extends State<Profile> {
                                   },
                                   icon: Icon(
                                     Icons.menu,
-                                    color: Colors.white,
+                                    color: Colors.red,
                                     size: 36.0,
                                   ),
                                 ),
@@ -128,6 +131,8 @@ class _ProfileState extends State<Profile> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: Colors.blue,
+                                  border:
+                                      Border.all(color: Colors.red, width: 3),
                                   image: DecorationImage(
                                     image: NetworkImage(user!.avatarUrl),
                                     fit: BoxFit.cover,
@@ -139,23 +144,11 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(2.0),
                         child: Text(
-                          user!.username,
+                          '@' + user!.username,
                           style: TextStyle(
-                            fontSize: 24,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          'My Murals',
-                          style: TextStyle(
-                            fontSize: 32,
+                            fontSize: 20,
                           ),
                         ),
                       ),

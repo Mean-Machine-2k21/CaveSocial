@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:frontend/bloc/mural_bloc/mural_state.dart';
+import 'package:frontend/screens/create_bio_screen.dart';
 import 'package:frontend/screens/create_mural_screen.dart';
 import 'package:frontend/screens/profile.dart';
 import 'package:frontend/widget/toggle_button.dart';
@@ -160,17 +161,19 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 Spacer(),
                 IconButton(
-                  onPressed: () {
-                    uploadImage().then(
-                      (value) => ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Profile Photo Updated'),
+                    onPressed: () {
+                      uploadImage().then(
+                        (value) => ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Profile Photo Updated'),
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  icon: Icon(Icons.edit,color: Colors.red,)
-                ),
+                      );
+                    },
+                    icon: Icon(
+                      Icons.edit,
+                      color: Colors.red,
+                    )),
               ],
             ),
           ),
@@ -259,7 +262,7 @@ class _EditProfileState extends State<EditProfile> {
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CreateMuralScreen(
+                        builder: (context) => CreateBioScreen(
                           'normal',
                           editProfile: getUrl,
                         ),
@@ -312,7 +315,7 @@ class _EditProfileState extends State<EditProfile> {
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
-                      color:   color.contrast),
+                      color: color.contrast),
                 ),
                 Spacer(),
                 Padding(
