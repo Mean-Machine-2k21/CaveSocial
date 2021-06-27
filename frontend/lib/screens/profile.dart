@@ -69,7 +69,9 @@ class _ProfileState extends State<Profile> {
     //List<Mural> murals=[];
     return BlocBuilder<ThemeBloc, ThemeData>(
       builder: (context, state) {
+
         return Scaffold(
+          backgroundColor: themeBloc.main,
           body: loading
               ? Center(
                   child: CircularProgressIndicator(
@@ -108,8 +110,15 @@ class _ProfileState extends State<Profile> {
                                   onPressed: () {
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
-                                        builder: (context) => EditProfile(
-                                          key: widget.key,
+                                        builder: (context) =>
+                                            BlocProvider<ThemeBloc>.value(
+                                          value: themeBloc,
+                                          child: BlocProvider<MuralBloc>.value(
+                                            value:muralBloc,
+                                            child: EditProfile(
+                                              key: widget.key,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     );
@@ -190,10 +199,10 @@ class _ProfileState extends State<Profile> {
                                           'Lenggggghhhh---> ${state.murals.length}');
                                       print("____________________" +
                                           index.toString());
-                                      if (index == muralsFeed.length - 2) {
-                                        muralBloc.add(FetchProfileMurals(
-                                            username: username, page: cnt++));
-                                      }
+                                      // if (index == muralsFeed.length - 2) {
+                                      //   muralBloc.add(FetchProfileMurals(
+                                      //       username: username, page: cnt++));
+                                      // }
 
                                       return InkWell(
                                         onTap: () {
@@ -216,11 +225,11 @@ class _ProfileState extends State<Profile> {
                                           width: 107,
                                           height: 332,
                                           decoration: BoxDecoration(
-                                            color: themeBloc.contrast,
+                                            color: themeBloc.style,
                                             borderRadius:
                                                 BorderRadius.circular(10),
-                                            border:
-                                                Border.all(color: Colors.black),
+                                            border: Border.all(
+                                                color: themeBloc.contrast),
                                             image: DecorationImage(
                                               image: NetworkImage(
                                                   muralsFeed[index].imageUrl),
@@ -272,11 +281,11 @@ class _ProfileState extends State<Profile> {
                                           width: 107,
                                           height: 332,
                                           decoration: BoxDecoration(
-                                            color: themeBloc.contrast,
+                                            color: themeBloc.style,
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                             border:
-                                                Border.all(color: Colors.black),
+                                                Border.all(color: themeBloc.contrast),
                                             image: DecorationImage(
                                               image: NetworkImage(
                                                   muralsFeed[index].imageUrl),
