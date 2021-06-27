@@ -61,6 +61,22 @@ class ApiHandling {
     }
   }
 
+  Future<void> signOut() async {
+    try {
+      final token = await localRead('jwt');
+
+      final response = await Dio(options).post(
+        url + '/api/logout',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json'
+          },
+        ),
+      );
+    } catch (e) {}
+  }
+
   Future<void> createMural(String content, Flipbook? flipbook) async {
     print('Content Url ---> ${content}');
     if (flipbook != null) {

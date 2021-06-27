@@ -20,6 +20,7 @@ import 'dart:convert' show json, base64, ascii;
 //import '../model/app_route.dart';
 
 class LoginScreen extends StatefulWidget {
+  static const routeName = '/loginScreen';
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -59,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     MuralRepository _muralRepository = MuralRepository();
-    
+
     //   if(themeBloc.darkMode)setState(() {});
 
     Future<Map> attemptLogIn(String username, String password) async {
