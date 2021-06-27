@@ -116,7 +116,7 @@ class _ProfileState extends State<Profile> {
                                       padding: const EdgeInsets.all(24.0),
                                       child: IconButton(
                                         onPressed: () {
-                                          Navigator.of(context).pushReplacement(
+                                          Navigator.of(context).push(
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   BlocProvider<ThemeBloc>.value(

@@ -101,7 +101,7 @@ class _FeedPageState extends State<FeedPage> {
                       height: cheight,
                       width: cwidth,
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
+                        color: Colors.black.withOpacity(0.1),
                       ),
                     ),
                     Container(

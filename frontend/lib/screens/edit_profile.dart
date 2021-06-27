@@ -129,18 +129,8 @@ class _EditProfileState extends State<EditProfile> {
                           avatarUrl: avatarUrl,
                           bioUrl: bioUrl,
                         );
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => BlocProvider.value(
-                              value: themeBloc,
-                              child: BlocProvider.value(
-                                value: muralBloc,
-                                child: Profile(
-                                  key: widget.key,
-                                ),
-                              ),
-                            ),
-                          ),
+                        Navigator.of(context).pop(
+                         
                         );
                       },
                       child: loading
@@ -217,27 +207,29 @@ class _EditProfileState extends State<EditProfile> {
                   //     ),
                   //   ],
                   // ),
+
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       image != null
-                          ? CircularProgressIndicator(
-                              color: themeBloc.contrast,
-                              strokeWidth: 5.0,
-                            )
-                          // Container(
-                          //     height: 95,
-                          //     width: 95,
-                          //     decoration: BoxDecoration(
-                          //       shape: BoxShape.circle,
-                          //       color: Colors.blue,
-                          //       border: Border.all(color: Colors.red, width: 2),
-                          //       image: DecorationImage(
-                          //         image: FileImage(image!),
-                          //         fit: BoxFit.cover,
-                          //       ),
-                          //     ),
+                          ?
+                          // CircularProgressIndicator(
+                          //     color: themeBloc.contrast,
+                          //     strokeWidth: 5.0,
                           //   )
+                          Container(
+                              height: 95,
+                              width: 95,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.blue,
+                                border: Border.all(color: Colors.red, width: 2),
+                                image: DecorationImage(
+                                  image: FileImage(image!),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )
                           : Container(
                               height: 95,
                               width: 95,
