@@ -35,6 +35,7 @@ class _FeedPageState extends State<FeedPage> {
         // if(state is NoReqState)
         //{
         return Scaffold(
+          
           body: GestureDetector(
             onVerticalDragUpdate: (details) {
               print('heloooo');
