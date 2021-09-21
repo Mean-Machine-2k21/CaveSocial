@@ -18,7 +18,7 @@ Using our app, users can convey their thoughts with minimal effort and communica
 
 ## Screenshots of our App
 
-| ![](https://devfolio-prod.s3.ap-south-1.amazonaws.com/hackathons/bd9d80e9240040878e0f02050f35553d/projects/948794ad00bc44fa88b15a4c5c4516bb/e818718b-050e-400c-ab2d-3578c8041a8c.png | width=100) | ![](https://devfolio-prod.s3.ap-south-1.amazonaws.com/hackathons/bd9d80e9240040878e0f02050f35553d/projects/948794ad00bc44fa88b15a4c5c4516bb/60efe22b-337d-4401-a088-ace1a3a86ca9.png) | 
+| ![](https://devfolio-prod.s3.ap-south-1.amazonaws.com/hackathons/bd9d80e9240040878e0f02050f35553d/projects/948794ad00bc44fa88b15a4c5c4516bb/e818718b-050e-400c-ab2d-3578c8041a8c.png )| ![](https://devfolio-prod.s3.ap-south-1.amazonaws.com/hackathons/bd9d80e9240040878e0f02050f35553d/projects/948794ad00bc44fa88b15a4c5c4516bb/60efe22b-337d-4401-a088-ace1a3a86ca9.png) | 
 |:--------------------------|:--------------------------|:--------------------------|
 | ![](https://devfolio-prod.s3.ap-south-1.amazonaws.com/hackathons/bd9d80e9240040878e0f02050f35553d/projects/948794ad00bc44fa88b15a4c5c4516bb/e33e1d5b-db98-4eff-8d20-325d8ec69e17.png) | ![](https://devfolio-prod.s3.ap-south-1.amazonaws.com/hackathons/bd9d80e9240040878e0f02050f35553d/projects/948794ad00bc44fa88b15a4c5c4516bb/a6997d0e-7792-44de-bab8-d4dbf242426a.png) | 
 
