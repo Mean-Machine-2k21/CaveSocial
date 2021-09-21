@@ -1,5 +1,5 @@
-# CaveSocial
-Let's Get Primitive!
+# CaveSocial - Let's Get Primitive!
+
 
 ## Why CaveSocial ?
 Social Media today is a place where everyone's mind is at our disposal, but we still can't make any sense of it.
