@@ -276,59 +276,69 @@ class _ProfileState extends State<Profile> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Container(
-                                  child: GridView.builder(
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      childAspectRatio: 9 / 16,
-                                      crossAxisSpacing: 10,
-                                      mainAxisSpacing: 10,
-                                    ),
-                                    itemCount: muralsFeed.length,
-                                    itemBuilder: (context, index) {
-                                      return InkWell(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  BlocProvider<ThemeBloc>.value(
-                                                value: themeBloc,
-                                                child: BlocProvider<
-                                                    MuralBloc>.value(
-                                                  value: muralBloc,
-                                                  child: FeedPage(
-                                                    mural: muralsFeed[index],
+                                  child: muralsFeed.length == 0
+                                      ? Text('Nothing to Show!',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.red,
+                                          ))
+                                      : GridView.builder(
+                                          gridDelegate:
+                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2,
+                                            childAspectRatio: 9 / 16,
+                                            crossAxisSpacing: 10,
+                                            mainAxisSpacing: 10,
+                                          ),
+                                          itemCount: muralsFeed.length,
+                                          itemBuilder: (context, index) {
+                                            return InkWell(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        BlocProvider<
+                                                            ThemeBloc>.value(
+                                                      value: themeBloc,
+                                                      child: BlocProvider<
+                                                          MuralBloc>.value(
+                                                        value: muralBloc,
+                                                        child: FeedPage(
+                                                          mural:
+                                                              muralsFeed[index],
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ),
+                                                );
+                                              },
+                                              child: Container(
+                                                width: 107,
+                                                height: 332,
+                                                decoration: BoxDecoration(
+                                                  color: themeBloc.style,
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  border: Border.all(
+                                                      color:
+                                                          themeBloc.contrast),
+                                                  // image: DecorationImage(
+                                                  //   image: NetworkImage(
+                                                  //       muralsFeed[index].imageUrl),
+                                                  //   fit: BoxFit.cover,
+                                                  // ),
+                                                ),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: ShimmerNetworkImage(
+                                                      muralsFeed[index]
+                                                          .imageUrl),
                                                 ),
                                               ),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          width: 107,
-                                          height: 332,
-                                          decoration: BoxDecoration(
-                                            color: themeBloc.style,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            border: Border.all(
-                                                color: themeBloc.contrast),
-                                            // image: DecorationImage(
-                                            //   image: NetworkImage(
-                                            //       muralsFeed[index].imageUrl),
-                                            //   fit: BoxFit.cover,
-                                            // ),
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            child: ShimmerNetworkImage(
-                                                muralsFeed[index].imageUrl),
-                                          ),
+                                            );
+                                          },
                                         ),
-                                      );
-                                    },
-                                  ),
                                 ),
                               ),
                             );

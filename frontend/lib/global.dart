@@ -25,14 +25,8 @@ void localInsertSignUp(Map jwt) {
   storage.write(key: "jwt", value: jwt['token']);
   storage.write(key: "userid", value: jwt['user']['_id']);
   storage.write(key: "username", value: jwt['user']['username']);
-  storage.write(
-      key: "avatar_url",
-      value:
-          'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png');
-  storage.write(
-      key: "bio_url",
-      value:
-          'https://designshack.net/wp-content/uploads/background-textures.png');
+  storage.write(key: "avatar_url", value: jwt['user']['avatar_url']);
+  storage.write(key: "bio_url", value: jwt['user']['bio_url']);
 }
 
 void localDelete() async {

@@ -237,8 +237,8 @@ class ApiHandling {
   }
 
   Future<List<Mural>> fetchAllMurals(int pageNo) async {
-    print(
-        'PageNo gggggggggggggggggggggggg--------------------------> ${pageNo}');
+    print('Inside Fetch Function');
+    print('PageNo Hellllll--------------------------> ${pageNo}');
 
     List<Mural> murals = [];
 
@@ -255,6 +255,10 @@ class ApiHandling {
       ////print(json.decode(response.data));
 
       //final extractedData = json.decode(response.data) as Map<String, dynamic>;
+      print('------------------>>>>>>>>>>>>>>>>>>>>>');
+      print(response);
+      print(json.decode(response.data).runtimeType);
+      print('Helllllllllllllllllooooo');
       final vari = Map<String, dynamic>.from(response.data);
 
       final likedList = vari.values.elementAt(0);
@@ -358,7 +362,7 @@ class ApiHandling {
             'pagenumber': pageNo,
           });
 
-      print('*******************->  ${response}');
+      print('*******->  ${response}');
       // print(json.decode(response.data));
 
       Map extractedData = response.data;
@@ -376,15 +380,18 @@ class ApiHandling {
 
       print('HHHHHHHHHHHHHHHHHH->  ${vari.runtimeType}');
 
-      vari.values.forEach((element) {
-        print(element[0]);
-        print('Hiiii');
-      });
+      // vari.values.forEach((element) {
+      //   print(element[0]);
+      //   print('Hiiii');
+      // });
+
+      print("Lwwwwwwwwwwww-> ${vari.values.length}");
 
       final userMap2 = vari.values.elementAt(1);
       final muralMap = vari.values.elementAt(2);
       print(userMap2.values.elementAt(1));
       print('UUUUUUUUUUUUUUUUUU-> ${muralMap}');
+      print('User Map Lengthhhhhhhh-> ${userMap2.length}');
 
       userMap2.values.forEach((element) {
         print('Value--> ${element}');

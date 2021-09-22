@@ -47,6 +47,8 @@ class _EditProfileState extends State<EditProfile> {
     });
     currentProfile = await localRead('avatar_url');
     currentBio = await localRead('bio_url');
+    print('bioooo0000000000000000000000000000000000000000 $currentBio');
+    bioUrl = currentBio;
 
     setState(() {
       loading = false;
