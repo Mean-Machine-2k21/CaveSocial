@@ -41,6 +41,8 @@ dependencies:
   flutter_icons: ^1.1.0
   swipe_up: ^1.0.0
   dio: ^4.0.0
+  shimmer: ^2.0.0
+  fancy_shimmer_image: ^2.0.0+1
   logger: ^1.1.0
 
 dev_dependencies:

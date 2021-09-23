@@ -78,6 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     double height = MediaQuery.of(context).size.height;
     var themeBloc = BlocProvider.of<ThemeBloc>(context);
+    var muralBloc = BlocProvider.of<MuralBloc>(context);
     //  themeBloc.add(ThemeEvent.change);
     print('heyyyyyyyyy');
     print(themeBloc.darkMode);
@@ -109,14 +110,31 @@ class _LoginScreenState extends State<LoginScreen> {
                       Row(
                         children: [
                           Text(
-                            'Log into your account',
-                            style: style.heading
-                                .copyWith(color: themeBloc.contrast),
+                            'Lets get Primitive !',
+                            style: style.heading.copyWith(
+                              color: Colors.red,
+                              fontSize: 26,
+                              fontWeight: FontWeight.w900,
+                            ),
                           ),
                         ],
                       ),
                       SizedBox(
-                        height: height * 0.07,
+                        height: height * 0.02,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'Welcome To CaveSocial',
+                            style: style.heading.copyWith(
+                                color: themeBloc.contrast,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: height * 0.03,
                       ),
                       TextFormField(
                         style: TextStyle(color: themeBloc.contrast),
@@ -127,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: themeBloc.contrast,
                           ),
                           prefixIcon: Icon(
-                            Icons.mail,
+                            Icons.person,
                             color: themeBloc.contrast.withOpacity(0.8),
                             size: 25,
                           ),
@@ -234,7 +252,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               MaterialPageRoute(
                                 builder: (ctx) => BlocProvider.value(
                                   value: themeBloc,
-                                  child: SignUpScreen(),
+                                  child: BlocProvider<MuralBloc>.value(
+                                    value: muralBloc,
+                                    child: SignUpScreen(),
+                                  ),
                                 ),
                               ));
                         },

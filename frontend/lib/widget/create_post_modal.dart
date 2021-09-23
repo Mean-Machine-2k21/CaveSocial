@@ -110,19 +110,37 @@ void onCreate(BuildContext context) {
                             TextStyle(fontSize: 14, color: themeBloc.contrast),
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.push(
+                    onPressed: () async {
+                      // await Navigator.push(
+                      //   context,
+                      //   //CreateMuralScreen('comic');
+                      //   MaterialPageRoute(
+                      //     builder: (context) => BlocProvider.value(
+                      //       value: themeBloc,
+                      //       child: BlocProvider.value(
+                      //         value: muralBloc,
+                      //         child: CreateMuralScreen(
+                      //           'comic',
+                      //           editProfile: funct,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // );
+                      // muralRepository.createMural(content: imageUrl);
+                      // Navigator.pop(context);
+                      await Navigator.push(
                         context,
-                        //CreateMuralScreen('comic');
                         MaterialPageRoute(
-                          builder: (context) => BlocProvider.value(
-                            value: themeBloc,
-                            child: BlocProvider.value(
-                                value: muralBloc,
-                                child: CreateMuralScreen('comic')),
+                          builder: (context) => CreateMuralScreen(
+                            'comic',
+                            editProfile: funct,
                           ),
                         ),
                       );
+
+                      muralRepository.createMural(content: imageUrl);
+                      Navigator.pop(context);
                     },
                   ),
                   ElevatedButton(
