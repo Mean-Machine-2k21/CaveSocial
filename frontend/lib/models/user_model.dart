@@ -9,6 +9,15 @@ User userFromJson(String str) => User.fromJson(json.decode(str));
 
 String userToJson(User data) => json.encode(data.toJson());
 
+User returnUser(Map<String, dynamic> json){
+  return User(
+        id: json["_id"],
+        username: json["username"],
+        avatarUrl: json["avatar_url"],
+        bioUrl: json["bio_url"],
+    );
+}
+
 class User {
     User({
         required this.id,
