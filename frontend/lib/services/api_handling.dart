@@ -71,41 +71,6 @@ class ApiHandling {
     }
   }
 
-  Future<List<LikedUsers>> fetchLikesonMural(String muralId) async {
-    List<LikedUsers> likedUsers = [];
-
-    try {
-      final token = await localRead('jwt');
-      print('tokennn -----> ${token}');
-      print('muralId -----> ${muralId}');
-      final response = await Dio(options).get(
-        url + '/api/likesonmural/${muralId}',
-        options: Options(headers: {
-          'Authorization': 'Bearer $token',
-        }),
-      );
-
-      final vari = Map<String, dynamic>.from(response.data);
-
-      final likedList = vari.values.elementAt(0);
-      likedList.forEach((element) {
-        print(element.values.elementAt(0));
-
-        likedUsers.add(
-          LikedUsers(
-            element.values.elementAt(1),
-            element.values.elementAt(2),
-          ),
-        );
-      });
-    } catch (e) {
-      print(e.toString());
-    }
-
-    print('Liked Users Length ---> ${likedUsers.length}');
-    return likedUsers;
-  }
-
   Future<void> signOut() async {
     try {
       final token = await localRead('jwt');
@@ -193,58 +158,6 @@ class ApiHandling {
     }
   }
 
-  Future<List<Mural>> fetchMuralCommentList(String muralId, int pageNo) async {
-    print(
-        'PageNo ggggggggggggggggeeeeeeeeeeeeeee--------------------------> ${pageNo}');
-
-    List<Mural> murals = [];
-
-    try {
-      final token = await localRead('jwt');
-      print('tokennn -----> ${token}');
-      print('muralId -----> ${muralId}');
-      final response =
-          await Dio(options).get(url + '/api/commentsonmural/${muralId}',
-              options: Options(headers: {
-                'Authorization': 'Bearer $token',
-              }),
-              queryParameters: {
-            'pagenumber': pageNo,
-          });
-
-      ////print(json.decode(response.data));
-      //final extractedData = json.decode(response.data) as Map<String, dynamic>;
-      final vari = Map<String, dynamic>.from(response.data);
-
-      print(response.data);
-
-      final muralMap = vari.values.elementAt(0);
-      muralMap.forEach((element) {
-        print('Mural ---> ${element.values.elementAt(0)}');
-
-        murals.add(Mural(
-          id: element.values.elementAt(0),
-          creatorId: element.values.elementAt(1),
-          creatorUsername: element.values.elementAt(2),
-          imageUrl: element.values.elementAt(3),
-          likedCount: element.values.elementAt(4),
-          commentCount: element.values.elementAt(5),
-          isLiked: element.values.elementAt(6),
-        ));
-      });
-
-      // extractedData.forEach((key, value) {
-      //   murals.add(muralFromJson(value));
-      // });
-    } catch (e) {
-      print(e.toString());
-    }
-
-    print('Lengthhhh----> ${murals.length}');
-
-    return murals;
-  }
-
   Future<void> likeMural(String muralId) async {
     print('Likkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk MuralId ---> ${muralId}');
 
@@ -284,15 +197,13 @@ class ApiHandling {
   }
 
   Future<List<Mural>> fetchAllMurals(int pageNo) async {
-    // print(
-    //     'PageNo gggggggggggggggggggggggg--------------------------> ${pageNo}');
     loggerNoStack.i({pageNo});
-    List<Mural> murals2 = [];
+    List<Mural> murals = [];
 
     try {
       final token = await localRead('jwt');
 
-      Response<String> response2 = await Dio(options).get(url + '/api/murals/',
+      Response<String> response = await Dio(options).get(url + '/api/murals/',
           options: Options(headers: {
             'Authorization': 'Bearer $token',
           }),
@@ -300,20 +211,88 @@ class ApiHandling {
             'pagenumber': pageNo,
           });
 
-      final parsed = json.decode(response2.data ?? "") as Map<String, dynamic>;
+      final parsed = json.decode(response.data ?? "") as Map<String, dynamic>;
 
       parsed["murals"].forEach((element) {
         if (element["flipbook"] != null) {
-          murals2.add(returnMuralWithFlipbook(element));
+          murals.add(returnMuralWithFlipbook(element));
         } else {
-          murals2.add(returnMural(element));
+          murals.add(returnMural(element));
         }
       });
     } catch (e) {
       print(e.toString());
     }
 
-    return murals2;
+    return murals;
+  }
+
+  Future<List<LikedUsers>> fetchLikesonMural(String muralId) async {
+    List<LikedUsers> likedUsers = [];
+
+    try {
+      final token = await localRead('jwt');
+      print('tokennn -----> ${token}');
+      print('muralId -----> ${muralId}');
+      Response<String> response = await Dio(options).get(
+        url + '/api/likesonmural/${muralId}',
+        options: Options(headers: {
+          'Authorization': 'Bearer $token',
+        }),
+      );
+
+      final parsed = json.decode(response.data ?? "") as Map<String, dynamic>;
+
+      parsed["likes"].forEach((element) {
+        likedUsers.add(
+          LikedUsers(
+            element["likedByUserId"],
+            element["likedByUserName"],
+          ),
+        );
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+
+    print('Liked Users Length ---> ${likedUsers.length}');
+    return likedUsers;
+  }
+
+  Future<List<Mural>> fetchMuralCommentList(String muralId, int pageNo) async {
+    logger.i('PageNo -> ${pageNo}');
+
+    List<Mural> murals = [];
+
+    try {
+      final token = await localRead('jwt');
+      print('tokennn -----> ${token}');
+      print('muralId -----> ${muralId}');
+      Response<String> response =
+          await Dio(options).get(url + '/api/commentsonmural/${muralId}',
+              options: Options(headers: {
+                'Authorization': 'Bearer $token',
+              }),
+              queryParameters: {
+            'pagenumber': pageNo,
+          });
+
+      final parsed = json.decode(response.data ?? "") as Map<String, dynamic>;
+
+      parsed["comments"].forEach((element) {
+        if (element["flipbook"] != null) {
+          murals.add(returnMuralWithFlipbook(element));
+        } else {
+          murals.add(returnMural(element));
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+
+    print('Lengthhhh----> ${murals.length}');
+
+    return murals;
   }
 
   Future<User?> fetchProfileMurals(
