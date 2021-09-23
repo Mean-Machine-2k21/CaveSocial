@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
+import 'package:frontend/repository/mural_repository.dart';
 import 'package:frontend/screens/feed.dart';
 import 'package:frontend/screens/navigator_screen.dart';
 import 'package:frontend/widget/app_button.dart';
@@ -22,6 +24,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   String _email = '';
+  bool isloading = false;
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
   TextEditingController _emailController = TextEditingController();
@@ -66,6 +69,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     //   print(res.body);
     //   return res.statusCode;
     // }
+
+    MuralRepository _muralRepository = MuralRepository();
 
     Future<Map> attemptSignUp(String username, String password) async {
       var res = await http.post(Uri.parse("$SERVER_IP/api/signup"),
@@ -262,8 +267,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   displayDialog(context, "Invalid Password",
                                       "The password should be at least 7 characters long");
                                 else {
+                                  setState(() {
+                                    isloading = true;
+                                  });
                                   var jwt =
                                       await attemptSignUp(username, password);
+                                  setState(() {
+                                    isloading = false;
+                                  });
                                   // if (res == 201)
                                   //   displayDialog(context, "Success",
                                   //       "The user was created. Log in now.");
@@ -283,12 +294,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                NavigatorPage () // Todo
-                                                // HomePage.fromBase64(jwt[
-                                                //     'token'])
-                                                    )
-                                                    ); //To change path here
+                                          builder: (context) => BlocProvider(
+                                            create: (context) =>
+                                                MuralBloc(_muralRepository),
+                                            child: BlocProvider.value(
+                                              value: themeBloc,
+                                              child: NavigatorPage(),
+                                            ),
+                                          ),
+                                          // builder: (context) =>
+                                          //     NavigatorPage ()
+                                        )); //To change path here
                                   } else {
                                     if (jwt['res'] == '400') {
                                       displayDialog(
