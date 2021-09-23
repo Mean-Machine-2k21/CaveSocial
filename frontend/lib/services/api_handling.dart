@@ -6,6 +6,7 @@ import 'package:frontend/global.dart';
 import 'package:frontend/models/liked_user.dart';
 import 'package:frontend/models/mural_model.dart';
 import 'package:frontend/models/user_model.dart';
+import 'package:logger/logger.dart';
 
 class ApiHandling {
   static const String url = SERVER_IP;
@@ -17,6 +18,14 @@ class ApiHandling {
       // queryParameters: ,
     );
   }
+
+  var logger = Logger(
+    printer: PrettyPrinter(),
+  );
+
+  var loggerNoStack = Logger(
+    printer: PrettyPrinter(methodCount: 0),
+  );
 
   Future<void> editProfile({
     required String avatarUrl,
@@ -236,38 +245,6 @@ class ApiHandling {
     return murals;
   }
 
-  Future<List<Mural>> fetchAllMurals(int pageNo) async {
-    print('PageNo gggggggggggggggggggggggg--------------------------> ${pageNo}');    
-    List<Mural> murals2 = [];
-
-    try {
-      final token = await localRead('jwt');    
-
-      Response<String> response2 = await Dio(options).get(url + '/api/murals/',
-          options: Options(headers: {
-            'Authorization': 'Bearer $token',
-          }),
-          queryParameters: {
-            'pagenumber': pageNo,
-          });
-      
-      final parsed = json.decode(response2.data ?? "") as Map<String, dynamic>;   
-
-      parsed["murals"].forEach((element) {
-        if (element["flipbook"] != null) {
-          murals2.add(returnMuralWithFlipbook(element));
-        } else {
-          murals2.add(returnMural(element));
-        }
-      });   
-
-    } catch (e) {
-      print(e.toString());
-    }
-
-    return murals2;
-  }
-
   Future<void> likeMural(String muralId) async {
     print('Likkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk MuralId ---> ${muralId}');
 
@@ -304,6 +281,39 @@ class ApiHandling {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  Future<List<Mural>> fetchAllMurals(int pageNo) async {
+    // print(
+    //     'PageNo gggggggggggggggggggggggg--------------------------> ${pageNo}');
+    loggerNoStack.i('Page No:- ${pageNo}');
+    List<Mural> murals2 = [];
+
+    try {
+      final token = await localRead('jwt');
+
+      Response<String> response2 = await Dio(options).get(url + '/api/murals/',
+          options: Options(headers: {
+            'Authorization': 'Bearer $token',
+          }),
+          queryParameters: {
+            'pagenumber': pageNo,
+          });
+
+      final parsed = json.decode(response2.data ?? "") as Map<String, dynamic>;
+
+      parsed["murals"].forEach((element) {
+        if (element["flipbook"] != null) {
+          murals2.add(returnMuralWithFlipbook(element));
+        } else {
+          murals2.add(returnMural(element));
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+
+    return murals2;
   }
 
   Future<User?> fetchProfileMurals(
@@ -397,8 +407,6 @@ class ApiHandling {
                   ),
                 ),
         );
-
-        
       });
     } catch (e) {
       print(e.toString());
