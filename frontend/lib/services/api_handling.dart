@@ -237,68 +237,35 @@ class ApiHandling {
   }
 
   Future<List<Mural>> fetchAllMurals(int pageNo) async {
-    print(
-        'PageNo gggggggggggggggggggggggg--------------------------> ${pageNo}');
-
-    List<Mural> murals = [];
+    print('PageNo gggggggggggggggggggggggg--------------------------> ${pageNo}');    
+    List<Mural> murals2 = [];
 
     try {
-      final token = await localRead('jwt');
-      final response = await Dio(options).get(url + '/api/murals/',
+      final token = await localRead('jwt');    
+
+      Response<String> response2 = await Dio(options).get(url + '/api/murals/',
           options: Options(headers: {
             'Authorization': 'Bearer $token',
           }),
           queryParameters: {
             'pagenumber': pageNo,
           });
+      
+      final parsed = json.decode(response2.data ?? "") as Map<String, dynamic>;   
 
-      ////print(json.decode(response.data));
+      parsed["murals"].forEach((element) {
+        if (element["flipbook"] != null) {
+          murals2.add(returnMuralWithFlipbook(element));
+        } else {
+          murals2.add(returnMural(element));
+        }
+      });   
 
-      //final extractedData = json.decode(response.data) as Map<String, dynamic>;
-      final vari = Map<String, dynamic>.from(response.data);
-
-      final likedList = vari.values.elementAt(0);
-
-      likedList.forEach((element) {});
-
-      final muralMap = vari.values.elementAt(0);
-      muralMap.forEach((element) {
-        print('Mural ---> ${element.values.elementAt(0)}');
-        murals.add(
-          element.values.length == 7
-              ? Mural(
-                  id: element.values.elementAt(0),
-                  creatorId: element.values.elementAt(1),
-                  creatorUsername: element.values.elementAt(2),
-                  imageUrl: element.values.elementAt(3),
-                  likedCount: element.values.elementAt(4),
-                  commentCount: element.values.elementAt(5),
-                  isLiked: element.values.elementAt(6),
-                )
-              : Mural(
-                  id: element.values.elementAt(0),
-                  creatorId: element.values.elementAt(1),
-                  creatorUsername: element.values.elementAt(2),
-                  imageUrl: element.values.elementAt(4),
-                  likedCount: element.values.elementAt(5),
-                  commentCount: element.values.elementAt(6),
-                  isLiked: element.values.elementAt(7),
-                  flipbook: Flipbook(
-                    duration: element.values.elementAt(3).values.elementAt(1),
-                    frames: element.values.elementAt(3).values.elementAt(0),
-                  ),
-                ),
-        );
-      });
-
-      // extractedData.forEach((key, value) {
-      //   murals.add(muralFromJson(value));
-      // });
     } catch (e) {
       print(e.toString());
     }
 
-    return murals;
+    return murals2;
   }
 
   Future<void> likeMural(String muralId) async {
@@ -431,11 +398,7 @@ class ApiHandling {
                 ),
         );
 
-        // element.values.map(
-        //   (e){
-
-        //   }
-        // );
+        
       });
     } catch (e) {
       print(e.toString());
