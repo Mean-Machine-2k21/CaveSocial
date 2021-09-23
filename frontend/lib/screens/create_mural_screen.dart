@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:frontend/services/add_image_fuction.dart';
 import '../painter.dart';
 
@@ -99,6 +100,10 @@ class _CreateMuralScreenState extends State<CreateMuralScreen> {
               top: MediaQuery.of(context).size.height / 4,
               child: Column(
                 children: [
+                   Icon(
+                    FontAwesome.paint_brush,
+                    color: Colors.red,
+                  ),
                   Container(
                     height: MediaQuery.of(context).size.height / 3,
                     width: 70,

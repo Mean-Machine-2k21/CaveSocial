@@ -56,6 +56,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //var themeBloc = BlocProvider.of<ThemeBloc>(context);
+    var muralBloc = BlocProvider.of<MuralBloc>(context);
     //   if(themeBloc.darkMode)setState(() {});
 
     // Future<int> attemptSignUp(String username, String password) async {

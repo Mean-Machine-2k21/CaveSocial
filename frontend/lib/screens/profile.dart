@@ -9,6 +9,7 @@ import 'package:frontend/global.dart';
 import 'package:frontend/models/mural_model.dart';
 import 'package:frontend/models/user_model.dart';
 import 'package:frontend/screens/feed_page.dart';
+import 'package:frontend/widget/shimmer_image.dart';
 
 import './edit_profile.dart';
 import 'package:flutter/material.dart';
@@ -103,10 +104,11 @@ class _ProfileState extends State<Profile> {
                                   border: Border(
                                       bottom: BorderSide(
                                           color: Colors.red, width: 5)),
-                                  image: DecorationImage(
-                                      image: NetworkImage(user!.bioUrl),
-                                      fit: BoxFit.cover),
+                                  // image: DecorationImage(
+                                  //     image: NetworkImage(user!.bioUrl),
+                                  //     fit: BoxFit.cover),
                                 ),
+                                child: ShimmerNetworkImage(user!.bioUrl),
                               ),
                             ),
                             !isOther
@@ -157,6 +159,12 @@ class _ProfileState extends State<Profile> {
                                     fit: BoxFit.cover,
                                   ),
                                 ),
+                                // child: ShimmerNetworkImage(
+                                //   user!.avatarUrl,
+                                //   boxFit: BoxFit.cover,
+                                //   height: 30,
+                                //   width: 30,
+                                // ),
                               ),
                             )
                           ],
@@ -167,7 +175,7 @@ class _ProfileState extends State<Profile> {
                         child: Text(
                           '@' + user!.username,
                           style: TextStyle(
-                            color:themeBloc.materialStyle.shade600,
+                            color: themeBloc.materialStyle.shade600,
                             fontSize: 20,
                           ),
                         ),
@@ -241,10 +249,17 @@ class _ProfileState extends State<Profile> {
                                                 BorderRadius.circular(10),
                                             border: Border.all(
                                                 color: themeBloc.contrast),
-                                            image: DecorationImage(
-                                              image: NetworkImage(
-                                                  muralsFeed[index].imageUrl),
-                                              fit: BoxFit.cover,
+                                            // image: DecorationImage(
+                                            //   image: NetworkImage(
+                                            //       muralsFeed[index].imageUrl),
+                                            //   fit: BoxFit.cover,
+                                            // ),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: ShimmerNetworkImage(
+                                              muralsFeed[index].imageUrl,
                                             ),
                                           ),
                                         ),
@@ -261,53 +276,69 @@ class _ProfileState extends State<Profile> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Container(
-                                  child: GridView.builder(
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      childAspectRatio: 9 / 16,
-                                      crossAxisSpacing: 10,
-                                      mainAxisSpacing: 10,
-                                    ),
-                                    itemCount: muralsFeed.length,
-                                    itemBuilder: (context, index) {
-                                      return InkWell(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  BlocProvider<ThemeBloc>.value(
-                                                value: themeBloc,
-                                                child: BlocProvider<
-                                                    MuralBloc>.value(
-                                                  value: muralBloc,
-                                                  child: FeedPage(
-                                                    mural: muralsFeed[index],
+                                  child: muralsFeed.length == 0
+                                      ? Text('Nothing to Show!',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.red,
+                                          ))
+                                      : GridView.builder(
+                                          gridDelegate:
+                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2,
+                                            childAspectRatio: 9 / 16,
+                                            crossAxisSpacing: 10,
+                                            mainAxisSpacing: 10,
+                                          ),
+                                          itemCount: muralsFeed.length,
+                                          itemBuilder: (context, index) {
+                                            return InkWell(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        BlocProvider<
+                                                            ThemeBloc>.value(
+                                                      value: themeBloc,
+                                                      child: BlocProvider<
+                                                          MuralBloc>.value(
+                                                        value: muralBloc,
+                                                        child: FeedPage(
+                                                          mural:
+                                                              muralsFeed[index],
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ),
+                                                );
+                                              },
+                                              child: Container(
+                                                width: 107,
+                                                height: 332,
+                                                decoration: BoxDecoration(
+                                                  color: themeBloc.style,
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  border: Border.all(
+                                                      color:
+                                                          themeBloc.contrast),
+                                                  // image: DecorationImage(
+                                                  //   image: NetworkImage(
+                                                  //       muralsFeed[index].imageUrl),
+                                                  //   fit: BoxFit.cover,
+                                                  // ),
+                                                ),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: ShimmerNetworkImage(
+                                                      muralsFeed[index]
+                                                          .imageUrl),
                                                 ),
                                               ),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          width: 107,
-                                          height: 332,
-                                          decoration: BoxDecoration(
-                                            color: themeBloc.style,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            border: Border.all(
-                                                color: themeBloc.contrast),
-                                            image: DecorationImage(
-                                              image: NetworkImage(
-                                                  muralsFeed[index].imageUrl),
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
+                                            );
+                                          },
                                         ),
-                                      );
-                                    },
-                                  ),
                                 ),
                               ),
                             );

@@ -12,9 +12,12 @@ import 'package:frontend/screens/liked_by_screen.dart';
 
 import 'package:frontend/screens/profile.dart';
 import 'package:frontend/services/api_handling.dart';
+import 'package:frontend/widget/shimmer_image.dart';
 import 'package:frontend/widget/showflip_book.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:swipe_up/swipe_up.dart';
 import '../models/mural_model.dart';
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 
 //Liked by page and api calling hre..............#################################################
 class FeedPage extends StatefulWidget {
@@ -77,27 +80,34 @@ class _FeedPageState extends State<FeedPage> {
                   alignment: Alignment.bottomRight,
                   children: [
                     Container(
-                      height: cheight,
-                      width: cwidth,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        image: widget.mural.flipbook == null
-                            ? DecorationImage(
-                                image: NetworkImage(
-                                  widget.mural.imageUrl,
-                                ),
-                                fit: BoxFit.cover,
+                        height: cheight,
+                        width: cwidth,
+                        // decoration: BoxDecoration(
+                        //   color: Colors.blue,
+                        //   image: widget.mural.flipbook == null
+                        //       ? DecorationImage(
+                        //           image: NetworkImage(
+                        //             widget.mural.imageUrl,
+                        //           ),
+                        //           fit: BoxFit.cover,
+                        //         )
+                        //       : null,
+                        // ),
+                        child: widget.mural.flipbook != null
+                            ? ShowFlipBook(
+                                widget.mural.imageUrl,
+                                frames: widget.mural.flipbook!.frames,
+                                time: widget.mural.flipbook!.duration,
                               )
-                            : null,
-                      ),
-                      child: widget.mural.flipbook != null
-                          ? ShowFlipBook(
-                              widget.mural.imageUrl,
-                              frames: widget.mural.flipbook!.frames,
-                              time: widget.mural.flipbook!.duration,
-                            )
-                          : null,
-                    ),
+                            : ShimmerNetworkImage(
+                                widget.mural.imageUrl,
+                                boxFit: BoxFit.cover,
+                              )
+                        // : FancyShimmerImage(
+                        //     imageUrl: widget.mural.imageUrl,
+                        //   ),
+                        //: null,
+                        ),
                     Container(
                       height: cheight,
                       width: cwidth,
@@ -161,7 +171,9 @@ class _FeedPageState extends State<FeedPage> {
                                         value: themeBloc,
                                         child: BlocProvider.value(
                                           value: muralBloc,
-                                          child: LikedByScreen( muralid: widget.mural.id,),
+                                          child: LikedByScreen(
+                                            muralid: widget.mural.id,
+                                          ),
                                         ),
                                         //FeedComment(parentMuralid: widget.mural.id,),
                                       ),

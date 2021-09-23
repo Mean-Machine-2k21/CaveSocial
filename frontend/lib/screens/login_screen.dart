@@ -79,6 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     double height = MediaQuery.of(context).size.height;
     var themeBloc = BlocProvider.of<ThemeBloc>(context);
+    var muralBloc = BlocProvider.of<MuralBloc>(context);
     //  themeBloc.add(ThemeEvent.change);
     print('heyyyyyyyyy');
     print(themeBloc.darkMode);

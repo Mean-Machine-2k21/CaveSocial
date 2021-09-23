@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -10,6 +9,7 @@ import 'package:frontend/screens/create_bio_screen.dart';
 import 'package:frontend/screens/create_mural_screen.dart';
 import 'package:frontend/screens/login_screen.dart';
 import 'package:frontend/screens/profile.dart';
+import 'package:frontend/widget/shimmer_image.dart';
 import 'package:frontend/widget/toggle_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +47,8 @@ class _EditProfileState extends State<EditProfile> {
     });
     currentProfile = await localRead('avatar_url');
     currentBio = await localRead('bio_url');
+    print('bioooo0000000000000000000000000000000000000000 $currentBio');
+    bioUrl = currentBio;
 
     setState(() {
       loading = false;
@@ -130,6 +132,14 @@ class _EditProfileState extends State<EditProfile> {
                       Spacer(),
                       TextButton(
                         onPressed: () async {
+                          await storage.write(
+                            key: "avatar_url",
+                            value: avatarUrl,
+                          );
+                          await storage.write(
+                            key: "bio_url",
+                            value: bioUrl,
+                          );
                           await apiHandling.editProfile(
                             avatarUrl: avatarUrl,
                             bioUrl: bioUrl,
@@ -247,6 +257,9 @@ class _EditProfileState extends State<EditProfile> {
                                     fit: BoxFit.cover,
                                   ),
                                 ),
+                                // child: ShimmerNetworkImage(
+                                //   currentProfile,
+                                // ),
                               ),
                       ],
                     ),
@@ -319,11 +332,12 @@ class _EditProfileState extends State<EditProfile> {
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.red, width: 2),
                     color: themeBloc.materialStyle.shade800,
-                    image: DecorationImage(
-                      image: NetworkImage(bioUrl),
-                      fit: BoxFit.cover,
-                    ),
+                    // image: DecorationImage(
+                    //   image: NetworkImage(bioUrl),
+                    //   fit: BoxFit.cover,
+                    // ),
                   ),
+                  child: ShimmerNetworkImage(bioUrl),
                 ),
                 SizedBox(
                   height: 10,

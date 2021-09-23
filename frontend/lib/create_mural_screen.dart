@@ -2,24 +2,20 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
-import 'package:frontend/bloc/theme_bloc.dart';
-import '../painter.dart';
+import 'package:frontend/services/add_image_fuction.dart';
+import './painter.dart';
 
-import 'functions.dart';
-
-class CreateFrame extends StatefulWidget {
+class ExamplePage extends StatefulWidget {
   final String mode;
-  CreateFrame(this.mode);
+  ExamplePage(this.mode);
 
   @override
-  _CreateFrameState createState() => new _CreateFrameState();
+  _ExamplePageState createState() => new _ExamplePageState();
 }
 
-class _CreateFrameState extends State<CreateFrame> {
+class _ExamplePageState extends State<ExamplePage> {
   bool _finished = false;
   late String mode;
   late PainterController _controller = _newController(mode);
@@ -40,7 +36,6 @@ class _CreateFrameState extends State<CreateFrame> {
 
   @override
   Widget build(BuildContext context) {
-    
     List<Widget> actions;
     if (_finished) {
       actions = <Widget>[
@@ -63,7 +58,7 @@ class _CreateFrameState extends State<CreateFrame> {
             ),
             tooltip: 'back',
             onPressed: () {
-              Navigator.of(context).pop(false);
+              Navigator.of(context).pop();
             }),
         Spacer(),
         // new IconButton(
@@ -97,7 +92,7 @@ class _CreateFrameState extends State<CreateFrame> {
               top: MediaQuery.of(context).size.height / 4,
               child: Column(
                 children: [
-                   Icon(
+                  Icon(
                     FontAwesome.paint_brush,
                     color: Colors.red,
                   ),
@@ -109,7 +104,6 @@ class _CreateFrameState extends State<CreateFrame> {
                       child: new StatefulBuilder(builder:
                           (BuildContext context, StateSetter setState) {
                         return new Container(
-
                             child: new Slider(
                           value: _controller.thickness,
                           onChanged: (double value) => setState(() {
@@ -175,8 +169,11 @@ class _CreateFrameState extends State<CreateFrame> {
               child: Container(
                 height: 40,
                 width: MediaQuery.of(context).size.width,
-                child: Row(
-                  children: actions,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: actions,
+                  ),
                 ),
               ),
             ),
@@ -190,7 +187,7 @@ class _CreateFrameState extends State<CreateFrame> {
     setState(() {
       _finished = true;
     });
-    var check = await Navigator.of(context)
+    await Navigator.of(context)
         .push(new MaterialPageRoute(builder: (BuildContext context) {
       return new Scaffold(
         // appBar: new AppBar(
@@ -242,24 +239,27 @@ class _CreateFrameState extends State<CreateFrame> {
                         // var filee = await File.fromRawPath(aa);
 
                         // var image = MemoryImage(aa);
-                        // var aate = DateTime.now().toString();
-                        // final Directory systemTempDir = Directory.systemTemp;
-                        // final File file = await new File(
-                        //         '${systemTempDir.path}/foo${aate}.png')
-                        //     .create();
-                        // file.writeAsBytes(aa);
+                        var aate = DateTime.now().toString();
+                        final Directory systemTempDir = Directory.systemTemp;
+                        final File file = await new File(
+                                '${systemTempDir.path}/foo${aate}.png')
+                            .create();
+                        file.writeAsBytes(aa);
 
-                        addimage(aa);
+                        print(file);
+                        await uploadImageToFirebase(file);
                         final snackBar = SnackBar(
-                          content: Text('Frame added !!'),
-                          duration: Duration(seconds: 3),
+                          content: Text('Yay! Your Mural is posted!'),
+                          duration: Duration(seconds: 5),
                           backgroundColor: Colors.red,
                         );
 
+                        // Find the ScaffoldMessenger in the widget tree
+                        // and use it to show a SnackBar.
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        Navigator.of(context).pop(true);
+                        Navigator.of(context).pop();
                       },
-                      child: Text('Add Frame')),
+                      child: Text('Post Mural')),
                 ],
               ),
             ),
@@ -275,14 +275,14 @@ class _CreateFrameState extends State<CreateFrame> {
                 ),
                 tooltip: 'back',
                 onPressed: () {
-                  Navigator.of(context).pop(false);
+                  Navigator.of(context).pop();
                 }),
           ),
         ]),
       );
     }));
 
-    Navigator.of(context).pop(check);
+    Navigator.of(context).pop();
   }
 }
 
