@@ -3,7 +3,8 @@ const router = new express.Router();
 const User = require('../Models/User');
 const Mural = require('../Models/Mural');
 const auth = require('../Middleware/Auth');
-
+const mongoose = require('mongoose');
+const ObjectId = require("mongodb").ObjectId;
 
 router.post('/api/signup', async (req, res, next) => {
     try {
@@ -78,18 +79,19 @@ router.patch('/api/editprofile', auth, async (req, res) => {
     }
 });
 
-router.get('/api/profile/:username', auth, async (req, res) => {
-    const username = req.params.username;
-    const pageNumber = req.query.pagenumber;
-    const nPerPage = 6;
+router.get('/api/profile/:id', auth, async (req, res) => {
+    const _id = req.params.id;
     try {
-        const user = await User.find({ username });
+        const user = await User.findById(_id);
+        delete user.followers;
+        delete user.following;
+
         console.log(user);
-        if (!user[0]) {
+        if (!user) {
             return res.status(400).json({ msg: 'User Not Found' });
         }
         const murals = await Mural.aggregate([
-            { $match: { isComment: false, creatorUsername: username } },
+            { $match: { isComment: false, creatorUsername: user.username } },
             {
                 $project: {
                     _id: 1, imageUrl: "$content", creatorUsername: 1, creatorId: 1, likedCount: { $size: "$likes" },
@@ -99,7 +101,29 @@ router.get('/api/profile/:username', auth, async (req, res) => {
             },
             { $sort: { _id: -1 } }
         ]);
-        res.status(200).json({ msg: 'User Found', user: user[0], murals });
+        res.status(200).json({ msg: 'User Found', user: user, murals });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ msg: 'Something Went Wrong' });
+    }
+});
+router.get('/api/follow/:id', auth, async (req, res) => {
+    const _id = req.params.id;
+    try {
+        const updatedUser1Res = await User.updateOne({ _id: ObjectId(req.user._id) }, { $addToSet: { following: [ObjectId(_id)] } });
+        const updatedUser2Res = await User.updateOne({ _id: ObjectId(_id) }, { $addToSet: { followers: [ObjectId(req.user._id)] } });
+        res.status(200).json({ msg: 'User followed' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ msg: 'Something Went Wrong' });
+    }
+});
+router.get('/api/unfollow/:id', auth, async (req, res) => {
+    const _id = req.params.id;
+    try {
+        const updatedUser1Res = await User.updateOne({ _id: ObjectId(req.user._id) }, { $pull: { following: ObjectId(_id) } });
+        const updatedUser2Res = await User.updateOne({ _id: ObjectId(_id) }, { $pull: { followers: ObjectId(req.user._id) } });
+        res.status(200).json({ msg: 'User unfollowed' });
     } catch (error) {
         console.log(error);
         res.status(500).send({ msg: 'Something Went Wrong' });
