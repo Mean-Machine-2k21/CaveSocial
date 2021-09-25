@@ -82,14 +82,29 @@ router.patch('/api/editprofile', auth, async (req, res) => {
 router.get('/api/profile/:id', auth, async (req, res) => {
     const _id = req.params.id;
     try {
-        const user = await User.findById(_id);
-        delete user.followers;
-        delete user.following;
-
-        console.log(user);
+        const user = await User.findOne({ _id })
+            .populate({
+                path: 'followers',
+                select: '_id username avatar_url'
+            }).populate({
+                path: 'following',
+                select: '_id username avatar_url'
+            })
+            .exec();
         if (!user) {
             return res.status(400).json({ msg: 'User Not Found' });
         }
+        console.log(user.followers.length);
+        console.log(user.following.length);
+        console.log(typeof (user));
+        const counts = {
+            followersCount: user.followers.length,
+            followingCount: user.following.length
+        };
+        Object.assign(user, counts);
+        console.log(user.followersCount);
+
+        // console.log(user);
         const murals = await Mural.aggregate([
             { $match: { isComment: false, creatorUsername: user.username } },
             {
