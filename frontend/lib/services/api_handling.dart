@@ -296,8 +296,9 @@ class ApiHandling {
   }
 
   Future<User?> fetchProfileMurals(
-      String username, List<Mural> murals, int pageNo) async {
+      String username, List<Mural> murals, int pageNo, String id) async {
     print('Username ---> ${username}');
+    logger.i('id-----> ${id}');
 
     User? user;
 
@@ -305,9 +306,9 @@ class ApiHandling {
       final token = await localRead('jwt');
 
       print(token);
-      logger.i(' URL ----> ${url + '/api/profile/' + username}');
+      logger.i(' URL ----> ${url + '/api/profile/' + id}');
       Response<String> response =
-          await Dio(options).get(url + '/api/profile/' + username,
+          await Dio(options).get(url + '/api/profile/' + id,
               options: Options(headers: {
                 'Authorization': 'Bearer $token',
               }),

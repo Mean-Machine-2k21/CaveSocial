@@ -8,8 +8,9 @@ class MuralRepository {
   fetchProfileMurals(
       {required List<Mural> murals,
       required String username,
-      required int page}) async {
-    return await _apiHandling.fetchProfileMurals(username, murals, page);
+      required int page,
+      required String id}) async {
+    return await _apiHandling.fetchProfileMurals(username, murals, page, id);
   }
 
   fetchAllMurals(int page) async {

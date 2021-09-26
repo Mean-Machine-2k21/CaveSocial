@@ -133,6 +133,7 @@ class _FeedPageState extends State<FeedPage> {
                                         child: Profile(
                                           otherUsername:
                                               widget.mural.creatorUsername,
+                                          otherId: widget.mural.creatorId,
                                         ),
                                       ),
                                     ),

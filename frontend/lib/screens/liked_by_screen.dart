@@ -99,6 +99,7 @@ class LikedByScreen extends StatelessWidget {
                                         child: Profile(
                                           otherUsername:
                                               likedUsers[index].username,
+                                              otherId: likedUsers[index].userId,
                                         ),
                                       ),
                                     ),
