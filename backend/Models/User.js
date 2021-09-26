@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        unique: true
+        unique: true,
     },
     password: {
         type: String,
@@ -31,7 +31,22 @@ const userSchema = new mongoose.Schema({
     },
     bio_url: {
         type: String
-    }
+    },
+    followers: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: 'User'
+        }]
+    },
+    following: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: 'User'
+        }]
+    },
+
 }, {
     timestamps: true
 });
@@ -39,14 +54,13 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.toJSON = function () {
     const user = this;
+    console.log('came here');
     const userObject = user.toObject();
-
     delete userObject.password;
     delete userObject.tokens;
     delete userObject.__v;
     delete userObject.createdAt;
     delete userObject.updatedAt;
-
     return userObject;
 };
 
@@ -61,7 +75,7 @@ userSchema.methods.generateAuthToken = async function () {
 };
 
 userSchema.statics.findByCredentials = async (username, password) => {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username }, { "followers": 0, "following": 0, "likes": 0 });
     if (!user) {
         throw new Error('Wrong Username');
     }
