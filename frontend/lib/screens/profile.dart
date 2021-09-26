@@ -19,7 +19,8 @@ import '../services/api_handling.dart';
 class Profile extends StatefulWidget {
   static const routeName = '/profile';
   String? otherUsername;
-  Profile({Key? key, this.otherUsername}) : super(key: key);
+  String? otherId;
+  Profile({Key? key, this.otherUsername, this.otherId}) : super(key: key);
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -33,6 +34,7 @@ class _ProfileState extends State<Profile> {
   bool isOther = false;
 
   late String username;
+  late String id;
   var themeBloc, muralBloc;
   int cnt = 0;
   @override
@@ -46,16 +48,19 @@ class _ProfileState extends State<Profile> {
       print("YYYYYYYYYther Username ---> ${widget.otherUsername}");
       if (widget.otherUsername == null) {
         username = await localRead('username');
+        id = await localRead('id');
       } else {
         username = widget.otherUsername!;
+        id = widget.otherId!;
         isOther = true;
       }
 
       print("OOOOOOOOOOther Username ---> ${username}");
 
       final apiRepository = ApiHandling();
-      muralBloc.add(FetchProfileMurals(username: username, page: cnt++));
-      user = await apiRepository.fetchProfileMurals(username, murals, 0);
+      muralBloc
+          .add(FetchProfileMurals(username: username, page: cnt++, id: id));
+      user = await apiRepository.fetchProfileMurals(username, murals, 0, id);
       print('username --> ${user!.username}');
 
       print('mural Length ${murals.length}');
