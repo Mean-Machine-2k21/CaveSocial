@@ -83,6 +83,7 @@ router.get('/api/profile/:id', auth, async (req, res) => {
     const _id = req.params.id;
     try {
         const user = await User.findOne({ _id })
+            .select({ tokens: 0, password: 0, createdAt: 0, updatedAt: 0, __v: 0 })
             .populate({
                 path: 'followers',
                 select: '_id username avatar_url'
@@ -96,13 +97,7 @@ router.get('/api/profile/:id', auth, async (req, res) => {
         }
         console.log(user.followers.length);
         console.log(user.following.length);
-        console.log(typeof (user));
-        const counts = {
-            followersCount: user.followers.length,
-            followingCount: user.following.length
-        };
-        Object.assign(user, counts);
-        console.log(user.followersCount);
+        console.log(user);
 
         // console.log(user);
         const murals = await Mural.aggregate([
@@ -116,7 +111,12 @@ router.get('/api/profile/:id', auth, async (req, res) => {
             },
             { $sort: { _id: -1 } }
         ]);
-        res.status(200).json({ msg: 'User Found', user: user, murals });
+        res.status(200).json({
+            msg: 'User Found', user: {
+                ...(user.toObject()), followersCount: user.followers.length,
+                followingCount: user.following.length
+            }, murals
+        });
     } catch (error) {
         console.log(error);
         res.status(500).send({ msg: 'Something Went Wrong' });
