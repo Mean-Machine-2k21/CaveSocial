@@ -2,12 +2,21 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+// mongoose.connect("mongodb+srv://taskapp:taskapp123@cluster0.laatv.mongodb.net/CaveSocial?retryWrites=true", {
+//     useNewUrlParser: true,
+//     useCreateIndex: true,
+//     useUnifiedTopology: true,
+//     useFindAndModify: false
+// });
+
+
+
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
         trim: true,
-        unique: true
+        unique: true,
     },
     password: {
         type: String,
@@ -31,7 +40,22 @@ const userSchema = new mongoose.Schema({
     },
     bio_url: {
         type: String
-    }
+    },
+    followers: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: 'User'
+        }]
+    },
+    following: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: 'User'
+        }]
+    },
+
 }, {
     timestamps: true
 });
@@ -39,14 +63,13 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.toJSON = function () {
     const user = this;
+    console.log('came here');
     const userObject = user.toObject();
-
     delete userObject.password;
     delete userObject.tokens;
     delete userObject.__v;
     delete userObject.createdAt;
     delete userObject.updatedAt;
-
     return userObject;
 };
 
@@ -61,7 +84,7 @@ userSchema.methods.generateAuthToken = async function () {
 };
 
 userSchema.statics.findByCredentials = async (username, password) => {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username }, { "followers": 0, "following": 0, "likes": 0 });
     if (!user) {
         throw new Error('Wrong Username');
     }
@@ -89,6 +112,13 @@ userSchema.pre('save', async function (next) {
 
 const User = new mongoose.model('User', userSchema);
 
+
+// (async () => {
+//     const users = await User.find();
+//     for (let user of users) {
+//         await user.save();
+//     }
+// })();
 
 
 module.exports = User;
