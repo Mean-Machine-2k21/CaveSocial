@@ -96,35 +96,34 @@ class _CreateMuralScreenState extends State<CreateMuralScreen> {
         // ),
         body: new Center(
           child: Container(
-            // height: double.maxFinite,
-            // width: double.maxFinite,
+            height: double.maxFinite,
+            width: double.maxFinite,
             child: Stack(
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(
-                      vertical: (MediaQuery.maybeOf(context)!.size.height -
+                  // height: MediaQuery.maybeOf(context)!.size.height,
+                  // width: MediaQuery.maybeOf(context)!.size.width,
+                  padding: EdgeInsets.only(
+                      top: (MediaQuery.maybeOf(context)!.size.height -
                                   (MediaQuery.maybeOf(context)!.size.width *
                                       1.78)) >
                               0
-                          ? (MediaQuery.maybeOf(context)!.size.height -
-                                  MediaQuery.maybeOf(context)!.size.width *
-                                      1.78) /
-                              2
+                          ? 20
                           : 0),
-                  child: Center(
-                    child: InteractiveViewer(
-                      constrained: false,
-                      boundaryMargin: EdgeInsets.all(double.infinity),
-                      maxScale: 5,
-                      child: Container(
-                        height: MediaQuery.maybeOf(context)!.size.width * 1.78,
-                        width: MediaQuery.maybeOf(context)!.size.width,
-                        child: AbsorbPointer(
-                            absorbing: _ismoved, child: Painter(_controller)),
-                        color: Colors.amber,
+                  // padding: EdgeInsets.only(top: 20),/
+                  child: InteractiveViewer(
+                    constrained: false,
+                    boundaryMargin: EdgeInsets.all(double.infinity),
+                    maxScale: 5,
+                    child: Container(
+                      height: MediaQuery.maybeOf(context)!.size.width * 1.78,
+                      width: MediaQuery.maybeOf(context)!.size.width,
+                      child: AbsorbPointer(
+                        absorbing: _ismoved,
+                        child: Painter(_controller),
                       ),
+                      color: Colors.amber,
                     ),
-                    // boundaryMargin: EdgeInsets.all(500.0),
                   ),
                 ),
 

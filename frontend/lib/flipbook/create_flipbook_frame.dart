@@ -90,15 +90,6 @@ class _CreateFrameState extends State<CreateFrame> {
         child: Stack(
           children: [
             Container(
-              padding: EdgeInsets.symmetric(
-                  vertical: (MediaQuery.maybeOf(context)!.size.height -
-                              (MediaQuery.maybeOf(context)!.size.width *
-                                  1.78)) >
-                          0
-                      ? (MediaQuery.maybeOf(context)!.size.height -
-                              MediaQuery.maybeOf(context)!.size.width * 1.78) /
-                          2
-                      : 0),
               child: Center(
                 child: InteractiveViewer(
                   constrained: false,
