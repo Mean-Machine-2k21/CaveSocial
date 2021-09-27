@@ -41,6 +41,12 @@ class FetchMuralLikeList extends MuralEvent {
   FetchMuralLikeList({required this.muralid, required this.page});
 }
 
+class FetchUserList extends MuralEvent {
+  String userid;
+  String type;
+  FetchUserList({required this.userid, required this.type});
+}
+
 class FetchMuralCommentList extends MuralEvent {
   String muralid;
   int page;

@@ -1,5 +1,6 @@
 class LikedUsers {
   String userId;
   String username;
-  LikedUsers(this.userId, this.username);
+  String avatarUrl;
+  LikedUsers(this.userId, this.username, this.avatarUrl);
 }

@@ -9,6 +9,7 @@ import 'package:frontend/global.dart';
 import 'package:frontend/models/mural_model.dart';
 import 'package:frontend/models/user_model.dart';
 import 'package:frontend/screens/feed_page.dart';
+import 'package:frontend/screens/user_list.dart';
 import 'package:frontend/widget/create_post_modal.dart';
 import 'package:frontend/widget/shimmer_image.dart';
 
@@ -193,30 +194,68 @@ class _ProfileState extends State<Profile> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Padding(
-                              padding: EdgeInsets.all(2.0),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    '${user!.followersCount ?? 0}',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      BlocProvider<ThemeBloc>.value(
+                                    value: themeBloc,
+                                    child: BlocProvider<MuralBloc>.value(
+                                      value: muralBloc,
+                                      child: UserListScreen(
+                                        userId: user!.id,
+                                        type: "Followers",
+                                      ),
+                                    ),
+                                    //FeedComment(parentMuralid: widget.mural.id,),
                                   ),
-                                  Text('Followers'),
-                                ],
+                                ));
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(2.0),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      '${user!.followersCount ?? 0}',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text('Followers'),
+                                  ],
+                                ),
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.all(2.0),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    '${user!.followingCount ?? 0}',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        BlocProvider<ThemeBloc>.value(
+                                      value: themeBloc,
+                                      child: BlocProvider<MuralBloc>.value(
+                                        value: muralBloc,
+                                        child: UserListScreen(
+                                          userId: user!.id,
+                                          type: "Following",
+                                        ),
+                                      ),
+                                      //FeedComment(parentMuralid: widget.mural.id,),
+                                    ),
                                   ),
-                                  Text('Following'),
-                                ],
+                                );
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(2.0),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      '${user!.followingCount ?? 0}',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text('Following'),
+                                  ],
+                                ),
                               ),
                             ),
                             isOther

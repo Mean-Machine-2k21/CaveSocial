@@ -5,6 +5,7 @@ import 'package:frontend/bloc/mural_bloc/mural_event.dart';
 import 'package:frontend/global.dart';
 import 'package:frontend/models/liked_user.dart';
 import 'package:frontend/models/mural_model.dart';
+import 'package:frontend/models/user_list.dart';
 import 'package:frontend/models/user_model.dart';
 import 'logger.dart';
 
@@ -251,6 +252,37 @@ class ApiHandling {
     return murals;
   }
 
+  Future<List<UserList>> fetchUserList(String userId, String type) async {
+    List<UserList> usersList = [];
+
+    try {
+      final token = await localRead('jwt');
+      Response<String> response = await Dio(options).get(
+        url + '/api/user/${userId}/${type}',
+        options: Options(headers: {
+          'Authorization': 'Bearer $token',
+        }),
+      );
+
+      final parsed = json.decode(response.data ?? "") as Map<String, dynamic>;
+
+      parsed["${type.toLowerCase()}"].forEach((element) {
+        usersList.add(
+          UserList(
+            element["_id"],
+            element["username"],
+            element["avatar_url"],
+            element["isFollowed"],
+          ),
+        );
+      });
+    } catch (e) {
+      logger.e(e.toString());
+    }
+
+    return usersList;
+  }
+
   Future<List<LikedUsers>> fetchLikesonMural(String muralId) async {
     List<LikedUsers> likedUsers = [];
 
@@ -270,8 +302,9 @@ class ApiHandling {
       parsed["likes"].forEach((element) {
         likedUsers.add(
           LikedUsers(
-            element["likedByUserId"],
-            element["likedByUserName"],
+            element["_id"],
+            element["username"],
+            element["avatar_url"],
           ),
         );
       });

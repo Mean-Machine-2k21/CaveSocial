@@ -1,3 +1,4 @@
+import 'package:frontend/bloc/mural_bloc/mural_event.dart';
 import 'package:frontend/models/mural_model.dart';
 import 'package:frontend/models/user_model.dart';
 import 'package:frontend/services/api_handling.dart';
@@ -38,8 +39,12 @@ class MuralRepository {
   }
 
   fetchMuralLikeList({required String muralid, required int page}) async {
-    print('ddddddddddddddddddddd');
+    //print('ddddddddddddddddddddd');
     return await _apiHandling.fetchLikesonMural(muralid);
+  }
+
+  fetchUserList({required String userId, required String type}) async {
+    return await _apiHandling.fetchUserList(userId, type);
   }
 
   fetchMuralCommentList({required String muralid, required int page}) async {

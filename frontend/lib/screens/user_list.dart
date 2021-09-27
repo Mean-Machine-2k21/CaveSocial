@@ -1,32 +1,48 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'dart:ui';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
 import 'package:frontend/bloc/mural_bloc/mural_event.dart';
 import 'package:frontend/bloc/mural_bloc/mural_state.dart';
 import 'package:frontend/bloc/theme_bloc.dart';
+import 'package:frontend/global.dart';
 import 'package:frontend/models/liked_user.dart';
+import 'package:frontend/models/mural_model.dart';
+import 'package:frontend/models/user_list.dart';
+import 'package:frontend/models/user_model.dart';
+import 'package:frontend/screens/feed_page.dart';
 import 'package:frontend/screens/profile.dart';
+import 'package:frontend/widget/create_post_modal.dart';
+import 'package:frontend/widget/shimmer_image.dart';
 
-class LikedByScreen extends StatelessWidget {
-  final String muralid;
+import './edit_profile.dart';
+import 'package:flutter/material.dart';
+import '../global.dart';
+import '../services/api_handling.dart';
+import '../services/logger.dart';
 
-  LikedByScreen({
-    required this.muralid,
+class UserListScreen extends StatelessWidget {
+  final String userId;
+  final String type;
+
+  UserListScreen({
+    required this.userId,
+    required this.type,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final title = 'Liked By ';
+    final title = type;
     var themeBloc = BlocProvider.of<ThemeBloc>(context);
     var muralBloc = BlocProvider.of<MuralBloc>(context);
-    muralBloc.add(FetchMuralLikeList(muralid: muralid, page: 0));
-    String UsernameUrl(username) {
-      return 'https://firebasestorage.googleapis.com/v0/b/cavesocial-78776.appspot.com/o/uploads%2fprofileImages%2f' +
-          username +
-          '?alt=media&token=c2033fb1-2be9-4616-adfd-2996c5c13749';
-    }
+    //muralBloc.add(FetchMuralLikeList(muralid: muralid, page: 0));
+    muralBloc.add(FetchUserList(userid: userId, type: type));
+    // String UsernameUrl(username) {
+    //   return 'https://firebasestorage.googleapis.com/v0/b/cavesocial-78776.appspot.com/o/uploads%2fprofileImages%2f' +
+    //       username +
+    //       '?alt=media&token=c2033fb1-2be9-4616-adfd-2996c5c13749';
+    // }
 
     return MaterialApp(
       title: title,
@@ -51,16 +67,16 @@ class LikedByScreen extends StatelessWidget {
         ),
         body: BlocBuilder<MuralBloc, MuralState>(
           builder: (context, state) {
-            if (state is FetchedMuralLikeList) print('pkkkkkkkkkk@@@@@@@@@@@');
-            if (state is FetchedMuralLikeList && state.usernames.length != 0)
+            // if (state is FetchedMuralLikeList) print('pkkkkkkkkkk@@@@@@@@@@@');
+            if (state is FetchedUserList && state.users.length != 0)
             //
             {
-              List<LikedUsers> likedUsers = [];
-              likedUsers = (state).usernames;
-              print('##################################################');
-              print(likedUsers.length);
+              List<UserList> userList = [];
+              userList = (state).users;
+              //print('##################################################');
+              //print(userList.length);
               return ListView.builder(
-                itemCount: likedUsers.length,
+                itemCount: userList.length,
                 itemBuilder: (context, index) {
                   return Container(
                     decoration: BoxDecoration(
@@ -76,7 +92,7 @@ class LikedByScreen extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               backgroundImage:
-                                  NetworkImage(likedUsers[index].avatarUrl),
+                                  NetworkImage(userList[index].avatarUrl),
                               backgroundColor: Colors.red,
                             ),
                             SizedBox(
@@ -84,7 +100,7 @@ class LikedByScreen extends StatelessWidget {
                             ),
                             InkWell(
                               child: Text(
-                                '@' + likedUsers[index].username,
+                                '@' + userList[index].username,
                                 maxLines: 1,
                                 style: TextStyle(color: themeBloc.style),
                               ),
@@ -98,8 +114,8 @@ class LikedByScreen extends StatelessWidget {
                                         value: muralBloc,
                                         child: Profile(
                                           otherUsername:
-                                              likedUsers[index].username,
-                                          otherId: likedUsers[index].userId,
+                                              userList[index].username,
+                                          otherId: userList[index].userId,
                                         ),
                                       ),
                                     ),
@@ -107,6 +123,20 @@ class LikedByScreen extends StatelessWidget {
                                 );
                               },
                             ),
+                            Spacer(),
+                            userList[index].isFollowed
+                                ? Text(
+                                    '. Following',
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                  )
+                                : Text(
+                                    '. Follow',
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                    ),
+                                  )
                           ],
                         ),
                       ),
@@ -114,7 +144,7 @@ class LikedByScreen extends StatelessWidget {
                   );
                 },
               );
-            } else if (state is FetchedMuralLikeList) {
+            } else if (state is FetchingUserList) {
               return Center(
                 child: CircularProgressIndicator(
                   color: Colors.blue,
