@@ -82,21 +82,14 @@ router.patch('/api/editprofile', auth, async (req, res) => {
 router.get('/api/profile/:id', auth, async (req, res) => {
     const _id = req.params.id;
     try {
-        const user = await User.findOne({ _id })
-            .select({ tokens: 0, password: 0, createdAt: 0, updatedAt: 0, __v: 0 })
-            .populate({
-                path: 'followers',
-                select: '_id username avatar_url'
-            }).populate({
-                path: 'following',
-                select: '_id username avatar_url'
-            })
+        if (!_id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(404).send();
+        }
+        const user = await User.findOne({ _id }, { followersCount: { $size: "$followers" }, followingCount: { $size: "$following" }, username: 1, avatar_url: 1, bio_url: 1 })
             .exec();
         if (!user) {
             return res.status(400).json({ msg: 'User Not Found' });
         }
-        console.log(user.followers.length);
-        console.log(user.following.length);
         console.log(user);
 
         // console.log(user);
@@ -112,19 +105,59 @@ router.get('/api/profile/:id', auth, async (req, res) => {
             { $sort: { _id: -1 } }
         ]);
         res.status(200).json({
-            msg: 'User Found', user: {
-                ...(user.toObject()), followersCount: user.followers.length,
-                followingCount: user.following.length
-            }, murals
+            msg: 'User Found', user, murals
         });
     } catch (error) {
         console.log(error);
         res.status(500).send({ msg: 'Something Went Wrong' });
     }
 });
-router.get('/api/follow/:id', auth, async (req, res) => {
+router.get('/api/user/:id/followers', auth, async (req, res) => {
     const _id = req.params.id;
     try {
+        if (!_id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(404).send();
+        }
+        const followersInfo = await User.findOne({ _id }, { followersCount: { $size: "$followers" } })
+            .populate({ path: "followers", select: "_id username avatar_url" })
+            .exec();
+        if (!followersInfo) {
+            return res.status(400).json({ msg: 'User Not Found' });
+        }
+        res.status(200).json({
+            msg: 'User Found', ...(followersInfo.toObject()),
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ msg: 'Something Went Wrong' });
+    }
+});
+router.get('/api/user/:id/following', auth, async (req, res) => {
+    const _id = req.params.id;
+    try {
+        if (!_id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(404).send();
+        }
+        const followersInfo = await User.findOne({ _id }, { followingCount: { $size: "$following" } })
+            .populate({ path: "following", select: "_id username avatar_url" })
+            .exec();
+        if (!followersInfo) {
+            return res.status(400).json({ msg: 'User Not Found' });
+        }
+        res.status(200).json({
+            msg: 'User Found', ...(followersInfo.toObject()),
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ msg: 'Something Went Wrong' });
+    }
+});
+router.put('/api/follow/:id', auth, async (req, res) => {
+    const _id = req.params.id;
+    try {
+        if (!_id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(404).send();
+        }
         const updatedUser1Res = await User.updateOne({ _id: ObjectId(req.user._id) }, { $addToSet: { following: [ObjectId(_id)] } });
         const updatedUser2Res = await User.updateOne({ _id: ObjectId(_id) }, { $addToSet: { followers: [ObjectId(req.user._id)] } });
         res.status(200).json({ msg: 'User followed' });
@@ -133,7 +166,7 @@ router.get('/api/follow/:id', auth, async (req, res) => {
         res.status(500).send({ msg: 'Something Went Wrong' });
     }
 });
-router.get('/api/unfollow/:id', auth, async (req, res) => {
+router.put('/api/unfollow/:id', auth, async (req, res) => {
     const _id = req.params.id;
     try {
         const updatedUser1Res = await User.updateOne({ _id: ObjectId(req.user._id) }, { $pull: { following: ObjectId(_id) } });
