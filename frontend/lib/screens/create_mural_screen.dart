@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:frontend/services/add_image_fuction.dart';
+import 'package:zoom_widget/zoom_widget.dart';
 import '../painter.dart';
 
 class CreateMuralScreen extends StatefulWidget {
@@ -23,6 +24,7 @@ class CreateMuralScreen extends StatefulWidget {
 
 class _CreateMuralScreenState extends State<CreateMuralScreen> {
   String muralUrl = "";
+
   bool _finished = false;
   late String mode;
   late PainterController _controller = _newController(mode);
@@ -41,6 +43,7 @@ class _CreateMuralScreenState extends State<CreateMuralScreen> {
     return controller;
   }
 
+  bool _ismoved = false;
   @override
   Widget build(BuildContext context) {
     List<Widget> actions;
@@ -83,107 +86,166 @@ class _CreateMuralScreenState extends State<CreateMuralScreen> {
         ),
       ];
     }
-    return new Scaffold(
-      // appBar: new AppBar(
-      //   title: const Text('Painter Example'),
 
-      //   actions: actions,
-      // ),
-      body: new Center(
-        child: Stack(
-          children: [
-            Container(
-                height: double.maxFinite,
-                width: double.maxFinite,
-                child: new Painter(_controller)),
-            Positioned(
-              top: MediaQuery.of(context).size.height / 4,
-              child: Column(
-                children: [
-                   Icon(
-                    FontAwesome.paint_brush,
-                    color: Colors.red,
+    return SafeArea(
+      child: new Scaffold(
+        // appBar: new AppBar(
+        //   title: const Text('Painter Example'),
+
+        //   actions: actions,
+        // ),
+        body: new Center(
+          child: Container(
+            // height: double.maxFinite,
+            // width: double.maxFinite,
+            child: Stack(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(
+                      vertical: (MediaQuery.maybeOf(context)!.size.height -
+                                  (MediaQuery.maybeOf(context)!.size.width *
+                                      1.78)) >
+                              0
+                          ? (MediaQuery.maybeOf(context)!.size.height -
+                                  MediaQuery.maybeOf(context)!.size.width *
+                                      1.78) /
+                              2
+                          : 0),
+                  child: Center(
+                    child: InteractiveViewer(
+                      constrained: false,
+                      boundaryMargin: EdgeInsets.all(double.infinity),
+                      maxScale: 5,
+                      child: Container(
+                        height: MediaQuery.maybeOf(context)!.size.width * 1.78,
+                        width: MediaQuery.maybeOf(context)!.size.width,
+                        child: AbsorbPointer(
+                            absorbing: _ismoved, child: Painter(_controller)),
+                        color: Colors.amber,
+                      ),
+                    ),
+                    // boundaryMargin: EdgeInsets.all(500.0),
                   ),
-                  Container(
-                    height: MediaQuery.of(context).size.height / 3,
-                    width: 70,
-                    child: RotatedBox(
-                      quarterTurns: 3,
-                      child: new StatefulBuilder(builder:
-                          (BuildContext context, StateSetter setState) {
-                        return new Container(
-                            child: new Slider(
-                          
-                          value: _controller.thickness,
-                          onChanged: (double value) => setState(() {
-                            _controller.thickness = value;
+                ),
+
+                // child: InteractiveViewer(
+                //   constrained: false,
+                //   child: Container(
+                //     height: 200,
+                //     width: 200,
+                //     color: Colors.amber,
+                //     // child: new Painter(_controller),
+                //     // child: Container(
+                //     //   height: 200,
+                //     //   width: 200,
+                //     //   color: Colors.amber,
+                //     // ),
+                //   ),
+                // ),
+
+                Positioned(
+                  top: MediaQuery.of(context).size.height / 6,
+                  child: Column(
+                    children: [
+                      Icon(
+                        FontAwesome.paint_brush,
+                        color: Colors.red,
+                      ),
+                      Container(
+                        height: MediaQuery.of(context).size.height / 3,
+                        width: 70,
+                        child: RotatedBox(
+                          quarterTurns: 3,
+                          child: new StatefulBuilder(builder:
+                              (BuildContext context, StateSetter setState) {
+                            return new Container(
+                                child: new Slider(
+                              value: _controller.thickness,
+                              onChanged: (double value) => setState(() {
+                                _controller.thickness = value;
+                              }),
+                              min: 1.0,
+                              max: 40.0,
+                              activeColor: Colors.red,
+                              inactiveColor: Colors.redAccent,
+                            ));
                           }),
-                          min: 1.0,
-                          max: 40.0,
-                          activeColor: Colors.red,
-                          inactiveColor: Colors.redAccent,
-                        ));
+                        ),
+                      ),
+                      new ColorPickerButton(_controller, false),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      new ColorPickerButton(_controller, true),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      StatefulBuilder(builder:
+                          (BuildContext context, StateSetter setState) {
+                        return new RotatedBox(
+                            quarterTurns: _controller.eraseMode ? 2 : 0,
+                            child: IconButton(
+                                icon: new Icon(
+                                  Icons.create,
+                                  color: Colors.red,
+                                  size: 28,
+                                ),
+                                tooltip: (_controller.eraseMode
+                                        ? 'Disable'
+                                        : 'Enable') +
+                                    ' eraser',
+                                onPressed: () {
+                                  setState(() {
+                                    _controller.eraseMode =
+                                        !_controller.eraseMode;
+                                  });
+                                }));
                       }),
+                      IconButton(
+                          icon: new Icon(
+                            Icons.undo,
+                            color: Colors.red,
+                            size: 28,
+                          ),
+                          tooltip: 'Undo',
+                          onPressed: () {
+                            if (_controller.isEmpty) {
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      new Text('Nothing to undo'));
+                            } else {
+                              _controller.undo();
+                            }
+                          }),
+                      IconButton(
+                          icon: new Icon(
+                            Icons.move_to_inbox,
+                            color: _ismoved ? Colors.blue : Colors.red,
+                            size: 28,
+                          ),
+                          tooltip: 'Move',
+                          onPressed: () {
+                            setState(() {
+                              _ismoved = !_ismoved;
+                            });
+                          }),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  top: 10,
+                  child: Container(
+                    height: 40,
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      children: actions,
                     ),
                   ),
-                  new ColorPickerButton(_controller, false),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  new ColorPickerButton(_controller, true),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  StatefulBuilder(
-                      builder: (BuildContext context, StateSetter setState) {
-                    return new RotatedBox(
-                        quarterTurns: _controller.eraseMode ? 2 : 0,
-                        child: IconButton(
-                            icon: new Icon(
-                              Icons.create,
-                              color: Colors.red,
-                              size: 28,
-                            ),
-                            tooltip:
-                                (_controller.eraseMode ? 'Disable' : 'Enable') +
-                                    ' eraser',
-                            onPressed: () {
-                              setState(() {
-                                _controller.eraseMode = !_controller.eraseMode;
-                              });
-                            }));
-                  }),
-                  IconButton(
-                      icon: new Icon(
-                        Icons.undo,
-                        color: Colors.red,
-                        size: 28,
-                      ),
-                      tooltip: 'Undo',
-                      onPressed: () {
-                        if (_controller.isEmpty) {
-                          showModalBottomSheet(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  new Text('Nothing to undo'));
-                        } else {
-                          _controller.undo();
-                        }
-                      }),
-                ],
-              ),
-            ),
-            Positioned(
-              top: 10,
-              child: Container(
-                height: 40,
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  children: actions,
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -194,32 +256,33 @@ class _CreateMuralScreenState extends State<CreateMuralScreen> {
       _finished = true;
     });
     await Navigator.of(context)
-        .push(new MaterialPageRoute(builder: (BuildContext context) {
+        .push(MaterialPageRoute(builder: (BuildContext context) {
       return new Scaffold(
         // appBar: new AppBar(
         //   title: const Text('View your image'),
         // ),
+
         body: Stack(children: [
-          new Container(
+          Container(
             alignment: Alignment.center,
-            child: new FutureBuilder<Uint8List>(
+            child: FutureBuilder<Uint8List>(
               future: picture.toPNG(),
               builder:
                   (BuildContext context, AsyncSnapshot<Uint8List> snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.done:
                     if (snapshot.hasError) {
-                      return new Text('Error: ${snapshot.error}');
+                      return Text('Error: ${snapshot.error}');
                     } else {
                       return Image.memory(snapshot.data!);
                     }
                   default:
-                    return new Container(
-                      child: new FractionallySizedBox(
+                    return Container(
+                      child: FractionallySizedBox(
                         widthFactor: 0.1,
-                        child: new AspectRatio(
+                        child: AspectRatio(
                             aspectRatio: 1.0,
-                            child: new CircularProgressIndicator()),
+                            child: CircularProgressIndicator()),
                         alignment: Alignment.center,
                       ),
                     );

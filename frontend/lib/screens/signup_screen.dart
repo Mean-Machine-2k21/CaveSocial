@@ -95,7 +95,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     double height = MediaQuery.of(context).size.height;
     var themeBloc = BlocProvider.of<ThemeBloc>(context);
     //  themeBloc.add(ThemeEvent.change);
-    print('heyyyyyyyyy');
+    print('hey');
     print(themeBloc.darkMode);
     print(themeBloc.main);
     print(themeBloc.style);
