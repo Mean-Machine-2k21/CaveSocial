@@ -6,7 +6,7 @@ const auth = require('../Middleware/Auth');
 const ObjectId = require("mongodb").ObjectId;
 
 router.post('/api/createmural', auth, async (req, res) => {
-    console.log(req.user);
+    // console.log(req.user);
     try {
         let mural;
         if (req.body.flipbook) {
@@ -133,13 +133,39 @@ router.get('/api/murals', auth, async (req, res) => {
             { $limit: nPerPage }
         ]);
 
-        console.log(response);
+        // console.log(response);
         res.status(200).json({ murals: response });
     } catch (error) {
         console.log(error);
         res.status(400).json({ msg: 'Something went wrong' });
     }
 });
+router.get('/api/following/murals', auth, async (req, res) => {
+    try {
+        const pageNumber = req.query.pagenumber;
+        const nPerPage = 5;
+        const response = await Mural.aggregate([
+            { $match: { isComment: false, creatorId: { $in: req.user.following } } },
+            {
+                $project: {
+                    _id: 1, imageUrl: "$content", creatorUsername: 1, creatorId: 1, likedCount: { $size: "$likes" },
+                    commentCount: { $size: "$comments" }, flipbook: 1,
+                    isLiked: { $in: [ObjectId(req.user._id), "$likes"] }
+                }
+            },
+            { $sort: { _id: -1 } },
+            { $skip: pageNumber * nPerPage },
+            { $limit: nPerPage }
+        ]);
+
+        // console.log(response);
+        res.status(200).json({ murals: response });
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ msg: 'Something went wrong' });
+    }
+});
+
 router.get('/api/commentsonmural/:id', auth, async (req, res) => {
     const _id = req.params.id;
 
@@ -153,9 +179,9 @@ router.get('/api/commentsonmural/:id', auth, async (req, res) => {
         // const objectIdArrays = muralResponse.comments.map(item => {
         //     return ObjectId(item.muralCommentId);
         // });
-        console.log(muralCommentsResponse.comments);
+        // console.log(muralCommentsResponse.comments);
         const objectIdArrays = muralCommentsResponse.comments;
-        console.log(objectIdArrays);
+        // console.log(objectIdArrays);
         const response = await Mural.aggregate([
             { $match: { isComment: true, _id: { $in: objectIdArrays } } },
             {
@@ -170,7 +196,7 @@ router.get('/api/commentsonmural/:id', auth, async (req, res) => {
             { $limit: nPerPage }
         ]);
 
-        console.log(response);
+        // console.log(response);
         res.status(200).json({ comments: response });
     } catch (error) {
         console.log(error);
@@ -187,7 +213,7 @@ router.get('/api/likesonmural/:id', auth, async (req, res) => {
         const muralLikes = await Mural.findById(_id)
             .select({ likes: 1 })
             .populate({ path: "likes", select: "_id username avatar_url" });
-        console.log(muralLikes);
+        // console.log(muralLikes);
         res.status(200).json({ likes: muralLikes.likes });
     } catch (error) {
         console.log(error);
