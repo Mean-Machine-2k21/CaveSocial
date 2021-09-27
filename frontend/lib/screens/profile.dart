@@ -9,12 +9,14 @@ import 'package:frontend/global.dart';
 import 'package:frontend/models/mural_model.dart';
 import 'package:frontend/models/user_model.dart';
 import 'package:frontend/screens/feed_page.dart';
+import 'package:frontend/widget/create_post_modal.dart';
 import 'package:frontend/widget/shimmer_image.dart';
 
 import './edit_profile.dart';
 import 'package:flutter/material.dart';
 import '../global.dart';
 import '../services/api_handling.dart';
+import '../services/logger.dart';
 
 class Profile extends StatefulWidget {
   static const routeName = '/profile';
@@ -48,7 +50,8 @@ class _ProfileState extends State<Profile> {
       print("YYYYYYYYYther Username ---> ${widget.otherUsername}");
       if (widget.otherUsername == null) {
         username = await localRead('username');
-        id = await localRead('id');
+        id = await localRead('userid');
+        logger.d('Main Id -> ${id}');
       } else {
         username = widget.otherUsername!;
         id = widget.otherId!;
@@ -183,6 +186,71 @@ class _ProfileState extends State<Profile> {
                             color: themeBloc.materialStyle.shade600,
                             fontSize: 20,
                           ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(2.0),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    '${user!.followersCount ?? 0}',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text('Followers'),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(2.0),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    '${user!.followingCount ?? 0}',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text('Following'),
+                                ],
+                              ),
+                            ),
+                            isOther
+                                ? Padding(
+                                    padding: EdgeInsets.all(2.0),
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        if (user!.isFollowed) {
+                                          setState(() {
+                                            user!.isFollowed =
+                                                !user!.isFollowed;
+                                            user!.followersCount--;
+                                          });
+
+                                          muralRepository.unfollowUser(
+                                              userId: user!.id);
+                                        } else {
+                                          setState(() {
+                                            user!.isFollowed =
+                                                !user!.isFollowed;
+                                            user!.followersCount++;
+                                          });
+
+                                          muralRepository.followUser(
+                                              userId: user!.id);
+                                        }
+                                      },
+                                      child: user!.isFollowed
+                                          ? Text('Unfollow')
+                                          : Text('Follow'),
+                                    ),
+                                  )
+                                : Container(),
+                          ],
                         ),
                       ),
                       BlocBuilder<MuralBloc, MuralState>(

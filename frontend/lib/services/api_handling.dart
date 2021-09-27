@@ -6,7 +6,7 @@ import 'package:frontend/global.dart';
 import 'package:frontend/models/liked_user.dart';
 import 'package:frontend/models/mural_model.dart';
 import 'package:frontend/models/user_model.dart';
-import 'package:logger/logger.dart';
+import 'logger.dart';
 
 class ApiHandling {
   static const String url = SERVER_IP;
@@ -18,14 +18,6 @@ class ApiHandling {
       // queryParameters: ,
     );
   }
-
-  var logger = Logger(
-    printer: PrettyPrinter(),
-  );
-
-  var loggerNoStack = Logger(
-    printer: PrettyPrinter(methodCount: 0),
-  );
 
   Future<void> editProfile({
     required String avatarUrl,
@@ -190,6 +182,38 @@ class ApiHandling {
         data: {
           'muralId': muralId,
         },
+      );
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> followUser(String userId) async {
+    logger.d('UserId ---> ${userId}');
+
+    try {
+      final token = await localRead('jwt');
+      final response = await Dio(options).put(
+        url + '/api/follow/${userId}',
+        options: Options(headers: {
+          'Authorization': 'Bearer $token',
+        }),
+      );
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> unfollowUser(String userId) async {
+    logger.d('UserId ---> ${userId}');
+
+    try {
+      final token = await localRead('jwt');
+      final response = await Dio(options).put(
+        url + '/api/unfollow/userId',
+        options: Options(headers: {
+          'Authorization': 'Bearer $token',
+        }),
       );
     } catch (e) {
       print(e.toString());
