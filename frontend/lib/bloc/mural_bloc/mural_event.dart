@@ -4,7 +4,8 @@ abstract class MuralEvent {}
 
 class FetchAllMurals extends MuralEvent {
   int page;
-  FetchAllMurals({required this.page});
+  String type;
+  FetchAllMurals({required this.page, required this.type});
 } //pagination to be done
 
 //This is for any profile read.

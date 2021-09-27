@@ -18,6 +18,10 @@ class MuralRepository {
     return await _apiHandling.fetchAllMurals(page);
   }
 
+  fetchFollowingMurals(int page) async {
+    return await _apiHandling.fetchFollowingMurals(page);
+  }
+
   createMural({required String content, Flipbook? flipbook}) async {
     return await _apiHandling.createMural(content, flipbook);
   }

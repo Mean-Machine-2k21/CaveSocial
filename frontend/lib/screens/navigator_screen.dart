@@ -10,6 +10,7 @@ import 'package:frontend/widget/create_post_modal.dart';
 import 'package:frontend/widget/navigation_bar.dart';
 
 import '../global.dart';
+import 'followers_feed.dart';
 
 class NavigatorPage extends StatefulWidget {
   NavigatorPage();
@@ -34,12 +35,19 @@ class _NavigatorPageState extends State<NavigatorPage> {
         value: themeBloc,
         child: BlocProvider.value(
           value: muralBloc,
-          child: Feed(),
+          child: FollowersFeed(),
         ),
       ),
       Text(
         'Index 2: School',
         style: optionStyle,
+      ),
+      BlocProvider.value(
+        value: themeBloc,
+        child: BlocProvider.value(
+          value: muralBloc,
+          child: Feed(),
+        ),
       ),
       BlocProvider.value(
         value: themeBloc,
@@ -56,7 +64,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
 
   @override
   Widget build(BuildContext context) {
-   // theme
+    // theme
     return Scaffold(
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),

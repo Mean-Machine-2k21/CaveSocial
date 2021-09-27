@@ -7,6 +7,7 @@ import 'package:frontend/models/mural_model.dart';
 import 'package:frontend/models/user_list.dart';
 import 'package:frontend/models/user_model.dart';
 import 'package:frontend/repository/mural_repository.dart';
+import 'package:frontend/services/logger.dart';
 
 import '../../global.dart';
 
@@ -22,7 +23,13 @@ class MuralBloc extends Bloc<MuralEvent, MuralState> {
       if (event is FetchAllMurals) {
         yield FetchingMurals();
         List<Mural> murals = [];
-        murals = await muralRepository.fetchAllMurals(event.page);
+        if (event.type == 'all') {
+          murals = await muralRepository.fetchAllMurals(event.page);
+        } else {
+          logger.i('Following Function');
+          murals = await muralRepository.fetchFollowingMurals(event.page);
+        }
+
         yield FetchedMurals(Murals: murals);
       } else if (event is FetchProfileMurals) {
         yield FetchingProfileMurals();

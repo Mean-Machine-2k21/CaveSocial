@@ -211,7 +211,7 @@ class ApiHandling {
     try {
       final token = await localRead('jwt');
       final response = await Dio(options).put(
-        url + '/api/unfollow/userId',
+        url + '/api/unfollow/${userId}',
         options: Options(headers: {
           'Authorization': 'Bearer $token',
         }),
@@ -233,6 +233,38 @@ class ApiHandling {
             'Authorization': 'Bearer $token',
           }),
           queryParameters: {
+            'pagenumber': pageNo,
+          });
+
+      final parsed = json.decode(response.data ?? "") as Map<String, dynamic>;
+
+      parsed["murals"].forEach((element) {
+        if (element["flipbook"] != null) {
+          murals.add(returnMuralWithFlipbook(element));
+        } else {
+          murals.add(returnMural(element));
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+
+    return murals;
+  }
+
+  Future<List<Mural>> fetchFollowingMurals(int pageNo) async {
+    logger.i({pageNo});
+    List<Mural> murals = [];
+
+    try {
+      final token = await localRead('jwt');
+
+      Response<String> response =
+          await Dio(options).get(url + '/api/following/murals/',
+              options: Options(headers: {
+                'Authorization': 'Bearer $token',
+              }),
+              queryParameters: {
             'pagenumber': pageNo,
           });
 
