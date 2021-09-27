@@ -103,7 +103,8 @@ class _FeedCommentState extends State<FeedComment> {
                       );
                     else if (state is FetchedMuralCommentList &&
                         state.muralCommentList.length != 0) {
-                      muralComments.addAll(state.muralCommentList);
+                    //  muralComments.addAll(state.muralCommentList);
+                      muralComments = state.muralCommentList;
                       print('mural Commentssssss---> ${muralComments.length}');
                       return Expanded(
                         child: Padding(
