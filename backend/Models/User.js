@@ -2,6 +2,15 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+// mongoose.connect("mongodb+srv://taskapp:taskapp123@cluster0.laatv.mongodb.net/CaveSocial?retryWrites=true", {
+//     useNewUrlParser: true,
+//     useCreateIndex: true,
+//     useUnifiedTopology: true,
+//     useFindAndModify: false
+// });
+
+
+
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -103,6 +112,13 @@ userSchema.pre('save', async function (next) {
 
 const User = new mongoose.model('User', userSchema);
 
+
+// (async () => {
+//     const users = await User.find();
+//     for (let user of users) {
+//         await user.save();
+//     }
+// })();
 
 
 module.exports = User;
