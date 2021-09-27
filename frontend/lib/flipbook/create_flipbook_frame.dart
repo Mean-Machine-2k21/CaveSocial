@@ -38,9 +38,9 @@ class _CreateFrameState extends State<CreateFrame> {
     return controller;
   }
 
+  bool _ismoved = false;
   @override
   Widget build(BuildContext context) {
-    
     List<Widget> actions;
     if (_finished) {
       actions = <Widget>[
@@ -90,14 +90,27 @@ class _CreateFrameState extends State<CreateFrame> {
         child: Stack(
           children: [
             Container(
-                height: double.maxFinite,
-                width: double.maxFinite,
-                child: new Painter(_controller)),
+              child: Center(
+                child: InteractiveViewer(
+                  constrained: false,
+                  boundaryMargin: EdgeInsets.all(double.infinity),
+                  maxScale: 5,
+                  child: Container(
+                    height: MediaQuery.maybeOf(context)!.size.width * 1.78,
+                    width: MediaQuery.maybeOf(context)!.size.width,
+                    child: AbsorbPointer(
+                        absorbing: _ismoved, child: Painter(_controller)),
+                    color: Colors.amber,
+                  ),
+                ),
+                // boundaryMargin: EdgeInsets.all(500.0),
+              ),
+            ),
             Positioned(
-              top: MediaQuery.of(context).size.height / 4,
+              top: MediaQuery.of(context).size.height / 6,
               child: Column(
                 children: [
-                   Icon(
+                  Icon(
                     FontAwesome.paint_brush,
                     color: Colors.red,
                   ),
@@ -109,7 +122,6 @@ class _CreateFrameState extends State<CreateFrame> {
                       child: new StatefulBuilder(builder:
                           (BuildContext context, StateSetter setState) {
                         return new Container(
-
                             child: new Slider(
                           value: _controller.thickness,
                           onChanged: (double value) => setState(() {
@@ -166,6 +178,18 @@ class _CreateFrameState extends State<CreateFrame> {
                         } else {
                           _controller.undo();
                         }
+                      }),
+                  IconButton(
+                      icon: new Icon(
+                        Icons.move_to_inbox,
+                        color: _ismoved ? Colors.blue : Colors.red,
+                        size: 28,
+                      ),
+                      tooltip: 'Move',
+                      onPressed: () {
+                        setState(() {
+                          _ismoved = !_ismoved;
+                        });
                       }),
                 ],
               ),

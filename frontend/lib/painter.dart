@@ -99,15 +99,15 @@ class _PainterState extends State<Painter> {
       child = new GestureDetector(
         child: child,
         onPanStart: _onPanStart,
+        // onScaleStart: ,
+        // onScaleUpdate: ,
+        // onScaleEnd: ,
+          
         onPanUpdate: _onPanUpdate,
         onPanEnd: _onPanEnd,
       );
     }
-    return new Container(
-      child: child,
-      width: double.infinity,
-      height: double.infinity,
-    );
+    return child;
   }
 
   void _onPanStart(DragStartDetails start) {
@@ -247,7 +247,7 @@ class PictureDetails {
   ///
   /// This might throw a [FlutterError], if flutter is not able to convert
   /// the intermediate [Image] to a PNG.
-  
+
   Future<ByteData> toPNGa() async {
     Image image = await toImage();
     ByteData? data = await image.toByteData(format: ImageByteFormat.png);
