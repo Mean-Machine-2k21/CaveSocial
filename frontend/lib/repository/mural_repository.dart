@@ -8,8 +8,9 @@ class MuralRepository {
   fetchProfileMurals(
       {required List<Mural> murals,
       required String username,
-      required int page}) async {
-    return await _apiHandling.fetchProfileMurals(username, murals, page);
+      required int page,
+      required String id}) async {
+    return await _apiHandling.fetchProfileMurals(username, murals, page, id);
   }
 
   fetchAllMurals(int page) async {
@@ -26,6 +27,14 @@ class MuralRepository {
 
   unLikeMural({required String muralId}) async {
     return await _apiHandling.unLikeMural(muralId);
+  }
+
+  followUser({required String userId}) async {
+    return await _apiHandling.followUser(userId);
+  }
+
+  unfollowUser({required String userId}) async {
+    return await _apiHandling.unfollowUser(userId);
   }
 
   fetchMuralLikeList({required String muralid, required int page}) async {

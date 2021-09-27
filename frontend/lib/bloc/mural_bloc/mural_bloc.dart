@@ -28,7 +28,7 @@ class MuralBloc extends Bloc<MuralEvent, MuralState> {
         //var username = await localRead('username');
         List<Mural> murals = [];
         User user = await muralRepository.fetchProfileMurals(
-            murals: murals, username: event.username, page: event.page);
+            murals: murals, username: event.username, page: event.page, id: event.id);
         yield FetchedUserProfile(murals: murals, user: user);
       } else if (event is CreateMural) {
         await muralRepository.createMural(

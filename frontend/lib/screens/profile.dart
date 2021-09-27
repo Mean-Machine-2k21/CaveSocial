@@ -9,17 +9,20 @@ import 'package:frontend/global.dart';
 import 'package:frontend/models/mural_model.dart';
 import 'package:frontend/models/user_model.dart';
 import 'package:frontend/screens/feed_page.dart';
+import 'package:frontend/widget/create_post_modal.dart';
 import 'package:frontend/widget/shimmer_image.dart';
 
 import './edit_profile.dart';
 import 'package:flutter/material.dart';
 import '../global.dart';
 import '../services/api_handling.dart';
+import '../services/logger.dart';
 
 class Profile extends StatefulWidget {
   static const routeName = '/profile';
   String? otherUsername;
-  Profile({Key? key, this.otherUsername}) : super(key: key);
+  String? otherId;
+  Profile({Key? key, this.otherUsername, this.otherId}) : super(key: key);
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -33,6 +36,7 @@ class _ProfileState extends State<Profile> {
   bool isOther = false;
 
   late String username;
+  late String id;
   var themeBloc, muralBloc;
   int cnt = 0;
   @override
@@ -46,16 +50,20 @@ class _ProfileState extends State<Profile> {
       print("YYYYYYYYYther Username ---> ${widget.otherUsername}");
       if (widget.otherUsername == null) {
         username = await localRead('username');
+        id = await localRead('userid');
+        logger.d('Main Id -> ${id}');
       } else {
         username = widget.otherUsername!;
+        id = widget.otherId!;
         isOther = true;
       }
 
       print("OOOOOOOOOOther Username ---> ${username}");
 
       final apiRepository = ApiHandling();
-      muralBloc.add(FetchProfileMurals(username: username, page: cnt++));
-      user = await apiRepository.fetchProfileMurals(username, murals, 0);
+      muralBloc
+          .add(FetchProfileMurals(username: username, page: cnt++, id: id));
+      user = await apiRepository.fetchProfileMurals(username, murals, 0, id);
       print('username --> ${user!.username}');
 
       print('mural Length ${murals.length}');
@@ -178,6 +186,71 @@ class _ProfileState extends State<Profile> {
                             color: themeBloc.materialStyle.shade600,
                             fontSize: 20,
                           ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(2.0),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    '${user!.followersCount ?? 0}',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text('Followers'),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(2.0),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    '${user!.followingCount ?? 0}',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text('Following'),
+                                ],
+                              ),
+                            ),
+                            isOther
+                                ? Padding(
+                                    padding: EdgeInsets.all(2.0),
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        if (user!.isFollowed) {
+                                          setState(() {
+                                            user!.isFollowed =
+                                                !user!.isFollowed;
+                                            user!.followersCount--;
+                                          });
+
+                                          muralRepository.unfollowUser(
+                                              userId: user!.id);
+                                        } else {
+                                          setState(() {
+                                            user!.isFollowed =
+                                                !user!.isFollowed;
+                                            user!.followersCount++;
+                                          });
+
+                                          muralRepository.followUser(
+                                              userId: user!.id);
+                                        }
+                                      },
+                                      child: user!.isFollowed
+                                          ? Text('Unfollow')
+                                          : Text('Follow'),
+                                    ),
+                                  )
+                                : Container(),
+                          ],
                         ),
                       ),
                       BlocBuilder<MuralBloc, MuralState>(
