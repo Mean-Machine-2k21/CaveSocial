@@ -85,7 +85,7 @@ router.get('/api/profile/:id', auth, async (req, res) => {
         if (!_id.match(/^[0-9a-fA-F]{24}$/)) {
             return res.status(404).send();
         }
-        const user = await User.findOne({ _id }, { followersCount: { $size: "$followers" }, followingCount: { $size: "$following" }, username: 1, avatar_url: 1, bio_url: 1 })
+        const user = await User.findOne({ _id }, { followersCount: { $size: "$followers" }, followingCount: { $size: "$following" }, username: 1, avatar_url: 1, bio_url: 1, isFollowed: { $in: [ObjectId(req.user._id), "$followers"] } })
             .exec();
         if (!user) {
             return res.status(400).json({ msg: 'User Not Found' });
