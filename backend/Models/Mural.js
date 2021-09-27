@@ -8,27 +8,17 @@ const MuralSchema = new mongoose.Schema({
     },
     likes: {
         type: [{
-            likedByUserId: {
-                type: mongoose.Schema.Types.ObjectId,
-                required: true,
-                ref: 'User'
-            },
-            likedByUserName: {
-                type: String,
-                required: true,
-                ref: 'User',
-                index: true
-            }
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: 'User'
         }]
     },
     comments: {
         type: [{
-            muralCommentId: {
-                type: mongoose.Schema.Types.ObjectId,
-                required: true,
-                ref: 'Mural'
-            }
-        }],
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: 'Mural'
+        }]
     },
     creatorId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -40,7 +30,6 @@ const MuralSchema = new mongoose.Schema({
         type: String,
         required: true,
         ref: 'User',
-        index: true
     },
     isComment: {
         type: Boolean,
@@ -65,5 +54,27 @@ const MuralSchema = new mongoose.Schema({
 });
 
 const Mural = new mongoose.model('Mural', MuralSchema);
+// (async () => {
+//     try {
+//         const murals = await Mural2.find();
+//         for (let mural of murals) {
+//             const newMural = new Mural({
+//                 _id: mural._id,
+//                 isComment: mural.isComment,
+//                 content: mural.content,
+//                 creatorId: mural.creatorId,
+//                 creatorUsername: mural.creatorUsername,
+//                 createdAt: mural.createdAt,
+//                 updatedAt: mural.updateAt,
+//                 __v: mural.__v,
+//                 likes: mural.likes,
+//                 comments: mural.comments
+//             });
+//             await newMural.save();
+//         }
+//     } catch (error) {
+//         console.log(error);
+//     }
+// })();
 
 module.exports = Mural;
