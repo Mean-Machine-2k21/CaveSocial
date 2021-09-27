@@ -12,6 +12,12 @@ const MuralSchema = new mongoose.Schema({
                 type: mongoose.Schema.Types.ObjectId,
                 required: true,
                 ref: 'User'
+            },
+            likedByUserName: {
+                type: String,
+                required: true,
+                ref: 'User',
+                index: true
             }
         }]
     },
@@ -24,8 +30,14 @@ const MuralSchema = new mongoose.Schema({
             }
         }],
     },
-    creator: {
+    creatorId: {
         type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User',
+        index: true
+    },
+    creatorUsername: {
+        type: String,
         required: true,
         ref: 'User',
         index: true
@@ -34,6 +46,19 @@ const MuralSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
         default: false
+    },
+    flipbook: {
+        type: {
+            frames: {
+                type: Number,
+                required: true,
+            },
+            duration: {
+                type: Number,
+                required: true
+            }
+        },
+        required: false
     }
 }, {
     timestamps: true
