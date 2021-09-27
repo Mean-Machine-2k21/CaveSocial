@@ -41,14 +41,21 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
         ),
       },
       {
-        'name': 'Profile',
+        'name': 'Explore',
         'child': Icon(
-          Icons.person,
+          MaterialIcons.explore,
           color: _selectedIndex == 2 ? themeBloc.style : themeBloc.contrast,
         ),
       },
+      {
+        'name': 'Profile',
+        'child': Icon(
+          Icons.person,
+          color: _selectedIndex == 3 ? themeBloc.style : themeBloc.contrast,
+        ),
+      },
     ];
-    var itemWidth = MediaQuery.of(context).size.width / 3;
+    var itemWidth = MediaQuery.of(context).size.width / 4;
     return Container(
       height: MediaQuery.of(context).size.height * 0.07,
       decoration: BoxDecoration(boxShadow: [
@@ -102,7 +109,6 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
             children: [
               for (int i = 0; i < _items.length; i++)
                 NavigationBarItem(
-                  
                   label: _items[i]['name'] as String,
                   child: _items[i]['child'] as Widget,
                   onSelect: () {
@@ -114,7 +120,7 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
                   textColor: (_selectedIndex == i)
                       ? themeBloc.style
                       : themeBloc.contrast,
-                back:themeBloc.main,
+                  back: themeBloc.main,
                 ),
             ],
           ),
@@ -142,7 +148,7 @@ class NavigationBarItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-     // color: back,
+      // color: back,
       width: MediaQuery.of(context).size.width / (5),
       padding: EdgeInsets.all(5),
       child: ClipRRect(

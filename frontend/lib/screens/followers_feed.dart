@@ -8,14 +8,14 @@ import 'package:frontend/models/mural_model.dart';
 
 import 'feed_page.dart';
 
-class Feed extends StatefulWidget {
-  const Feed({Key? key}) : super(key: key);
+class FollowersFeed extends StatefulWidget {
+  const FollowersFeed({Key? key}) : super(key: key);
 
   @override
-  _FeedState createState() => _FeedState();
+  _FollowersFeedState createState() => _FollowersFeedState();
 }
 
-class _FeedState extends State<Feed> {
+class _FollowersFeedState extends State<FollowersFeed> {
   List<Mural> murals = [];
   int counter = 0;
   int pageNo = 0;
@@ -25,7 +25,7 @@ class _FeedState extends State<Feed> {
     List<Mural> murals = [];
     var muralBloc = BlocProvider.of<MuralBloc>(context);
     var themeBloc = BlocProvider.of<ThemeBloc>(context);
-    muralBloc.add(FetchAllMurals(page: counter++, type: 'all'));
+    muralBloc.add(FetchAllMurals(page: counter++, type: 'following'));
 
     return BlocBuilder<ThemeBloc, ThemeData>(
       builder: (context, state) {
@@ -49,7 +49,8 @@ class _FeedState extends State<Feed> {
                   if (index == murals.length - 2) {
                     pageNo = murals.length - 2;
                     print('Pagggggeeeeeeeee----> ${pageNo}');
-                    muralBloc.add(FetchAllMurals(page: counter++,  type: 'all'));
+                    muralBloc.add(
+                        FetchAllMurals(page: counter++, type: 'following'));
                     print('Pagggggeeeeeeeee2222222222----> ${pageNo}');
                     pageController.jumpToPage(pageNo);
                   }

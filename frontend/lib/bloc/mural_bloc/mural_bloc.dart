@@ -4,8 +4,10 @@ import 'package:frontend/bloc/mural_bloc/mural_event.dart';
 import 'package:frontend/bloc/mural_bloc/mural_state.dart';
 import 'package:frontend/models/liked_user.dart';
 import 'package:frontend/models/mural_model.dart';
+import 'package:frontend/models/user_list.dart';
 import 'package:frontend/models/user_model.dart';
 import 'package:frontend/repository/mural_repository.dart';
+import 'package:frontend/services/logger.dart';
 
 import '../../global.dart';
 
@@ -21,14 +23,23 @@ class MuralBloc extends Bloc<MuralEvent, MuralState> {
       if (event is FetchAllMurals) {
         yield FetchingMurals();
         List<Mural> murals = [];
-        murals = await muralRepository.fetchAllMurals(event.page);
+        if (event.type == 'all') {
+          murals = await muralRepository.fetchAllMurals(event.page);
+        } else {
+          logger.i('Following Function');
+          murals = await muralRepository.fetchFollowingMurals(event.page);
+        }
+
         yield FetchedMurals(Murals: murals);
       } else if (event is FetchProfileMurals) {
         yield FetchingProfileMurals();
         //var username = await localRead('username');
         List<Mural> murals = [];
         User user = await muralRepository.fetchProfileMurals(
-            murals: murals, username: event.username, page: event.page, id: event.id);
+            murals: murals,
+            username: event.username,
+            page: event.page,
+            id: event.id);
         yield FetchedUserProfile(murals: murals, user: user);
       } else if (event is CreateMural) {
         await muralRepository.createMural(
@@ -45,9 +56,16 @@ class MuralBloc extends Bloc<MuralEvent, MuralState> {
         List<LikedUsers> usernames = [];
         usernames = await muralRepository.fetchMuralLikeList(
             muralid: event.muralid, page: event.page);
-        print('commmmmmmmmmmmiiiiiiiinnnnnnnnnnnnnnnnnngggggggggggggg');
-        print(usernames.length);
+        //print('commmmmmmmmmmmiiiiiiiinnnnnnnnnnnnnnnnnngggggggggggggg');
+        //print(usernames.length);
         yield FetchedMuralLikeList(usernames: usernames);
+      } else if (event is FetchUserList) {
+        yield FetchingUserList();
+        List<UserList> users = [];
+
+        users = await muralRepository.fetchUserList(
+            userId: event.userid, type: event.type);
+        yield FetchedUserList(users: users);
       } else if (event is FetchMuralCommentList) {
         yield MuralCommentLoading();
         List<Mural> muralCommentList = [];
