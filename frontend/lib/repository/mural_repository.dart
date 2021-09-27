@@ -29,6 +29,14 @@ class MuralRepository {
     return await _apiHandling.unLikeMural(muralId);
   }
 
+  followUser({required String userId}) async {
+    return await _apiHandling.followUser(userId);
+  }
+
+  unfollowUser({required String userId}) async {
+    return await _apiHandling.unfollowUser(userId);
+  }
+
   fetchMuralLikeList({required String muralid, required int page}) async {
     print('ddddddddddddddddddddd');
     return await _apiHandling.fetchLikesonMural(muralid);
