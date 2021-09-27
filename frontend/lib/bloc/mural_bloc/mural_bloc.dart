@@ -55,8 +55,9 @@ class MuralBloc extends Bloc<MuralEvent, MuralState> {
       } else if (event is FetchUserList) {
         yield FetchingUserList();
         List<UserList> users = [];
-        
-        users = await muralRepository.fetchUserList(userId: event.userid,  type: event.type);
+
+        users = await muralRepository.fetchUserList(
+            userId: event.userid, type: event.type);
         yield FetchedUserList(users: users);
       } else if (event is FetchMuralCommentList) {
         yield MuralCommentLoading();

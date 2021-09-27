@@ -94,12 +94,12 @@ router.get('/api/profile/:id', auth, async (req, res) => {
 
         // console.log(user);
         const murals = await Mural.aggregate([
-            { $match: { isComment: false, creatorUsername: user.username } },
+            { $match: { isComment: false, creatorId: user._id } },
             {
                 $project: {
                     _id: 1, imageUrl: "$content", creatorUsername: 1, creatorId: 1, likedCount: { $size: "$likes" },
                     commentCount: { $size: "$comments" }, flipbook: 1,
-                    isLiked: { $in: [req.user.username, "$likes.likedByUserName"] }
+                    isLiked: { $in: [ObjectId(req.user._id), "$likes"] }
                 }
             },
             { $sort: { _id: -1 } }
@@ -118,14 +118,25 @@ router.get('/api/user/:id/followers', auth, async (req, res) => {
         if (!_id.match(/^[0-9a-fA-F]{24}$/)) {
             return res.status(404).send();
         }
+        // console.log(typeof(req.user.following[0]));
         const followersInfo = await User.findOne({ _id }, { followersCount: { $size: "$followers" } })
             .populate({ path: "followers", select: "_id username avatar_url" })
             .exec();
         if (!followersInfo) {
             return res.status(400).json({ msg: 'User Not Found' });
         }
+
+        const followingSet = new Set();
+        req.user.following.forEach(followingId => { followingSet.add(followingId.toString()); });
+        followersObj = followersInfo.toObject();
+        followersObj.followers.forEach(follower => {
+            follower['isFollowed'] = followingSet.has(follower._id.toString());
+            return follower;
+        });
+        // console.log(followersInfo);
+
         res.status(200).json({
-            msg: 'User Found', ...(followersInfo.toObject()),
+            msg: 'User Found', ...followersObj,
         });
     } catch (error) {
         console.log(error);
@@ -138,14 +149,22 @@ router.get('/api/user/:id/following', auth, async (req, res) => {
         if (!_id.match(/^[0-9a-fA-F]{24}$/)) {
             return res.status(404).send();
         }
-        const followersInfo = await User.findOne({ _id }, { followingCount: { $size: "$following" } })
+        const followingInfo = await User.findOne({ _id }, { followingCount: { $size: "$following" } })
             .populate({ path: "following", select: "_id username avatar_url" })
             .exec();
-        if (!followersInfo) {
+        if (!followingInfo) {
             return res.status(400).json({ msg: 'User Not Found' });
         }
+        const followingSet = new Set();
+        req.user.following.forEach(followingId => { followingSet.add(followingId.toString()); });
+        followingInfoObj = followingInfo.toObject();
+        followingInfoObj.following.forEach(following => {
+            following['isFollowed'] = followingSet.has(following._id.toString());
+            return following;
+        });
+
         res.status(200).json({
-            msg: 'User Found', ...(followersInfo.toObject()),
+            msg: 'User Found', ...(followingInfoObj),
         });
     } catch (error) {
         console.log(error);
@@ -158,6 +177,7 @@ router.put('/api/follow/:id', auth, async (req, res) => {
         if (!_id.match(/^[0-9a-fA-F]{24}$/)) {
             return res.status(404).send();
         }
+        console.log(req.user);
         const updatedUser1Res = await User.updateOne({ _id: ObjectId(req.user._id) }, { $addToSet: { following: [ObjectId(_id)] } });
         const updatedUser2Res = await User.updateOne({ _id: ObjectId(_id) }, { $addToSet: { followers: [ObjectId(req.user._id)] } });
         res.status(200).json({ msg: 'User followed' });

@@ -44,6 +44,7 @@ dependencies:
   shimmer: ^2.0.0
   fancy_shimmer_image: ^2.0.0+1
   logger: ^1.1.0
+  zoom_widget: ^0.2.1
 
 dev_dependencies:
   flutter_test:

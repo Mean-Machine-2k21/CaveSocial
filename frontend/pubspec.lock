@@ -21,7 +21,7 @@ packages:
       name: bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.0.0"
+    version: "7.2.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -546,6 +546,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.1.2"
+  zoom_widget:
+    dependency: "direct main"
+    description:
+      name: zoom_widget
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.1"
 sdks:
   dart: ">=2.13.0 <3.0.0"
   flutter: ">=2.0.0"
