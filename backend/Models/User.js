@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mongoose_fuzzy_searching = require('mongoose-fuzzy-searching');
-
+const ObjectId = require("mongodb").ObjectId;
 // mongoose.connect("mongodb+srv://taskapp:taskapp123@cluster0.laatv.mongodb.net/CaveSocial?retryWrites=true", {
 //     useNewUrlParser: true,
 //     useCreateIndex: true,
@@ -111,18 +111,33 @@ userSchema.pre('save', async function (next) {
 
     next();
 });
-userSchema.plugin(mongoose_fuzzy_searching, { fields: ['username'] });
+userSchema.plugin(mongoose_fuzzy_searching, { fields: [{ name: 'username', escapeSpecialCharacters: false }] });
 const User = new mongoose.model('User', userSchema);
 
 
-(async () => {
-    // const users = await User.find();
-    // const users = await User.fuzzySearch('vik').select({ _id: 1, username: 1, avatar_url: 1 }).exec();
-    // console.log(users);
-    // for (let user of users) {
-    //     await user.save();
-    // }
-})();
+// (async () => {
+//     console.log('hello');
+//     // const abc = await User.updateOne({ _id: ObjectId("60d63ce396b7b83c783cc7b4") }, { "$unset": { "username_fuzzy": 1 } });
+//     // console.log(abc);
+//     // const users = await User.fuzzySearch('vik').select({ _id: 1, username: 1, avatar_url: 1 }).exec();
+//     // const users = await User.findById("60d81cf549cef90015bccd00");
+//     // users.username_fuzzy = [];
+//     // await users.save();
+//     // console.log(users.length);
+//     // await User.updateMany({}, { $unset: { ['username_fuzzy']: 1 } }, { new: true, strict: false });
+//     // const users = await User.find();
+//     // for (let user of users) {
+//     //     await user.save();
+//     // }
+//     // const attrs = ['username'];
+//     // const cursor = User.find().cursor();
+//     // cursor.next(function (error, doc) {
+//     //     // const $unset = attrs.reduce((acc, attr) => ({ ...acc, [`${attr}_fuzzy`]: 1 }), {});
+//     //     return User.findByIdAndUpdate(doc._id, { $unset: { ['username_fuzzy']: 1 } }, { new: true, strict: false });
+//     // });
+//     // const users = await User.updateMany({ 'username_fuzzy': { $exists: true, $ne: null } }, { username_fuzzy: null });
+
+// })();
 
 
 module.exports = User;
