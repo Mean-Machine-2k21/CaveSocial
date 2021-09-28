@@ -398,8 +398,17 @@ class _EditProfileState extends State<EditProfile> {
                       onPressed: () async {
                         await _apiHandling.signOut();
                         localDelete();
-                        Navigator.of(context)
-                            .pushReplacementNamed(LoginScreen.routeName);
+
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => LoginScreen(),
+                          ),
+                          (route) => false,
+                        );
+
+                        // Navigator.of(context)
+                        //     .pushReplacementNamed(LoginScreen.routeName);
                       },
                       child: Text('Sign Out'),
                       style: ElevatedButton.styleFrom(

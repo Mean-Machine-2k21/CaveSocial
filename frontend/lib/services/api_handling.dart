@@ -323,7 +323,7 @@ class ApiHandling {
     try {
       final token = await localRead('jwt');
       Response<String> response = await Dio(options).get(
-        url + '/api/profile/search/{$searchTerm}',
+        url + '/api/search/profile?searchTerm=$searchTerm',
         options: Options(headers: {
           'Authorization': 'Bearer $token',
         }),
