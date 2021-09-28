@@ -222,7 +222,7 @@ class ApiHandling {
   }
 
   Future<List<Mural>> fetchAllMurals(int pageNo) async {
-    loggerNoStack.i({pageNo});
+    loggerNoStack.i('All Murals:- ${pageNo}');
     List<Mural> murals = [];
 
     try {
@@ -248,12 +248,12 @@ class ApiHandling {
     } catch (e) {
       print(e.toString());
     }
-
-    return murals;
+    logger.i(murals.length);
+    return [...murals];
   }
 
   Future<List<Mural>> fetchFollowingMurals(int pageNo) async {
-    logger.i({pageNo});
+    logger.i("Following:- ${pageNo}");
     List<Mural> murals = [];
 
     try {
@@ -268,20 +268,23 @@ class ApiHandling {
             'pagenumber': pageNo,
           });
 
+      logger.i('Following:-- ${response}');
       final parsed = json.decode(response.data ?? "") as Map<String, dynamic>;
 
       parsed["murals"].forEach((element) {
         if (element["flipbook"] != null) {
+          logger.i(element["creatorUsername"]);
           murals.add(returnMuralWithFlipbook(element));
         } else {
+          logger.i(element["creatorUsername"]);
           murals.add(returnMural(element));
         }
       });
     } catch (e) {
       print(e.toString());
     }
-
-    return murals;
+    logger.i(murals.length);
+    return [...murals];
   }
 
   Future<List<UserList>> fetchUserList(String userId, String type) async {

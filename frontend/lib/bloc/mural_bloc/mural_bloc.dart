@@ -25,12 +25,12 @@ class MuralBloc extends Bloc<MuralEvent, MuralState> {
         List<Mural> murals = [];
         if (event.type == 'all') {
           murals = await muralRepository.fetchAllMurals(event.page);
+          yield FetchedMurals(Murals: murals);
         } else {
           logger.i('Following Function');
           murals = await muralRepository.fetchFollowingMurals(event.page);
+          yield FetchedFollowingMurals(FollowingMurals: murals);
         }
-
-        yield FetchedMurals(Murals: murals);
       } else if (event is FetchProfileMurals) {
         yield FetchingProfileMurals();
         //var username = await localRead('username');
