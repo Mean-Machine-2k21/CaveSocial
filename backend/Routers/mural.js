@@ -145,7 +145,7 @@ router.get('/api/following/murals', auth, async (req, res) => {
         const pageNumber = req.query.pagenumber;
         const nPerPage = 5;
         const response = await Mural.aggregate([
-            { $match: { isComment: false, creatorId: { $in: req.user.following } } },
+            { $match: { isComment: false, creatorId: { $in: [...req.user.following, req.user._id] } } },
             {
                 $project: {
                     _id: 1, imageUrl: "$content", creatorUsername: 1, creatorId: 1, likedCount: { $size: "$likes" },
