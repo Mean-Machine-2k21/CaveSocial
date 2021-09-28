@@ -1,7 +1,11 @@
 // @dart=2.9;
+import 'package:frontend/bloc/mural_bloc/movie_model.dart';
 import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
+import 'package:frontend/models/search_result.dart';
 import 'package:frontend/repository/mural_repository.dart';
 import 'package:frontend/screens/profile.dart';
+import 'package:frontend/services/movie_search_service.dart';
+import 'package:frontend/services/omdb_api.dart';
 
 import '../bloc/theme_bloc.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +15,7 @@ import '../global.dart';
 import '../widget/app_button.dart';
 import 'auth_screen.dart';
 import 'feed.dart';
+import 'movie_search_delegate.dart';
 import 'navigator_screen.dart';
 import 'signup_screen.dart';
 import 'package:http/http.dart' as http;
@@ -79,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     double height = MediaQuery.of(context).size.height;
     var themeBloc = BlocProvider.of<ThemeBloc>(context);
-    var muralBloc = BlocProvider.of<MuralBloc>(context);
+
     //  themeBloc.add(ThemeEvent.change);
     print('heyyyyyyyyy');
     print(themeBloc.darkMode);

@@ -34,35 +34,42 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
         ),
       },
       {
+        'name': 'Search',
+        'child': Icon(
+          Entypo.magnifying_glass,
+          color: _selectedIndex == 1 ? themeBloc.style : themeBloc.contrast,
+        ),
+      },
+      {
         'name': 'Create',
         'child': Icon(
           Ionicons.md_create,
-          color: _selectedIndex == 1 ? themeBloc.style : themeBloc.contrast,
+          color: _selectedIndex == 2 ? themeBloc.style : themeBloc.contrast,
         ),
       },
       {
         'name': 'Explore',
         'child': Icon(
           MaterialIcons.explore,
-          color: _selectedIndex == 2 ? themeBloc.style : themeBloc.contrast,
+          color: _selectedIndex == 3 ? themeBloc.style : themeBloc.contrast,
         ),
       },
       {
         'name': 'Profile',
         'child': Icon(
           Icons.person,
-          color: _selectedIndex == 3 ? themeBloc.style : themeBloc.contrast,
+          color: _selectedIndex == 4 ? themeBloc.style : themeBloc.contrast,
         ),
       },
     ];
-    var itemWidth = MediaQuery.of(context).size.width / 4;
+    var itemWidth = MediaQuery.of(context).size.width / 5;
     return Container(
       height: MediaQuery.of(context).size.height * 0.07,
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
           color: themeBloc.contrast
               .withOpacity(color.chooser(lightMode: 0.2, darkMode: 0.4)),
-          blurRadius: MediaQuery.of(context).size.height / 4,
+          blurRadius: MediaQuery.of(context).size.height / 5,
         ),
       ], color: themeBloc.main),
       child: Column(

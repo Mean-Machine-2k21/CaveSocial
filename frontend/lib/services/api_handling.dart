@@ -5,6 +5,7 @@ import 'package:frontend/bloc/mural_bloc/mural_event.dart';
 import 'package:frontend/global.dart';
 import 'package:frontend/models/liked_user.dart';
 import 'package:frontend/models/mural_model.dart';
+import 'package:frontend/models/search_result.dart';
 import 'package:frontend/models/user_list.dart';
 import 'package:frontend/models/user_model.dart';
 import 'logger.dart';
@@ -305,6 +306,37 @@ class ApiHandling {
             element["username"],
             element["avatar_url"],
             element["isFollowed"],
+          ),
+        );
+      });
+    } catch (e) {
+      logger.e(e.toString());
+    }
+
+    return usersList;
+  }
+
+  Future<List<SearchResult>> fetchSearchResults(String searchTerm) async {
+    List<SearchResult> usersList = [];
+    logger.i(searchTerm);
+    searchTerm = searchTerm.trim();
+    try {
+      final token = await localRead('jwt');
+      Response<String> response = await Dio(options).get(
+        url + '/api/profile/search/{$searchTerm}',
+        options: Options(headers: {
+          'Authorization': 'Bearer $token',
+        }),
+      );
+
+      final parsed = json.decode(response.data ?? "") as Map<String, dynamic>;
+      logger.i(parsed.toString());
+      parsed["users"].forEach((element) {
+        usersList.add(
+          SearchResult(
+            element["_id"],
+            element["username"],
+            element["avatar_url"],
           ),
         );
       });
