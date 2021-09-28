@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const mongoose_fuzzy_searching = require('mongoose-fuzzy-searching');
 
 // mongoose.connect("mongodb+srv://taskapp:taskapp123@cluster0.laatv.mongodb.net/CaveSocial?retryWrites=true", {
 //     useNewUrlParser: true,
@@ -17,6 +18,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
         unique: true,
+        index: true
     },
     password: {
         type: String,
@@ -63,7 +65,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.toJSON = function () {
     const user = this;
-    console.log('came here');
+    // console.log('came here');
     const userObject = user.toObject();
     delete userObject.password;
     delete userObject.tokens;
@@ -109,16 +111,18 @@ userSchema.pre('save', async function (next) {
 
     next();
 });
-
+userSchema.plugin(mongoose_fuzzy_searching, { fields: ['username'] });
 const User = new mongoose.model('User', userSchema);
 
 
-// (async () => {
-//     const users = await User.find();
-//     for (let user of users) {
-//         await user.save();
-//     }
-// })();
+(async () => {
+    // const users = await User.find();
+    // const users = await User.fuzzySearch('vik').select({ _id: 1, username: 1, avatar_url: 1 }).exec();
+    // console.log(users);
+    // for (let user of users) {
+    //     await user.save();
+    // }
+})();
 
 
 module.exports = User;

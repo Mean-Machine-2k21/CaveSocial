@@ -197,4 +197,18 @@ router.put('/api/unfollow/:id', auth, async (req, res) => {
         res.status(500).send({ msg: 'Something Went Wrong' });
     }
 });
+router.get('/api/profile/search/:searchTerm', auth, async (req, res) => {
+
+    try {
+        const searchTerm = req.params.searchTerm;
+        console.log(searchTerm);
+        const users = await User.fuzzySearch(searchTerm).select({ _id: 1, username: 1, avatar_url: 1 }).exec();
+        res.status(200).json({
+            msg: 'Users Found', users,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ msg: 'Something Went Wrong' });
+    }
+});
 module.exports = router;
