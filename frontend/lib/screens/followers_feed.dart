@@ -64,6 +64,29 @@ class _FollowersFeedState extends State<FollowersFeed> {
                   return FeedPage(mural: murals[index]);
                 },
               );
+            } else if (state is FetchedFollowingMurals &&
+                state.FollowingMurals.length == 0 &&
+                murals.isEmpty) {
+              return Center(
+                child: Text(
+                  "Follow Someone to show thier Murals in your feed :)",
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+              );
+
+              // else {
+              //   return PageView.builder(
+              //     controller: pageController,
+              //     itemCount: murals.length,
+              //     itemBuilder: (context, index) {
+              //       index = murals.length - 1;
+              //       pageController.jumpToPage(index);
+              //       return FeedPage(mural: murals[index]);
+              //     },
+              //   );
+              // }
             } else {
               return PageView.builder(
                 itemCount: murals.length,
