@@ -23,7 +23,7 @@ class _CreateFrameState extends State<CreateFrame> {
   bool _finished = false;
   late String mode;
   late PainterController _controller = _newController(mode);
-
+  bool alreadyPressed = false;
   @override
   void initState() {
     mode = widget.mode;
@@ -261,28 +261,34 @@ class _CreateFrameState extends State<CreateFrame> {
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.red),
                       ),
-                      onPressed: () async {
-                        var aa = await picture.toPNG();
-                        // var filee = await File.fromRawPath(aa);
+                      onPressed: !alreadyPressed
+                          ? () async {
+                              setState(() {
+                                alreadyPressed = true;
+                              });
+                              var aa = await picture.toPNG();
+                              // var filee = await File.fromRawPath(aa);
 
-                        // var image = MemoryImage(aa);
-                        // var aate = DateTime.now().toString();
-                        // final Directory systemTempDir = Directory.systemTemp;
-                        // final File file = await new File(
-                        //         '${systemTempDir.path}/foo${aate}.png')
-                        //     .create();
-                        // file.writeAsBytes(aa);
+                              // var image = MemoryImage(aa);
+                              // var aate = DateTime.now().toString();
+                              // final Directory systemTempDir = Directory.systemTemp;
+                              // final File file = await new File(
+                              //         '${systemTempDir.path}/foo${aate}.png')
+                              //     .create();
+                              // file.writeAsBytes(aa);
 
-                        addimage(aa);
-                        final snackBar = SnackBar(
-                          content: Text('Frame added !!'),
-                          duration: Duration(seconds: 3),
-                          backgroundColor: Colors.red,
-                        );
+                              addimage(aa);
+                              final snackBar = SnackBar(
+                                content: Text('Frame added !!'),
+                                duration: Duration(seconds: 3),
+                                backgroundColor: Colors.red,
+                              );
 
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        Navigator.of(context).pop(true);
-                      },
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                              Navigator.of(context).pop(true);
+                            }
+                          : () {},
                       child: Text('Add Frame')),
                 ],
               ),
