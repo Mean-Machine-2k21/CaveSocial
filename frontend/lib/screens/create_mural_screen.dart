@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:frontend/services/add_image_fuction.dart';
+import 'package:frontend/services/logger.dart';
 import 'package:zoom_widget/zoom_widget.dart';
 import '../painter.dart';
 
@@ -320,15 +321,15 @@ class _CreateMuralScreenState extends State<CreateMuralScreen> {
                           backgroundColor: Colors.red,
                         );
 
-                        print(file);
+                        logger.i(file);
                         uploadImageToFirebase(file).then((value) {
-                          print('Murall');
+                          logger.i('Murall');
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           widget.editProfile!(value);
                           Navigator.pop(context);
                         });
 
-                        print('*********-> ${muralUrl}');
+                        logger.i('*********-> ${muralUrl}');
 
                         // Find the ScaffoldMessenger in the widget tree
                         // and use it to show a SnackBar.

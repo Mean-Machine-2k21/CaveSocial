@@ -9,6 +9,7 @@ import 'package:frontend/models/mural_model.dart';
 import 'package:frontend/screens/create_mural_screen.dart';
 import 'package:frontend/screens/edit_profile.dart';
 import 'package:frontend/screens/feed_page.dart';
+import 'package:frontend/services/logger.dart';
 import 'package:frontend/widget/shimmer_image.dart';
 
 class FeedComment extends StatefulWidget {
@@ -103,9 +104,10 @@ class _FeedCommentState extends State<FeedComment> {
                       );
                     else if (state is FetchedMuralCommentList &&
                         state.muralCommentList.length != 0) {
-                    //  muralComments.addAll(state.muralCommentList);
+                      //  muralComments.addAll(state.muralCommentList);
                       muralComments = state.muralCommentList;
-                      print('mural Commentssssss---> ${muralComments.length}');
+                      logger
+                          .i('mural Commentssssss---> ${muralComments.length}');
                       return Expanded(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),

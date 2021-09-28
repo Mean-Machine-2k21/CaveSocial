@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:frontend/services/add_image_fuction.dart';
+import 'package:frontend/services/logger.dart';
 import '../painter.dart';
 
 class CreateBioScreen extends StatefulWidget {
@@ -111,9 +112,8 @@ class _CreateBioScreenState extends State<CreateBioScreen> {
             Positioned(
               top: MediaQuery.of(context).size.height / 4,
               child: Column(
-                
                 children: [
-                   Icon(
+                  Icon(
                     FontAwesome.paint_brush,
                     color: Colors.red,
                   ),
@@ -270,15 +270,15 @@ class _CreateBioScreenState extends State<CreateBioScreen> {
                           backgroundColor: Colors.red,
                         );
 
-                        print(file);
+                        logger.i(file);
                         uploadImageToFirebase(file).then((value) {
-                          print('Murall');
+                          logger.i('Murall');
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           widget.editProfile!(value);
                           Navigator.pop(context);
                         });
 
-                        print('*********-> ${muralUrl}');
+                        logger.i('*********-> ${muralUrl}');
 
                         // Find the ScaffoldMessenger in the widget tree
                         // and use it to show a SnackBar.

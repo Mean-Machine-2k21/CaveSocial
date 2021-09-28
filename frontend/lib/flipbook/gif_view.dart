@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gifimage/flutter_gifimage.dart';
+import 'package:frontend/services/logger.dart';
 
 import 'functions.dart';
 
@@ -29,7 +30,7 @@ class _GifViewState extends State<GifView> with TickerProviderStateMixin {
     a = getgif();
     b = Uint8List.fromList(a);
 
-    print(widget.frames.toString() + 'adadadadad');
+    logger.i(widget.frames.toString() + 'adadadadad');
     // var aate = DateTime.now().toString();
     // final Directory systemTempDir = Directory.systemTemp;
 

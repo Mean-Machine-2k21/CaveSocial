@@ -8,6 +8,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart' hide Image;
 import 'package:flutter/widgets.dart' hide Image;
 
+import 'services/logger.dart';
+
 /// A very simple widget that supports drawing using touch.
 class Painter extends StatefulWidget {
   final PainterController painterController;
@@ -54,7 +56,7 @@ class _PainterState extends State<Painter> {
   void initState() {
     super.initState();
     widget.painterController._widgetFinish = _finish;
-    print(widget.painterController.mode);
+    logger.i(widget.painterController.mode);
 
     // switch (widget.painterController.mode) {
     //   case 'comic':
@@ -102,7 +104,7 @@ class _PainterState extends State<Painter> {
         // onScaleStart: ,
         // onScaleUpdate: ,
         // onScaleEnd: ,
-          
+
         onPanUpdate: _onPanUpdate,
         onPanEnd: _onPanEnd,
       );
@@ -113,7 +115,7 @@ class _PainterState extends State<Painter> {
   void _onPanStart(DragStartDetails start) {
     Offset pos = (context.findRenderObject() as RenderBox)
         .globalToLocal(start.globalPosition);
-    // print(start);
+    // logger.i(start);
     widget.painterController._pathHistory.add(pos);
     widget.painterController._notifyListeners();
   }
@@ -194,8 +196,8 @@ class _PathHistory {
     if (!_inDrag) {
       _inDrag = true;
       Path path = new Path();
-      // print(startPoint.dx);
-      // print(startPoint.dy);
+      // logger.i(startPoint.dx);
+      // logger.i(startPoint.dy);
       path.moveTo(startPoint.dx, startPoint.dy);
       _paths.add(new MapEntry<Path, Paint>(path, currentPaint));
     }

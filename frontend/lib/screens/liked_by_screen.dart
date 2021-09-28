@@ -7,6 +7,7 @@ import 'package:frontend/bloc/mural_bloc/mural_state.dart';
 import 'package:frontend/bloc/theme_bloc.dart';
 import 'package:frontend/models/liked_user.dart';
 import 'package:frontend/screens/profile.dart';
+import 'package:frontend/services/logger.dart';
 
 class LikedByScreen extends StatelessWidget {
   final String muralid;
@@ -51,14 +52,15 @@ class LikedByScreen extends StatelessWidget {
         ),
         body: BlocBuilder<MuralBloc, MuralState>(
           builder: (context, state) {
-            if (state is FetchedMuralLikeList) print('pkkkkkkkkkk@@@@@@@@@@@');
+            if (state is FetchedMuralLikeList)
+              logger.i('pkkkkkkkkkk@@@@@@@@@@@');
             if (state is FetchedMuralLikeList && state.usernames.length != 0)
             //
             {
               List<LikedUsers> likedUsers = [];
               likedUsers = (state).usernames;
-              print('##################################################');
-              print(likedUsers.length);
+              logger.i('##################################################');
+              logger.i(likedUsers.length);
               return ListView.builder(
                 itemCount: likedUsers.length,
                 itemBuilder: (context, index) {

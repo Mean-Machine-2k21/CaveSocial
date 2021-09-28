@@ -9,6 +9,7 @@ import 'package:frontend/screens/create_bio_screen.dart';
 import 'package:frontend/screens/create_mural_screen.dart';
 import 'package:frontend/screens/login_screen.dart';
 import 'package:frontend/screens/profile.dart';
+import 'package:frontend/services/logger.dart';
 import 'package:frontend/widget/shimmer_image.dart';
 import 'package:frontend/widget/toggle_button.dart';
 import 'package:image_picker/image_picker.dart';
@@ -27,7 +28,7 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   void getUrl(String bioUrl) {
     this.bioUrl = bioUrl;
-    print("***-> ${bioUrl}");
+    logger.i("***-> ${bioUrl}");
   }
 
   ApiHandling apiHandling = ApiHandling();
@@ -47,7 +48,7 @@ class _EditProfileState extends State<EditProfile> {
     });
     currentProfile = await localRead('avatar_url');
     currentBio = await localRead('bio_url');
-    print('bioooo0000000000000000000000000000000000000000 $currentBio');
+    logger.i('bioooo0000000000000000000000000000000000000000 $currentBio');
     bioUrl = currentBio;
 
     setState(() {
@@ -78,13 +79,13 @@ class _EditProfileState extends State<EditProfile> {
         .ref()
         .child('uploads/profileImages/${username}');
     final uploadTask = firebaseStorageRef.putFile(image!);
-    await uploadTask.whenComplete(() => print('File Uploaded'));
+    await uploadTask.whenComplete(() => logger.i('File Uploaded'));
     firebaseStorageRef.getDownloadURL().then((fileURL) {
       setState(() {
         // _uploadedFileURL = fileURL;
         // //imageURLs.add(_uploadedFileURL);
         // widget.product.imageUrls.add(_uploadedFileURL);
-        print(fileURL + "-------");
+        logger.i(fileURL + "-------");
         avatarUrl = fileURL;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -94,7 +95,7 @@ class _EditProfileState extends State<EditProfile> {
       });
       // StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
       // taskSnapshot.ref.getDownloadURL().then(
-      //       (value) => print("Done: $value"),
+      //       (value) => logger.i("Done: $value"),
       //     );
     });
 
@@ -309,7 +310,7 @@ class _EditProfileState extends State<EditProfile> {
                             loading = false;
                           });
 
-                          print('################ ');
+                          logger.i('################ ');
                           localWrite('bio_url', bioUrl);
                         },
                         icon: Icon(
@@ -348,7 +349,7 @@ class _EditProfileState extends State<EditProfile> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Toggle Color Mode',
+                        'Toggle Dark Mode',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,

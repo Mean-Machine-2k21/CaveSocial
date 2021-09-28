@@ -10,9 +10,9 @@ Future uploadGifToFirebase(File image) async {
       FirebaseStorage.instance.ref().child('uploads/murals/gif${time}');
 
   //final uploadTask = firebaseStorageRef.putFile(image);
-  // await uploadTask.whenComplete(() => print('File Uploaded'));
+  // await uploadTask.whenComplete(() => logger.i('File Uploaded'));
   // firebaseStorageRef.getDownloadURL().then((fileURL) {
-  //   print(fileURL + "-------");
+  //   logger.i(fileURL + "-------");
   // });
 
   await firebaseStorageRef.putFile(image);

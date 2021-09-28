@@ -8,6 +8,7 @@ import 'package:frontend/bloc/theme_bloc.dart';
 import 'package:frontend/flipbook/create_flipbook_frame.dart';
 import 'package:frontend/flipbook/gif_view.dart';
 import 'package:frontend/services/add_gif_fuction.dart';
+import 'package:frontend/services/logger.dart';
 // import 'package:top_modal_sheet/top_modal_sheet.dart';
 import 'functions.dart';
 
@@ -40,8 +41,8 @@ class _CreateFlipbookState extends State<CreateFlipbook> {
   var time = 300;
   @override
   Widget build(BuildContext context) {
-      var themeBloc = BlocProvider.of<ThemeBloc>(context);
-  //  var muralBloc = BlocProvider.of<MuralBloc>(context);
+    var themeBloc = BlocProvider.of<ThemeBloc>(context);
+    //  var muralBloc = BlocProvider.of<MuralBloc>(context);
 
     return Scaffold(
       backgroundColor: themeBloc.main,
@@ -65,7 +66,8 @@ class _CreateFlipbookState extends State<CreateFlipbook> {
                   });
                 }
               },
-              child: Text('Add frame',style: TextStyle(color:themeBloc.contrast)),
+              child: Text('Add frame',
+                  style: TextStyle(color: themeBloc.contrast)),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red),
               ),
@@ -74,7 +76,8 @@ class _CreateFlipbookState extends State<CreateFlipbook> {
               onPressed: () async {
                 if (frame == 0) {
                   final snackBar = SnackBar(
-                    content: Text('First create something to view !!',style: TextStyle(color:themeBloc.contrast)),
+                    content: Text('First create something to view !!',
+                        style: TextStyle(color: themeBloc.contrast)),
                     duration: Duration(seconds: 3),
                     backgroundColor: Colors.red,
                   );
@@ -88,7 +91,8 @@ class _CreateFlipbookState extends State<CreateFlipbook> {
                   );
                 }
               },
-              child: Text('See GIF',style: TextStyle(color:themeBloc.contrast)),
+              child:
+                  Text('See GIF', style: TextStyle(color: themeBloc.contrast)),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red),
               ),
@@ -109,7 +113,8 @@ class _CreateFlipbookState extends State<CreateFlipbook> {
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 } else {
                   final snackBar = SnackBar(
-                    content: Text('No Frames to undo',style: TextStyle(color:themeBloc.contrast)),
+                    content: Text('No Frames to undo',
+                        style: TextStyle(color: themeBloc.contrast)),
                     duration: Duration(seconds: 3),
                     backgroundColor: Colors.red,
                   );
@@ -117,7 +122,8 @@ class _CreateFlipbookState extends State<CreateFlipbook> {
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 }
               },
-              child: Text('Undo Frame',style: TextStyle(color:themeBloc.contrast)),
+              child: Text('Undo Frame',
+                  style: TextStyle(color: themeBloc.contrast)),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red),
               ),
@@ -130,14 +136,16 @@ class _CreateFlipbookState extends State<CreateFlipbook> {
                 });
 
                 final snackBar = SnackBar(
-                  content: Text('Cleared FlipBook Done !!',style: TextStyle(color:themeBloc.contrast)),
+                  content: Text('Cleared FlipBook Done !!',
+                      style: TextStyle(color: themeBloc.contrast)),
                   duration: Duration(seconds: 3),
                   backgroundColor: Colors.red,
                 );
 
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
-              child: Text('Clear Flipbook',style: TextStyle(color:themeBloc.contrast)),
+              child: Text('Clear Flipbook',
+                  style: TextStyle(color: themeBloc.contrast)),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red),
               ),
@@ -160,7 +168,7 @@ class _CreateFlipbookState extends State<CreateFlipbook> {
                   backgroundColor: Colors.red,
                 );
 
-                // print(file);
+                // logger.i(file);
                 //  await uploadGifToFirebase(file);
 
                 //  final snackBar = SnackBar(
@@ -169,16 +177,17 @@ class _CreateFlipbookState extends State<CreateFlipbook> {
                 //           backgroundColor: Colors.red,
                 //         );
 
-                print(file);
+                logger.i(file);
                 await uploadGifToFirebase(file).then((value) {
-                  print('Murall');
-                  print(value);
+                  logger.i('Murall');
+                  logger.i(value);
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   widget.editProfile!(value, frame, time);
                   Navigator.pop(context);
                 });
               },
-              child: Text('Post FlipBook!!',style: TextStyle(color:themeBloc.contrast)),
+              child: Text('Post FlipBook!!',
+                  style: TextStyle(color: themeBloc.contrast)),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red),
               ),

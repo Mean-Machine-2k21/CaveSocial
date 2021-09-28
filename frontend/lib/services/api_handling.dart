@@ -60,7 +60,7 @@ class ApiHandling {
             });
       }
     } catch (e) {
-      print(e.toString());
+      logger.i(e.toString());
     }
   }
 
@@ -79,10 +79,10 @@ class ApiHandling {
   }
 
   Future<void> createMural(String content, Flipbook? flipbook) async {
-    print('Content Url ---> ${content}');
+    logger.i('Content Url ---> ${content}');
     if (flipbook != null) {
-      print('Flipbook Frames ----> ${flipbook.frames}');
-      print('Flipbook Duration ---> ${flipbook.duration}');
+      logger.i('Flipbook Frames ----> ${flipbook.frames}');
+      logger.i('Flipbook Duration ---> ${flipbook.duration}');
     }
 
     try {
@@ -100,7 +100,7 @@ class ApiHandling {
         };
       }
 
-      print(data);
+      logger.i(data);
 
       final response = await Dio(options).post(
         url + '/api/createmural',
@@ -110,19 +110,19 @@ class ApiHandling {
         }),
         data: data,
       );
-      print(response.data);
+      logger.i(response.data);
     } catch (e) {
-      print(e.toString());
+      logger.i(e.toString());
     }
   }
 
   Future<void> commentMural(
       String content, String parentMuralId, Flipbook? flipbook) async {
-    print('Inside Coment API------>');
-    print('Content Url ---> ${content}');
+    logger.i('Inside Coment API------>');
+    logger.i('Content Url ---> ${content}');
     if (flipbook != null) {
-      print('Flipbook Frames ----> ${flipbook.frames}');
-      print('Flipbook Duration ---> ${flipbook.duration}');
+      logger.i('Flipbook Frames ----> ${flipbook.frames}');
+      logger.i('Flipbook Duration ---> ${flipbook.duration}');
     }
 
     try {
@@ -145,14 +145,14 @@ class ApiHandling {
               : null,
         },
       );
-      print(response.data);
+      logger.i(response.data);
     } catch (e) {
-      print(e.toString());
+      logger.i(e.toString());
     }
   }
 
   Future<void> likeMural(String muralId) async {
-    print('Likkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk MuralId ---> ${muralId}');
+    logger.i('Likkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk MuralId ---> ${muralId}');
 
     try {
       final token = await localRead('jwt');
@@ -166,12 +166,12 @@ class ApiHandling {
         },
       );
     } catch (e) {
-      print(e.toString());
+      logger.i(e.toString());
     }
   }
 
   Future<void> unLikeMural(String muralId) async {
-    print('MuralId ---> ${muralId}');
+    logger.i('MuralId ---> ${muralId}');
 
     try {
       final token = await localRead('jwt');
@@ -185,7 +185,7 @@ class ApiHandling {
         },
       );
     } catch (e) {
-      print(e.toString());
+      logger.i(e.toString());
     }
   }
 
@@ -201,7 +201,7 @@ class ApiHandling {
         }),
       );
     } catch (e) {
-      print(e.toString());
+      logger.i(e.toString());
     }
   }
 
@@ -217,7 +217,7 @@ class ApiHandling {
         }),
       );
     } catch (e) {
-      print(e.toString());
+      logger.i(e.toString());
     }
   }
 
@@ -246,7 +246,7 @@ class ApiHandling {
         }
       });
     } catch (e) {
-      print(e.toString());
+      logger.i(e.toString());
     }
 
     return murals;
@@ -278,7 +278,7 @@ class ApiHandling {
         }
       });
     } catch (e) {
-      print(e.toString());
+      logger.i(e.toString());
     }
 
     return murals;
@@ -320,8 +320,8 @@ class ApiHandling {
 
     try {
       final token = await localRead('jwt');
-      print('tokennn -----> ${token}');
-      print('muralId -----> ${muralId}');
+      logger.i('tokennn -----> ${token}');
+      logger.i('muralId -----> ${muralId}');
       Response<String> response = await Dio(options).get(
         url + '/api/likesonmural/${muralId}',
         options: Options(headers: {
@@ -341,10 +341,10 @@ class ApiHandling {
         );
       });
     } catch (e) {
-      print(e.toString());
+      logger.i(e.toString());
     }
 
-    print('Liked Users Length ---> ${likedUsers.length}');
+    logger.i('Liked Users Length ---> ${likedUsers.length}');
     return likedUsers;
   }
 
@@ -355,8 +355,8 @@ class ApiHandling {
 
     try {
       final token = await localRead('jwt');
-      print('tokennn -----> ${token}');
-      print('muralId -----> ${muralId}');
+      logger.i('tokennn -----> ${token}');
+      logger.i('muralId -----> ${muralId}');
       Response<String> response =
           await Dio(options).get(url + '/api/commentsonmural/${muralId}',
               options: Options(headers: {
@@ -376,17 +376,17 @@ class ApiHandling {
         }
       });
     } catch (e) {
-      print(e.toString());
+      logger.i(e.toString());
     }
 
-    print('Lengthhhh----> ${murals.length}');
+    logger.i('Lengthhhh----> ${murals.length}');
 
     return murals;
   }
 
   Future<User?> fetchProfileMurals(
       String username, List<Mural> murals, int pageNo, String id) async {
-    print('Username ---> ${username}');
+    logger.i('Username ---> ${username}');
     logger.i('id-----> ${id}');
 
     User? user;
@@ -394,7 +394,7 @@ class ApiHandling {
     try {
       final token = await localRead('jwt');
 
-      print(token);
+      logger.i(token);
       logger.i(' URL ----> ${url + '/api/profile/' + id}');
       Response<String> response =
           await Dio(options).get(url + '/api/profile/' + id,
@@ -417,7 +417,7 @@ class ApiHandling {
         }
       });
     } catch (e) {
-      print(e.toString());
+      logger.i(e.toString());
     }
 
     return user!;

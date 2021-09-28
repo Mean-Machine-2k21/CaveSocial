@@ -48,7 +48,7 @@ class _ProfileState extends State<Profile> {
       setState(() {
         loading = true;
       });
-      print("YYYYYYYYYther Username ---> ${widget.otherUsername}");
+      logger.i("YYYYYYYYYther Username ---> ${widget.otherUsername}");
       if (widget.otherUsername == null) {
         username = await localRead('username');
         id = await localRead('userid');
@@ -59,15 +59,15 @@ class _ProfileState extends State<Profile> {
         isOther = true;
       }
 
-      print("OOOOOOOOOOther Username ---> ${username}");
+      logger.i("OOOOOOOOOOther Username ---> ${username}");
 
       final apiRepository = ApiHandling();
       muralBloc
           .add(FetchProfileMurals(username: username, page: cnt++, id: id));
       user = await apiRepository.fetchProfileMurals(username, murals, 0, id);
-      print('username --> ${user!.username}');
+      logger.i('username --> ${user!.username}');
 
-      print('mural Length ${murals.length}');
+      logger.i('mural Length ${murals.length}');
 
       isInit = false;
       setState(() {
@@ -324,11 +324,11 @@ class _ProfileState extends State<Profile> {
                                     ),
                                     itemCount: muralsFeed.length,
                                     itemBuilder: (context, index) {
-                                      print(
+                                      logger.i(
                                           'Lenggggggggg---> ${muralsFeed.length}');
-                                      print(
+                                      logger.i(
                                           'Lenggggghhhh---> ${state.murals.length}');
-                                      print("____________________" +
+                                      logger.i("____________________" +
                                           index.toString());
                                       // if (index == muralsFeed.length - 2) {
                                       //   muralBloc.add(FetchProfileMurals(
@@ -382,8 +382,8 @@ class _ProfileState extends State<Profile> {
                               ),
                             );
                           } else {
-                            print("ppppreeee");
-                            print(pre);
+                            logger.i("ppppreeee");
+                            logger.i(pre);
                             return Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),

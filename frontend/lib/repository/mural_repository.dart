@@ -43,7 +43,7 @@ class MuralRepository {
   }
 
   fetchMuralLikeList({required String muralid, required int page}) async {
-    //print('ddddddddddddddddddddd');
+    //logger.i('ddddddddddddddddddddd');
     return await _apiHandling.fetchLikesonMural(muralid);
   }
 

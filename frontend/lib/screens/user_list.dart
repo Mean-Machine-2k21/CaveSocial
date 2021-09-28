@@ -67,14 +67,14 @@ class UserListScreen extends StatelessWidget {
         ),
         body: BlocBuilder<MuralBloc, MuralState>(
           builder: (context, state) {
-            // if (state is FetchedMuralLikeList) print('pkkkkkkkkkk@@@@@@@@@@@');
+            // if (state is FetchedMuralLikeList) logger.i('pkkkkkkkkkk@@@@@@@@@@@');
             if (state is FetchedUserList && state.users.length != 0)
             //
             {
               List<UserList> userList = [];
               userList = (state).users;
-              //print('##################################################');
-              //print(userList.length);
+              //logger.i('##################################################');
+              //logger.i(userList.length);
               return ListView.builder(
                 itemCount: userList.length,
                 itemBuilder: (context, index) {

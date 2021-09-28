@@ -2,6 +2,7 @@
 import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
 import 'package:frontend/repository/mural_repository.dart';
 import 'package:frontend/screens/profile.dart';
+import 'package:frontend/services/logger.dart';
 
 import '../bloc/theme_bloc.dart';
 import 'package:flutter/material.dart';
@@ -68,11 +69,11 @@ class _LoginScreenState extends State<LoginScreen> {
       var res = await http.post(Uri.parse("$SERVER_IP/api/login"),
           headers: {'Content-Type': 'application/json'},
           body: json.encode({"username": username, "password": password}));
-      print('gggggggggggghhhhgggggggggggggggggggggghhhhhhhh');
-      print(json.decode(res.body));
+      logger.i('gggggggggggghhhhgggggggggggggggggggggghhhhhhhh');
+      logger.i(json.decode(res.body));
       if (res.statusCode == 200) return json.decode(res.body);
 
-      print('res+' + res.statusCode.toString());
+      logger.i('res+' + res.statusCode.toString());
 
       return {};
     }
@@ -81,13 +82,13 @@ class _LoginScreenState extends State<LoginScreen> {
     var themeBloc = BlocProvider.of<ThemeBloc>(context);
     var muralBloc = BlocProvider.of<MuralBloc>(context);
     //  themeBloc.add(ThemeEvent.change);
-    print('heyyyyyyyyy');
-    print(themeBloc.darkMode);
-    print(themeBloc.main);
-    print(themeBloc.style);
+    logger.i('heyyyyyyyyy');
+    logger.i(themeBloc.darkMode);
+    logger.i(themeBloc.main);
+    logger.i(themeBloc.style);
     return BlocBuilder<ThemeBloc, ThemeData>(
       builder: (context2, state) {
-        print('ggggggggggg_____' + themeBloc.main.toString());
+        logger.i('ggggggggggg_____' + themeBloc.main.toString());
         //ThemeBloc.dispatch();
         return
             // MaterialApp(
@@ -199,9 +200,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onTap: () async {
                                   _formkey.currentState!.save();
                                   if (_formkey.currentState!.validate()) {
-                                    print('success');
-                                    print(_passwordController.text);
-                                    print(_emailController.text);
+                                    logger.i('success');
+                                    logger.i(_passwordController.text);
+                                    logger.i(_emailController.text);
 
                                     var email = _emailController.text;
                                     var password = _passwordController.text;

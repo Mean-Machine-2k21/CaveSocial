@@ -4,6 +4,7 @@ import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
 import 'package:frontend/repository/mural_repository.dart';
 import 'package:frontend/screens/create_mural_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/services/logger.dart';
 
 import 'bloc/theme_bloc.dart';
 import 'global.dart';
@@ -20,7 +21,7 @@ import 'flipbook/flipbook_create.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  print('aaaaaaassssssssssssssss');
+  logger.i('aaaaaaassssssssssssssss');
   runApp(MyApp());
 }
 
@@ -48,8 +49,8 @@ class MyHomePage extends StatelessWidget {
     var themeBloc = BlocProvider.of<ThemeBloc>(context);
     var muralBloc = BlocProvider.of<MuralBloc>(context);
 
-    print('aaaaaaaaaaaaaaaaaaaaaaa');
-    print(themeBloc.darkMode);
+    logger.i('aaaaaaaaaaaaaaaaaaaaaaa');
+    logger.i(themeBloc.darkMode);
 
     return BlocBuilder<ThemeBloc, ThemeData>(
       builder: (context, state) {

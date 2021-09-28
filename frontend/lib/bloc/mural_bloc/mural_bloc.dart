@@ -56,8 +56,8 @@ class MuralBloc extends Bloc<MuralEvent, MuralState> {
         List<LikedUsers> usernames = [];
         usernames = await muralRepository.fetchMuralLikeList(
             muralid: event.muralid, page: event.page);
-        //print('commmmmmmmmmmmiiiiiiiinnnnnnnnnnnnnnnnnngggggggggggggg');
-        //print(usernames.length);
+        //logger.i('commmmmmmmmmmmiiiiiiiinnnnnnnnnnnnnnnnnngggggggggggggg');
+        //logger.i(usernames.length);
         yield FetchedMuralLikeList(usernames: usernames);
       } else if (event is FetchUserList) {
         yield FetchingUserList();

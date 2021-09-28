@@ -181,7 +181,7 @@ class _CreateFrameState extends State<CreateFrame> {
                       }),
                   IconButton(
                       icon: new Icon(
-                        Icons.move_to_inbox,
+                        Entypo.magnifying_glass,
                         color: _ismoved ? Colors.blue : Colors.red,
                         size: 28,
                       ),

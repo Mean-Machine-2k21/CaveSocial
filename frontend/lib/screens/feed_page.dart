@@ -12,6 +12,7 @@ import 'package:frontend/screens/liked_by_screen.dart';
 
 import 'package:frontend/screens/profile.dart';
 import 'package:frontend/services/api_handling.dart';
+import 'package:frontend/services/logger.dart';
 import 'package:frontend/widget/shimmer_image.dart';
 import 'package:frontend/widget/showflip_book.dart';
 import 'package:shimmer/shimmer.dart';
@@ -42,9 +43,9 @@ class _FeedPageState extends State<FeedPage> {
         return Scaffold(
           body: GestureDetector(
             onVerticalDragUpdate: (details) {
-              print('heloooo');
+              logger.i('heloooo');
               if (details.delta.dy < 0) {
-                print('Swiped Up');
+                logger.i('Swiped Up');
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => BlocProvider.value(

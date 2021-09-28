@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:frontend/services/add_image_fuction.dart';
+import 'package:frontend/services/logger.dart';
 import './painter.dart';
 
 class ExamplePage extends StatefulWidget {
@@ -246,7 +247,7 @@ class _ExamplePageState extends State<ExamplePage> {
                             .create();
                         file.writeAsBytes(aa);
 
-                        print(file);
+                        logger.i(file);
                         await uploadImageToFirebase(file);
                         final snackBar = SnackBar(
                           content: Text('Yay! Your Mural is posted!'),

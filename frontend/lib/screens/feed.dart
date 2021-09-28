@@ -5,6 +5,7 @@ import 'package:frontend/bloc/mural_bloc/mural_event.dart';
 import 'package:frontend/bloc/mural_bloc/mural_state.dart';
 import 'package:frontend/bloc/theme_bloc.dart';
 import 'package:frontend/models/mural_model.dart';
+import 'package:frontend/services/logger.dart';
 
 import 'feed_page.dart';
 
@@ -45,12 +46,12 @@ class _FeedState extends State<Feed> {
                 controller: pageController,
                 itemCount: murals.length,
                 itemBuilder: (context, index) {
-                  print('Indexxxxxxxxxxxxxxxxxxxx->>>> ${index}');
+                  logger.i('Indexxxxxxxxxxxxxxxxxxxx->>>> ${index}');
                   if (index == murals.length - 2) {
                     pageNo = murals.length - 2;
-                    print('Pagggggeeeeeeeee----> ${pageNo}');
-                    muralBloc.add(FetchAllMurals(page: counter++,  type: 'all'));
-                    print('Pagggggeeeeeeeee2222222222----> ${pageNo}');
+                    logger.i('Pagggggeeeeeeeee----> ${pageNo}');
+                    muralBloc.add(FetchAllMurals(page: counter++, type: 'all'));
+                    logger.i('Pagggggeeeeeeeee2222222222----> ${pageNo}');
                     pageController.jumpToPage(pageNo);
                   }
 

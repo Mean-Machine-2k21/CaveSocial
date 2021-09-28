@@ -4,6 +4,7 @@ import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
 import 'package:frontend/repository/mural_repository.dart';
 import 'package:frontend/screens/feed.dart';
 import 'package:frontend/screens/navigator_screen.dart';
+import 'package:frontend/services/logger.dart';
 import 'package:frontend/widget/app_button.dart';
 
 import '../bloc/theme_bloc.dart';
@@ -67,8 +68,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     //      },
     //       body: json.encode({"username": username, "password": password }));
-    //   print('gggggggggggghhhhhhhhhhhh');
-    //   print(res.body);
+    //   logger.i('gggggggggggghhhhhhhhhhhh');
+    //   logger.i(res.body);
     //   return res.statusCode;
     // }
 
@@ -78,11 +79,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       var res = await http.post(Uri.parse("$SERVER_IP/api/signup"),
           headers: {'Content-Type': 'application/json'},
           body: json.encode({"username": username, "password": password}));
-      print('gggggggggggghhhhgggggggggggggggggggggghhhhhhhh');
-      print(json.decode(res.body));
+      logger.i('gggggggggggghhhhgggggggggggggggggggggghhhhhhhh');
+      logger.i(json.decode(res.body));
       if (res.statusCode == 201) return json.decode(res.body);
 
-      print('res+' + res.statusCode.toString());
+      logger.i('res+' + res.statusCode.toString());
 
       return {'res': res.statusCode.toString()};
     }
@@ -95,13 +96,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
     double height = MediaQuery.of(context).size.height;
     var themeBloc = BlocProvider.of<ThemeBloc>(context);
     //  themeBloc.add(ThemeEvent.change);
-    print('hey');
-    print(themeBloc.darkMode);
-    print(themeBloc.main);
-    print(themeBloc.style);
+    logger.i('hey');
+    logger.i(themeBloc.darkMode);
+    logger.i(themeBloc.main);
+    logger.i(themeBloc.style);
     return BlocBuilder<ThemeBloc, ThemeData>(
       builder: (context2, state) {
-        print('ggggggggggg_____' + themeBloc.main.toString());
+        logger.i('ggggggggggg_____' + themeBloc.main.toString());
         //ThemeBloc.dispatch();
         return MaterialApp(
           theme: state,
@@ -256,9 +257,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             onTap: () async {
                               _formkey.currentState!.save();
                               if (_formkey.currentState!.validate()) {
-                                print('success');
-                                print(_passwordController.text);
-                                print(_emailController.text);
+                                logger.i('success');
+                                logger.i(_passwordController.text);
+                                logger.i(_emailController.text);
                                 var username = _emailController.text;
                                 var password = _passwordController.text;
 
@@ -289,8 +290,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   //   displayDialog(context, "Error",
                                   //       "An unknown error occurred.");
                                   // }
-                                  print('ppppppp');
-                                  print(jwt['res']);
+                                  logger.i('ppppppp');
+                                  logger.i(jwt['res']);
                                   if (jwt['res'] == null) {
                                     localInsertSignUp(jwt);
                                     Navigator.push(
