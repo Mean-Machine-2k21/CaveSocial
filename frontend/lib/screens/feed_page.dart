@@ -212,7 +212,10 @@ class _FeedPageState extends State<FeedPage> {
                                       widget.mural.id,
                                       widget.mural.likedCount);
                                 },
-                                icon: Icon(Icons.share),
+                                icon: Icon(
+                                  Icons.share,
+                                  color: Colors.red,
+                                ),
                               ),
                               InkWell(
                                 // onLongPress: (){
