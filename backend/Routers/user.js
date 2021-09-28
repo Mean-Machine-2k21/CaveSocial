@@ -3,7 +3,8 @@ const router = new express.Router();
 const User = require('../Models/User');
 const Mural = require('../Models/Mural');
 const auth = require('../Middleware/Auth');
-
+const mongoose = require('mongoose');
+const ObjectId = require("mongodb").ObjectId;
 
 router.post('/api/signup', async (req, res, next) => {
     try {
@@ -78,28 +79,133 @@ router.patch('/api/editprofile', auth, async (req, res) => {
     }
 });
 
-router.get('/api/profile/:username', auth, async (req, res) => {
-    const username = req.params.username;
-    const pageNumber = req.query.pagenumber;
-    const nPerPage = 6;
+router.get('/api/profile/:id', auth, async (req, res) => {
+    const _id = req.params.id;
     try {
-        const user = await User.find({ username });
-        console.log(user);
-        if (!user[0]) {
+        if (!_id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(404).send();
+        }
+        const user = await User.findOne({ _id }, { followersCount: { $size: "$followers" }, followingCount: { $size: "$following" }, username: 1, avatar_url: 1, bio_url: 1, isFollowed: { $in: [ObjectId(req.user._id), "$followers"] } })
+            .exec();
+        if (!user) {
             return res.status(400).json({ msg: 'User Not Found' });
         }
+        console.log(user);
+
+        // console.log(user);
         const murals = await Mural.aggregate([
-            { $match: { isComment: false, creatorUsername: username } },
+            { $match: { isComment: false, creatorId: user._id } },
             {
                 $project: {
                     _id: 1, imageUrl: "$content", creatorUsername: 1, creatorId: 1, likedCount: { $size: "$likes" },
                     commentCount: { $size: "$comments" }, flipbook: 1,
-                    isLiked: { $in: [req.user.username, "$likes.likedByUserName"] }
+                    isLiked: { $in: [ObjectId(req.user._id), "$likes"] }
                 }
             },
             { $sort: { _id: -1 } }
         ]);
-        res.status(200).json({ msg: 'User Found', user: user[0], murals });
+        res.status(200).json({
+            msg: 'User Found', user, murals
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ msg: 'Something Went Wrong' });
+    }
+});
+router.get('/api/user/:id/followers', auth, async (req, res) => {
+    const _id = req.params.id;
+    try {
+        if (!_id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(404).send();
+        }
+        // console.log(typeof(req.user.following[0]));
+        const followersInfo = await User.findOne({ _id }, { followersCount: { $size: "$followers" } })
+            .populate({ path: "followers", select: "_id username avatar_url" })
+            .exec();
+        if (!followersInfo) {
+            return res.status(400).json({ msg: 'User Not Found' });
+        }
+
+        const followingSet = new Set();
+        req.user.following.forEach(followingId => { followingSet.add(followingId.toString()); });
+        followersObj = followersInfo.toObject();
+        followersObj.followers.forEach(follower => {
+            follower['isFollowed'] = followingSet.has(follower._id.toString());
+            return follower;
+        });
+        // console.log(followersInfo);
+
+        res.status(200).json({
+            msg: 'User Found', ...followersObj,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ msg: 'Something Went Wrong' });
+    }
+});
+router.get('/api/user/:id/following', auth, async (req, res) => {
+    const _id = req.params.id;
+    try {
+        if (!_id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(404).send();
+        }
+        const followingInfo = await User.findOne({ _id }, { followingCount: { $size: "$following" } })
+            .populate({ path: "following", select: "_id username avatar_url" })
+            .exec();
+        if (!followingInfo) {
+            return res.status(400).json({ msg: 'User Not Found' });
+        }
+        const followingSet = new Set();
+        req.user.following.forEach(followingId => { followingSet.add(followingId.toString()); });
+        followingInfoObj = followingInfo.toObject();
+        followingInfoObj.following.forEach(following => {
+            following['isFollowed'] = followingSet.has(following._id.toString());
+            return following;
+        });
+
+        res.status(200).json({
+            msg: 'User Found', ...(followingInfoObj),
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ msg: 'Something Went Wrong' });
+    }
+});
+router.put('/api/follow/:id', auth, async (req, res) => {
+    const _id = req.params.id;
+    try {
+        if (!_id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(404).send();
+        }
+        console.log(req.user);
+        const updatedUser1Res = await User.updateOne({ _id: ObjectId(req.user._id) }, { $addToSet: { following: [ObjectId(_id)] } });
+        const updatedUser2Res = await User.updateOne({ _id: ObjectId(_id) }, { $addToSet: { followers: [ObjectId(req.user._id)] } });
+        res.status(200).json({ msg: 'User followed' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ msg: 'Something Went Wrong' });
+    }
+});
+router.put('/api/unfollow/:id', auth, async (req, res) => {
+    const _id = req.params.id;
+    try {
+        const updatedUser1Res = await User.updateOne({ _id: ObjectId(req.user._id) }, { $pull: { following: ObjectId(_id) } });
+        const updatedUser2Res = await User.updateOne({ _id: ObjectId(_id) }, { $pull: { followers: ObjectId(req.user._id) } });
+        res.status(200).json({ msg: 'User unfollowed' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ msg: 'Something Went Wrong' });
+    }
+});
+router.get('/api/profile/search/:searchTerm', auth, async (req, res) => {
+
+    try {
+        const searchTerm = req.params.searchTerm;
+        console.log(searchTerm);
+        const users = await User.fuzzySearch(searchTerm).select({ _id: 1, username: 1, avatar_url: 1 }).exec();
+        res.status(200).json({
+            msg: 'Users Found', users,
+        });
     } catch (error) {
         console.log(error);
         res.status(500).send({ msg: 'Something Went Wrong' });

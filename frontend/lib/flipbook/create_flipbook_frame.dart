@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
 import 'package:frontend/bloc/theme_bloc.dart';
 import '../painter.dart';
@@ -37,9 +38,9 @@ class _CreateFrameState extends State<CreateFrame> {
     return controller;
   }
 
+  bool _ismoved = false;
   @override
   Widget build(BuildContext context) {
-    
     List<Widget> actions;
     if (_finished) {
       actions = <Widget>[
@@ -89,13 +90,30 @@ class _CreateFrameState extends State<CreateFrame> {
         child: Stack(
           children: [
             Container(
-                height: double.maxFinite,
-                width: double.maxFinite,
-                child: new Painter(_controller)),
+              child: Center(
+                child: InteractiveViewer(
+                  constrained: false,
+                  boundaryMargin: EdgeInsets.all(double.infinity),
+                  maxScale: 5,
+                  child: Container(
+                    height: MediaQuery.maybeOf(context)!.size.width * 1.78,
+                    width: MediaQuery.maybeOf(context)!.size.width,
+                    child: AbsorbPointer(
+                        absorbing: _ismoved, child: Painter(_controller)),
+                    color: Colors.amber,
+                  ),
+                ),
+                // boundaryMargin: EdgeInsets.all(500.0),
+              ),
+            ),
             Positioned(
-              top: MediaQuery.of(context).size.height / 4,
+              top: MediaQuery.of(context).size.height / 6,
               child: Column(
                 children: [
+                  Icon(
+                    FontAwesome.paint_brush,
+                    color: Colors.red,
+                  ),
                   Container(
                     height: MediaQuery.of(context).size.height / 3,
                     width: 70,
@@ -160,6 +178,18 @@ class _CreateFrameState extends State<CreateFrame> {
                         } else {
                           _controller.undo();
                         }
+                      }),
+                  IconButton(
+                      icon: new Icon(
+                        Icons.move_to_inbox,
+                        color: _ismoved ? Colors.blue : Colors.red,
+                        size: 28,
+                      ),
+                      tooltip: 'Move',
+                      onPressed: () {
+                        setState(() {
+                          _ismoved = !_ismoved;
+                        });
                       }),
                 ],
               ),

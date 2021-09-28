@@ -4,14 +4,17 @@ abstract class MuralEvent {}
 
 class FetchAllMurals extends MuralEvent {
   int page;
-  FetchAllMurals({required this.page});
+  String type;
+  FetchAllMurals({required this.page, required this.type});
 } //pagination to be done
 
 //This is for any profile read.
 class FetchProfileMurals extends MuralEvent {
   String username;
   int page;
-  FetchProfileMurals({required this.username, required this.page});
+  String id;
+  FetchProfileMurals(
+      {required this.username, required this.page, required this.id});
 }
 
 class CreateMural extends MuralEvent {
@@ -36,7 +39,13 @@ class UnLikeMural extends MuralEvent {
 class FetchMuralLikeList extends MuralEvent {
   String muralid;
   int page;
-  FetchMuralLikeList({required this.muralid,required this.page});
+  FetchMuralLikeList({required this.muralid, required this.page});
+}
+
+class FetchUserList extends MuralEvent {
+  String userid;
+  String type;
+  FetchUserList({required this.userid, required this.type});
 }
 
 class FetchMuralCommentList extends MuralEvent {

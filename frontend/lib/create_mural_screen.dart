@@ -5,24 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:frontend/services/add_image_fuction.dart';
-import '../painter.dart';
+import './painter.dart';
 
-class CreateBioScreen extends StatefulWidget {
+class ExamplePage extends StatefulWidget {
   final String mode;
-
-  Function? editProfile;
-
-  CreateBioScreen(
-    this.mode, {
-    this.editProfile,
-  });
+  ExamplePage(this.mode);
 
   @override
-  _CreateBioScreenState createState() => new _CreateBioScreenState();
+  _ExamplePageState createState() => new _ExamplePageState();
 }
 
-class _CreateBioScreenState extends State<CreateBioScreen> {
-  String muralUrl = "";
+class _ExamplePageState extends State<ExamplePage> {
   bool _finished = false;
   late String mode;
   late PainterController _controller = _newController(mode);
@@ -92,28 +85,14 @@ class _CreateBioScreenState extends State<CreateBioScreen> {
         child: Stack(
           children: [
             Container(
-              height: double.maxFinite,
-              width: double.maxFinite,
-            ),
-            Positioned(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 2 - 172 / 2,
-                  ),
-                  Container(
-                      height: 173,
-                      width: double.maxFinite,
-                      child: new Painter(_controller)),
-                ],
-              ),
-            ),
+                height: double.maxFinite,
+                width: double.maxFinite,
+                child: new Painter(_controller)),
             Positioned(
               top: MediaQuery.of(context).size.height / 4,
               child: Column(
-                
                 children: [
-                   Icon(
+                  Icon(
                     FontAwesome.paint_brush,
                     color: Colors.red,
                   ),
@@ -190,8 +169,11 @@ class _CreateBioScreenState extends State<CreateBioScreen> {
               child: Container(
                 height: 40,
                 width: MediaQuery.of(context).size.width,
-                child: Row(
-                  children: actions,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: actions,
+                  ),
                 ),
               ),
             ),
@@ -264,24 +246,18 @@ class _CreateBioScreenState extends State<CreateBioScreen> {
                             .create();
                         file.writeAsBytes(aa);
 
+                        print(file);
+                        await uploadImageToFirebase(file);
                         final snackBar = SnackBar(
                           content: Text('Yay! Your Mural is posted!'),
                           duration: Duration(seconds: 5),
                           backgroundColor: Colors.red,
                         );
 
-                        print(file);
-                        uploadImageToFirebase(file).then((value) {
-                          print('Murall');
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          widget.editProfile!(value);
-                          Navigator.pop(context);
-                        });
-
-                        print('*********-> ${muralUrl}');
-
                         // Find the ScaffoldMessenger in the widget tree
                         // and use it to show a SnackBar.
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        Navigator.of(context).pop();
                       },
                       child: Text('Post Mural')),
                 ],

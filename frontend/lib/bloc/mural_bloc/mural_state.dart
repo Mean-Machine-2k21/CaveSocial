@@ -1,5 +1,6 @@
 import 'package:frontend/models/liked_user.dart';
 import 'package:frontend/models/mural_model.dart';
+import 'package:frontend/models/user_list.dart';
 import 'package:frontend/models/user_model.dart';
 
 abstract class MuralState {}
@@ -16,7 +17,11 @@ class FetchedMurals extends MuralState {
   List<Mural> Murals;
   FetchedMurals({required this.Murals});
 }
-class  FetchingMuralLikeList extends MuralState{}
+
+class FetchingMuralLikeList extends MuralState {}
+
+class FetchingUserList extends MuralState {}
+
 class FetchedUserProfile extends MuralState {
   List<Mural> murals;
   User user;
@@ -26,6 +31,11 @@ class FetchedUserProfile extends MuralState {
 class FetchedMuralLikeList extends MuralState {
   List<LikedUsers> usernames;
   FetchedMuralLikeList({required this.usernames});
+}
+
+class FetchedUserList extends MuralState {
+  List<UserList> users;
+  FetchedUserList({required this.users});
 }
 
 class MuralCommentLoading extends MuralState {}
