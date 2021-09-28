@@ -1,11 +1,11 @@
 // @dart=2.9;
-import 'package:frontend/bloc/mural_bloc/movie_model.dart';
+
 import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
 import 'package:frontend/models/search_result.dart';
 import 'package:frontend/repository/mural_repository.dart';
 import 'package:frontend/screens/profile.dart';
 import 'package:frontend/services/movie_search_service.dart';
-import 'package:frontend/services/omdb_api.dart';
+import 'package:frontend/services/search_api.dart';
 
 import '../bloc/theme_bloc.dart';
 import 'package:flutter/material.dart';
