@@ -1,7 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/services/logger.dart';
 
+import '../global.dart';
 
 enum ThemeEvent { dark, light }
 
@@ -16,15 +17,12 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeData> {
 
   ThemeData darkTheme = ThemeData(
     primarySwatch: Colors.deepOrange,
-
     backgroundColor: Colors.black,
-  
   );
 
   ThemeData lightTheme = ThemeData(
     primarySwatch: Colors.deepOrange,
     backgroundColor: Colors.white,
-    
   );
 
   static const Color _defaultMain = Colors.white;
@@ -32,7 +30,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeData> {
   bool darkMode = false;
   static const Color _style = Color(0xFFFF3E3E);
   static const Color _alternative = Color(0xFF3D5AF1);
-   Color get main => (darkMode) ? (_defaultContrast) : (_defaultMain);
+  Color get main => (darkMode) ? (_defaultContrast) : (_defaultMain);
 
   Color get contrast => (darkMode) ? (_defaultMain) : (_defaultContrast);
 
@@ -48,7 +46,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeData> {
 
   Color get white => Colors.white;
 
-   Color get black => Colors.black;
+  Color get black => Colors.black;
 
   MaterialColor get materialStyle => _materialStyle;
   static const MaterialColor _materialStyle = MaterialColor(
@@ -101,16 +99,23 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeData> {
           yield lightTheme;
         }
         break;
-     
+
       default:
         break;
     }
   }
 
-  void toggleTheTheme() {
+  void toggleTheTheme() async {
     print(currentTheme);
     add(currentTheme == ThemeEvent.dark ? ThemeEvent.light : ThemeEvent.dark);
-  }
-  
 
+    
+     await storage.write(
+                                  key: "darkThemeOn", value: currentTheme == ThemeEvent.dark ?"false":"true");
+                              print('trueeeeeeeeeeeeeeeeeeeee');
+
+     logger.e(await localRead("darkThemeOn"));
+    
+  //  print(currentTheme);
+  }
 }
