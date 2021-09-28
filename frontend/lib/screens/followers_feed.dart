@@ -40,38 +40,53 @@ class _FollowersFeedState extends State<FollowersFeed> {
                   strokeWidth: 5,
                 ),
               );
-            else if (state is FetchedFollowingMurals) {
+            else if (state is FetchedFollowingMurals &&
+                state.FollowingMurals.length != 0) {
               murals.addAll((state).FollowingMurals);
               logger.e("Following");
               murals.forEach((element) {
                 logger.i(element.creatorUsername);
               });
-              return state.FollowingMurals.length == 0
-                  ? Center(
-                      child: Text(
-                        "Follow Someone to show thier Murals in your feed :)",
-                        style: TextStyle(
-                          color: Colors.red,
-                        ),
-                      ),
-                    )
-                  : PageView.builder(
-                      controller: pageController,
-                      itemCount: murals.length,
-                      itemBuilder: (context, index) {
-                        print('Indexxxxxxxxxxxxxxxxxxxx->>>> ${index}');
-                        if (index == murals.length - 2) {
-                          pageNo = murals.length - 2;
-                          print('Pagggggeeeeeeeee----> ${pageNo}');
-                          muralBloc.add(FetchAllMurals(
-                              page: counter++, type: 'following'));
-                          print('Pagggggeeeeeeeee2222222222----> ${pageNo}');
-                          pageController.jumpToPage(pageNo);
-                        }
+              return PageView.builder(
+                controller: pageController,
+                itemCount: murals.length,
+                itemBuilder: (context, index) {
+                  print('Indexxxxxxxxxxxxxxxxxxxx->>>> ${index}');
+                  if (index == murals.length - 2) {
+                    pageNo = murals.length - 2;
+                    print('Pagggggeeeeeeeee----> ${pageNo}');
+                    muralBloc.add(
+                        FetchAllMurals(page: counter++, type: 'following'));
+                    print('Pagggggeeeeeeeee2222222222----> ${pageNo}');
+                    pageController.jumpToPage(pageNo);
+                  }
 
-                        return FeedPage(mural: murals[index]);
-                      },
-                    );
+                  return FeedPage(mural: murals[index]);
+                },
+              );
+            } else if (state is FetchedFollowingMurals &&
+                state.FollowingMurals.length == 0 &&
+                murals.isEmpty) {
+              return Center(
+                child: Text(
+                  "Follow Someone to show thier Murals in your feed :)",
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+              );
+
+              // else {
+              //   return PageView.builder(
+              //     controller: pageController,
+              //     itemCount: murals.length,
+              //     itemBuilder: (context, index) {
+              //       index = murals.length - 1;
+              //       pageController.jumpToPage(index);
+              //       return FeedPage(mural: murals[index]);
+              //     },
+              //   );
+              // }
             } else {
               return PageView.builder(
                 itemCount: murals.length,
