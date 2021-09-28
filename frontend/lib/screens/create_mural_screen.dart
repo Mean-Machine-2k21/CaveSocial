@@ -26,6 +26,7 @@ class _CreateMuralScreenState extends State<CreateMuralScreen> {
   String muralUrl = "";
 
   bool _finished = false;
+  bool alreadyPressed=false;
   late String mode;
   late PainterController _controller = _newController(mode);
 
@@ -298,11 +299,15 @@ class _CreateMuralScreenState extends State<CreateMuralScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ElevatedButton(
+                  !alreadyPressed?ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.red),
                       ),
-                      onPressed: () async {
+                      onPressed: 
+                      !alreadyPressed?() async {
+                       setState(() {
+      alreadyPressed= true;
+    });
                         var aa = await picture.toPNG();
                         // var filee = await File.fromRawPath(aa);
 
@@ -332,8 +337,14 @@ class _CreateMuralScreenState extends State<CreateMuralScreen> {
 
                         // Find the ScaffoldMessenger in the widget tree
                         // and use it to show a SnackBar.
+                      }
+                      :(){
+
                       },
-                      child: Text('Post Mural')),
+                      child: Text('Post Mural'))
+                :CircularProgressIndicator(
+                  strokeWidth: 4.0,
+                ),
                 ],
               ),
             ),
