@@ -1,7 +1,10 @@
 // @dart=2.9;
+import 'package:frontend/bloc/mural_bloc/movie_model.dart';
 import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
 import 'package:frontend/repository/mural_repository.dart';
 import 'package:frontend/screens/profile.dart';
+import 'package:frontend/services/movie_search_service.dart';
+import 'package:frontend/services/omdb_api.dart';
 
 import '../bloc/theme_bloc.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +14,7 @@ import '../global.dart';
 import '../widget/app_button.dart';
 import 'auth_screen.dart';
 import 'feed.dart';
+import 'movie_search_delegate.dart';
 import 'navigator_screen.dart';
 import 'signup_screen.dart';
 import 'package:http/http.dart' as http;
@@ -31,6 +35,18 @@ class _LoginScreenState extends State<LoginScreen> {
         builder: (context) =>
             AlertDialog(title: Text(title), content: Text(text)),
       );
+
+  void _showSearch(BuildContext context) async {
+    final searchService = MovieSearchService(apiWrapper: OmdbApi());
+    final user = await showSearch<MovieModel>(
+      context: context,
+      delegate: MovieSearchDelegate(searchService),
+    );
+    searchService.dispose();
+    print('user');
+    print(user!.imdbID);
+    print('user');
+  }
 
   String _email = '';
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
@@ -237,6 +253,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                   child: SignUpScreen(),
                                 ),
                               ));
+                        },
+                      ),
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
+                      AppButton(
+                        buttonColor: themeBloc.style,
+                        buttonText: 'search',
+                        onTap: () {
+                          _showSearch(context);
                         },
                       ),
                       SizedBox(
