@@ -9,6 +9,7 @@ import 'package:frontend/screens/create_bio_screen.dart';
 import 'package:frontend/screens/create_mural_screen.dart';
 import 'package:frontend/screens/login_screen.dart';
 import 'package:frontend/screens/profile.dart';
+import 'package:frontend/services/logger.dart';
 import 'package:frontend/widget/shimmer_image.dart';
 import 'package:frontend/widget/toggle_button.dart';
 import 'package:image_picker/image_picker.dart';
@@ -359,12 +360,30 @@ class _EditProfileState extends State<EditProfile> {
                         padding: const EdgeInsets.all(8.0),
                         child: Toggle(
                           value: themeBloc.isDarkMode,
-                          onToggle: (val) {
+                          onToggle: (val) async {
                             // if (value) {
                             //   // color.themeModeSwitch(colorMode: ColorMode.dark);
                             // } else {
                             //   // color.themeModeSwitch(colorMode: ColorMode.light);
                             themeBloc.toggleTheTheme();
+
+                            // logger.d(themeBloc.isDarkMode);
+                            // if (themeBloc.isDarkMode) {
+                            //   await storage.write(
+                            //       key: "darkThemeOn", value: "true");
+                            //   print('trueeeeeeeeeeeeeeeeeeeee');
+                            //   logger.e(await localRead("darkThemeOn"));
+                            // } else {
+                            //   await storage.write(
+                            //       key: "darkThemeOn", value: "false");
+                            //   print('falseeeeeeeeeeeeeeeeeeeeeeeee');
+                            //   logger.e(await localRead("darkThemeOn"));
+                            // }
+                            // await storage.write(
+                            //     key: "darkThemeOn",
+                            //     value: themeBloc.isDarkMode ? "true" : "false");
+                            // logger.d('ggez');
+                            // logger.i(themeBloc.isDarkMode);
                           },
                         ),
                       )
@@ -379,8 +398,17 @@ class _EditProfileState extends State<EditProfile> {
                       onPressed: () async {
                         await _apiHandling.signOut();
                         localDelete();
-                        Navigator.of(context)
-                            .pushReplacementNamed(LoginScreen.routeName);
+
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => LoginScreen(),
+                          ),
+                          (route) => false,
+                        );
+
+                        // Navigator.of(context)
+                        //     .pushReplacementNamed(LoginScreen.routeName);
                       },
                       child: Text('Sign Out'),
                       style: ElevatedButton.styleFrom(

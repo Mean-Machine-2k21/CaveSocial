@@ -19,6 +19,7 @@ void localInsertLoginIn(Map jwt) async {
   await storage.write(key: "username", value: jwt['user']['username']);
   await storage.write(key: "avatar_url", value: jwt['user']['avatar_url']);
   await storage.write(key: "bio_url", value: jwt['user']['bio_url']);
+  await storage.write(key: "darkThemeOn", value: "false");
 }
 
 void localInsertSignUp(Map jwt) {
@@ -27,6 +28,7 @@ void localInsertSignUp(Map jwt) {
   storage.write(key: "username", value: jwt['user']['username']);
   storage.write(key: "avatar_url", value: jwt['user']['avatar_url']);
   storage.write(key: "bio_url", value: jwt['user']['bio_url']);
+  storage.write(key: "darkThemeOn", value: "false");
 }
 
 void localDelete() async {
