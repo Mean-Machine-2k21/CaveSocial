@@ -50,12 +50,15 @@ class MyHomePage extends StatelessWidget {
   Future readToken() async {
     try {
       tokenValue = await localRead("jwt");
+      logger.i("jadu hua jadu hua" + tokenValue);
+
       // try {
       //   darkThemeOn = await localRead("darkThemeOn");
       // } catch (e) {
       //   darkThemeOn = "false";
       // }
     } catch (e) {
+      logger.i("jadu nhi hua jadu nhi hua");
       return tokenValue = " ";
     }
     return tokenValue;
@@ -71,6 +74,8 @@ class MyHomePage extends StatelessWidget {
   }
 
   Widget checkSync() {
+    logger.i("chalega ????");
+
     return FutureBuilder(
       builder: (context, projectSnap) {
         if (projectSnap.connectionState == ConnectionState.none &&
@@ -111,7 +116,7 @@ class MyHomePage extends StatelessWidget {
         if (darkThemeOn == "false") {
           logger.d(darkThemeOn);
           logger.e('should false');
-             themeBloc.darkMode = false;
+          themeBloc.darkMode = false;
           return BlocBuilder<ThemeBloc, ThemeData>(
             builder: (context, state) {
               return MaterialApp(
@@ -131,7 +136,7 @@ class MyHomePage extends StatelessWidget {
             },
           );
         } else {
-           logger.i(darkThemeOn);
+          logger.i(darkThemeOn);
           logger.e('should false');
           themeBloc.darkMode = true;
           return BlocBuilder<ThemeBloc, ThemeData>(

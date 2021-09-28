@@ -9,7 +9,7 @@ import 'package:frontend/screens/feed_page.dart';
 import 'package:frontend/screens/profile.dart';
 import 'package:frontend/services/logger.dart';
 import 'package:frontend/services/movie_search_service.dart';
-import 'package:frontend/services/omdb_api.dart';
+import 'package:frontend/services/search_api.dart';
 import 'package:frontend/widget/create_post_modal.dart';
 import 'package:frontend/widget/navigation_bar.dart';
 
@@ -72,7 +72,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
   }
 
   Future<SearchResult?> _showSearch(BuildContext context) async {
-    final searchService = MovieSearchService(apiWrapper: OmdbApi());
+    final searchService = MovieSearchService(apiWrapper: SearchApi());
     final user = await showSearch<SearchResult>(
       context: context,
       delegate: MovieSearchDelegate(searchService),

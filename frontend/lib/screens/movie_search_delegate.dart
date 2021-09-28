@@ -1,5 +1,5 @@
 //@dart=2.9
-import 'package:frontend/bloc/mural_bloc/movie_model.dart';
+
 import 'package:frontend/models/search_result.dart';
 import 'package:frontend/services/movie_search_service.dart';
 import 'package:flutter/material.dart';
