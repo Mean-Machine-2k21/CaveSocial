@@ -360,6 +360,7 @@ class _EditProfileState extends State<EditProfile> {
                         padding: const EdgeInsets.all(8.0),
                         child: Toggle(
                           value: themeBloc.isDarkMode,
+                          
                           onToggle: (val) async {
                             // if (value) {
                             //   // color.themeModeSwitch(colorMode: ColorMode.dark);

@@ -18,12 +18,15 @@ class _ToggleState extends State<Toggle> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _toggleController = AnimationController(vsync: this, duration: Duration(milliseconds: 200));
-    _colorController = AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    _toggleController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    _colorController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
     _toggleAnimation = AlignmentTween(
             begin: widget.value ? Alignment.centerRight : Alignment.centerLeft,
             end: widget.value ? Alignment.centerLeft : Alignment.centerRight)
-        .animate(CurvedAnimation(parent: _toggleController, curve: Curves.easeInOut));
+        .animate(CurvedAnimation(
+            parent: _toggleController, curve: Curves.easeInOut));
     _colorAnimation = ColorTween(
       begin: color.contrast,
       end: color.style,
@@ -49,14 +52,19 @@ class _ToggleState extends State<Toggle> with TickerProviderStateMixin {
               _toggleController.forward();
               _colorController.forward();
             }
-            widget.value == false ? widget.onToggle(true) : widget.onToggle(false);
+            widget.value == false
+                ? widget.onToggle(true)
+                : widget.onToggle(false);
           },
           child: Container(
             width: 56,
             height: 28,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(28),
-              color: color.chooser(lightMode: color.contrast.withOpacity(0.15), darkMode: color.contrast.withOpacity(0.15)),
+              color: color.chooser(
+                lightMode: Colors.grey,
+                darkMode: Colors.red,
+              ),
             ),
             child: Container(
               alignment: _toggleAnimation.value,
