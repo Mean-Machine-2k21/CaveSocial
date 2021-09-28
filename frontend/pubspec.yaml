@@ -46,6 +46,11 @@ dependencies:
   fancy_shimmer_image: ^2.0.0+1
   logger: ^1.1.0
   zoom_widget: ^0.2.1
+  flutter_social_content_share: ^1.0.1
+  share_plus: ^2.1.4
+  path_provider: ^2.0.4
+  network_to_file_image: ^3.0.3
+  
 
 dev_dependencies:
   flutter_test:

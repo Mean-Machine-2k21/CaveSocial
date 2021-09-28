@@ -5,6 +5,7 @@ import 'package:frontend/bloc/mural_bloc/mural_event.dart';
 import 'package:frontend/bloc/mural_bloc/mural_state.dart';
 import 'package:frontend/bloc/theme_bloc.dart';
 import 'package:frontend/models/mural_model.dart';
+import 'package:frontend/services/logger.dart';
 
 import 'feed_page.dart';
 
@@ -34,13 +35,18 @@ class _FollowersFeedState extends State<FollowersFeed> {
             final pageController = PageController(initialPage: pageNo);
             if (state is FetchingMurals)
               return Center(
-                  child: CircularProgressIndicator(
-                color: themeBloc.contrast,
-                strokeWidth: 5,
-              ));
-            else if (state is FetchedMurals && state.Murals.length != 0) {
-              murals.addAll((state).Murals);
-              ///////////////////////////////////////
+                child: CircularProgressIndicator(
+                  color: themeBloc.contrast,
+                  strokeWidth: 5,
+                ),
+              );
+            else if (state is FetchedFollowingMurals &&
+                state.FollowingMurals.length != 0) {
+              murals.addAll((state).FollowingMurals);
+              logger.e("Following");
+              murals.forEach((element) {
+                logger.i(element.creatorUsername);
+              });
               return PageView.builder(
                 controller: pageController,
                 itemCount: murals.length,
@@ -55,18 +61,7 @@ class _FollowersFeedState extends State<FollowersFeed> {
                     pageController.jumpToPage(pageNo);
                   }
 
-                  //  if()
-                  return FeedPage(mural: murals[index]
-                      //   commentCount: 12,
-                      //   creatorId: '0000',
-                      //   creatorUsername: 'dummyUser',
-                      //   imageUrl:
-                      //       "https://res.cloudinary.com/meanmachine/image/upload/v1624571586/profileImages/mwubbpf25oohhapp8vof.jpg",
-                      //   isLiked: true,
-                      //   likedCount: 20,
-                      //   id: '12222333333',
-                      // ),
-                      );
+                  return FeedPage(mural: murals[index]);
                 },
               );
             } else {
@@ -74,17 +69,7 @@ class _FollowersFeedState extends State<FollowersFeed> {
                 itemCount: murals.length,
                 itemBuilder: (context, index) {
                   //  if()
-                  return FeedPage(mural: murals[index]
-                      //   commentCount: 12,
-                      //   creatorId: '0000',
-                      //   creatorUsername: 'dummyUser',
-                      //   imageUrl:
-                      //       "https://res.cloudinary.com/meanmachine/image/upload/v1624571586/profileImages/mwubbpf25oohhapp8vof.jpg",
-                      //   isLiked: true,
-                      //   likedCount: 20,
-                      //   id: '12222333333',
-                      // ),
-                      );
+                  return FeedPage(mural: murals[index]);
                 },
               );
             }

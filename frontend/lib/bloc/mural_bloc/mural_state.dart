@@ -18,6 +18,11 @@ class FetchedMurals extends MuralState {
   FetchedMurals({required this.Murals});
 }
 
+class FetchedFollowingMurals extends MuralState {
+  List<Mural> FollowingMurals;
+  FetchedFollowingMurals({required this.FollowingMurals});
+}
+
 class FetchingMuralLikeList extends MuralState {}
 
 class FetchingUserList extends MuralState {}
