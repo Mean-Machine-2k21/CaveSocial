@@ -1,11 +1,10 @@
-
 //@dart=2.9
 import 'package:frontend/bloc/mural_bloc/movie_model.dart';
+import 'package:frontend/models/search_result.dart';
 import 'package:frontend/services/movie_search_service.dart';
 import 'package:flutter/material.dart';
 
-
-class MovieSearchDelegate extends SearchDelegate<MovieModel> {
+class MovieSearchDelegate extends SearchDelegate<SearchResult> {
   MovieSearchDelegate(this.searchService);
   final MovieSearchService searchService;
 
@@ -47,11 +46,11 @@ class MovieSearchDelegate extends SearchDelegate<MovieModel> {
 
   Widget buildMatchingSuggestions(BuildContext context) {
     // then return results
-    return StreamBuilder<List<MovieModel>>(
+    return StreamBuilder<List<SearchResult>>(
       stream: searchService.results,
-      builder: (context, AsyncSnapshot<List<MovieModel>> snapshot) {
+      builder: (context, AsyncSnapshot<List<SearchResult>> snapshot) {
         if (snapshot.hasData) {
-          final List<MovieModel> result = snapshot.data;
+          final List<SearchResult> result = snapshot.data;
           return result.isEmpty
               ? Center(child: Text('No Resuls Found !'))
               : ListView.builder(
@@ -66,18 +65,28 @@ class MovieSearchDelegate extends SearchDelegate<MovieModel> {
                           leading: ClipRRect(
                               borderRadius: BorderRadius.all(Radius.circular(
                                   1.0)), //add border radius here
-                              child: result[index].poster == 'N/A'
+                              child: result[index].avatarUrl == 'N/A'
                                   ? Container(
-                                      width: 30,
+                                      width: 50,
                                       height: 50,
                                       color: Colors.amber,
                                     )
-                                  : Image(
-                                      image: NetworkImage(result[index].poster),
-                                    ) //add image location here
+                                  : Container(
+                                      width: 50,
+                                      height: 50,
+                                      child: Image.network(
+                                        result[index].avatarUrl,
+                                        fit: BoxFit.cover,
+                                      )) //add image location here
                               ),
-                          title: Text(result[index].title), // movie details
-                          subtitle: Text(result[index].year), // movie details
+                          title: Text(
+                            "@" + result[index].username,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18,
+                                color: Colors.red),
+                          ), // movie details
+
                           dense: true,
                         ),
                         Divider(),

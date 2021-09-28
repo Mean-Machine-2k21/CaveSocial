@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:frontend/bloc/mural_bloc/movie_model.dart';
+import 'package:frontend/models/search_result.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'omdb_api.dart';
@@ -16,6 +17,7 @@ class MovieSearchService {
       yield await apiWrapper.searchMovie(query);
     }); // discard previous events
   }
+
   final OmdbApi apiWrapper;
 
   // Input stream (search terms)
@@ -24,8 +26,8 @@ class MovieSearchService {
 
   // Output stream (search results)
   late 
-  Stream<List<MovieModel>> _results;
-  Stream<List<MovieModel>> get results => _results;
+  Stream<List<SearchResult>> _results;
+  Stream<List<SearchResult>> get results => _results;
 
   void dispose() {
     _searchTerms.close();

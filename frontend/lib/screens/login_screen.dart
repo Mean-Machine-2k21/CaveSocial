@@ -1,6 +1,7 @@
 // @dart=2.9;
 import 'package:frontend/bloc/mural_bloc/movie_model.dart';
 import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
+import 'package:frontend/models/search_result.dart';
 import 'package:frontend/repository/mural_repository.dart';
 import 'package:frontend/screens/profile.dart';
 import 'package:frontend/services/movie_search_service.dart';
@@ -35,18 +36,6 @@ class _LoginScreenState extends State<LoginScreen> {
         builder: (context) =>
             AlertDialog(title: Text(title), content: Text(text)),
       );
-
-  void _showSearch(BuildContext context) async {
-    final searchService = MovieSearchService(apiWrapper: OmdbApi());
-    final user = await showSearch<MovieModel>(
-      context: context,
-      delegate: MovieSearchDelegate(searchService),
-    );
-    searchService.dispose();
-    print('user');
-    print(user!.imdbID);
-    print('user');
-  }
 
   String _email = '';
   bool isloading = false;
@@ -95,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     double height = MediaQuery.of(context).size.height;
     var themeBloc = BlocProvider.of<ThemeBloc>(context);
-    var muralBloc = BlocProvider.of<MuralBloc>(context);
+
     //  themeBloc.add(ThemeEvent.change);
     print('heyyyyyyyyy');
     print(themeBloc.darkMode);
@@ -277,16 +266,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                         child: SignUpScreen(),
                                       ),
                                     ));
-                              },
-                            ),
-                            SizedBox(
-                              height: height * 0.02,
-                            ),
-                            AppButton(
-                              buttonColor: themeBloc.style,
-                              buttonText: 'Sign Up',
-                              onTap: () {
-                                _showSearch(context);
                               },
                             ),
                             SizedBox(
