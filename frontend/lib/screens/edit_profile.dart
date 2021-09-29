@@ -360,6 +360,7 @@ class _EditProfileState extends State<EditProfile> {
                         padding: const EdgeInsets.all(8.0),
                         child: Toggle(
                           value: themeBloc.isDarkMode,
+                          
                           onToggle: (val) async {
                             // if (value) {
                             //   // color.themeModeSwitch(colorMode: ColorMode.dark);
@@ -398,8 +399,17 @@ class _EditProfileState extends State<EditProfile> {
                       onPressed: () async {
                         await _apiHandling.signOut();
                         localDelete();
-                        Navigator.of(context)
-                            .pushReplacementNamed(LoginScreen.routeName);
+
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => LoginScreen(),
+                          ),
+                          (route) => false,
+                        );
+
+                        // Navigator.of(context)
+                        //     .pushReplacementNamed(LoginScreen.routeName);
                       },
                       child: Text('Sign Out'),
                       style: ElevatedButton.styleFrom(

@@ -218,9 +218,16 @@ class _ProfileState extends State<Profile> {
                                     Text(
                                       '${user!.followersCount ?? 0}',
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red,
+                                      ),
                                     ),
-                                    Text('Followers'),
+                                    Text(
+                                      'Followers',
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -251,9 +258,16 @@ class _ProfileState extends State<Profile> {
                                     Text(
                                       '${user!.followingCount ?? 0}',
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red,
+                                      ),
                                     ),
-                                    Text('Following'),
+                                    Text(
+                                      'Following',
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),

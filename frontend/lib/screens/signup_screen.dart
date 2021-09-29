@@ -137,7 +137,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           decoration: InputDecoration(
                             contentPadding:
                                 EdgeInsets.symmetric(horizontal: 20),
-                            labelText: 'Email',
+                            labelText: 'Username',
                             labelStyle: TextStyle(
                               color: themeBloc.contrast,
                             ),

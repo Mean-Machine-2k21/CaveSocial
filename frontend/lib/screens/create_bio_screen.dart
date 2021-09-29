@@ -24,6 +24,7 @@ class CreateBioScreen extends StatefulWidget {
 class _CreateBioScreenState extends State<CreateBioScreen> {
   String muralUrl = "";
   bool _finished = false;
+  bool alreadyPressed=false;
   late String mode;
   late PainterController _controller = _newController(mode);
 
@@ -252,7 +253,10 @@ class _CreateBioScreenState extends State<CreateBioScreen> {
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.red),
                       ),
-                      onPressed: () async {
+                      onPressed:   !alreadyPressed?() async {
+                            setState(() {
+      alreadyPressed= true;
+    });
                         var aa = await picture.toPNG();
                         // var filee = await File.fromRawPath(aa);
 
@@ -282,7 +286,8 @@ class _CreateBioScreenState extends State<CreateBioScreen> {
 
                         // Find the ScaffoldMessenger in the widget tree
                         // and use it to show a SnackBar.
-                      },
+                      }
+                      :(){},
                       child: Text('Post Mural')),
                 ],
               ),

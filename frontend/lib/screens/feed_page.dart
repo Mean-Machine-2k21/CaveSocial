@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter/material.dart';
@@ -12,12 +14,18 @@ import 'package:frontend/screens/liked_by_screen.dart';
 
 import 'package:frontend/screens/profile.dart';
 import 'package:frontend/services/api_handling.dart';
+import 'package:frontend/services/logger.dart';
 import 'package:frontend/widget/shimmer_image.dart';
 import 'package:frontend/widget/showflip_book.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:swipe_up/swipe_up.dart';
 import '../models/mural_model.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:flutter_social_content_share/flutter_social_content_share.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 
 //Liked by page and api calling hre..............#################################################
 class FeedPage extends StatefulWidget {
@@ -29,6 +37,42 @@ class FeedPage extends StatefulWidget {
 
 class _FeedPageState extends State<FeedPage> {
   MuralRepository muralRepository = MuralRepository();
+
+  Future<File> file(String filename) async {
+    Directory dir = await getApplicationDocumentsDirectory();
+    String pathName = p.join(dir.path, filename);
+    return File(pathName);
+  }
+
+  shareWatsapp(String username, String imageUrl, String id, int number) async {
+    var myFile = await file("myFileName.png");
+    final response = await http.get(Uri.parse(imageUrl));
+    myFile.writeAsBytesSync(response.bodyBytes);
+
+    //NetworkToFileImage(url: "https://example.com/someFile.png", file: myFile);
+
+    final box = context.findRenderObject() as RenderBox?;
+    // String? result = await FlutterSocialContentShare.shareOnWhatsapp(
+    //     "0000000", "Text Appear hear");
+
+    logger.i(imageUrl);
+    logger.i(myFile.path);
+    Share.shareFiles([myFile.path],
+        text:
+            'Follow @${username} and come hangout with me on CaveSocial. #letsGetPrimitiveTogether');
+    //Share.share('CaveSocial');
+    // Share.share('check out my website https://example.com',
+    //     sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
+
+    // await FlutterSocialContentShare.share(
+    //     type: ShareType.instagramWithImageUrl,
+    //     imageName: username,
+    //     imageUrl: imageUrl,
+    //     quote: "Download CaveSocial",
+    //     url: "https://github.com/Mean-Machine-2k21/CaveSocial");
+    //logger.i(result);
+  }
+
   @override
   Widget build(BuildContext context) {
     double cwidth = MediaQuery.of(context).size.width;
@@ -160,6 +204,19 @@ class _FeedPageState extends State<FeedPage> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
+                              IconButton(
+                                onPressed: () {
+                                  shareWatsapp(
+                                      widget.mural.creatorUsername,
+                                      widget.mural.imageUrl,
+                                      widget.mural.id,
+                                      widget.mural.likedCount);
+                                },
+                                icon: Icon(
+                                  Icons.share,
+                                  color: Colors.red,
+                                ),
+                              ),
                               InkWell(
                                 // onLongPress: (){
 

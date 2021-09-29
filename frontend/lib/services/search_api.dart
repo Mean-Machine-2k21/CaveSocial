@@ -2,16 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:frontend/bloc/mural_bloc/movie_model.dart';
 import 'package:frontend/models/search_result.dart';
 import 'package:http/http.dart' as http;
 import 'api_handling.dart';
 
-class OmdbApi {
+class SearchApi {
   Dio dio = new Dio();
-  
+
   Future<List<SearchResult>> searchMovie(String name) async {
-    // final url = Uri.parse('http://www.omdbapi.com/?apikey=e6aefcb6&s=$name');
+    // final url = Uri.parse('http://www.SearchApi.com/?apikey=e6aefcb6&s=$name');
     List<SearchResult> loadedMovies = [];
     try {
       // final response = await await Dio(options).get(
