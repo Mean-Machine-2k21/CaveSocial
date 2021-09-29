@@ -197,21 +197,20 @@ router.put('/api/unfollow/:id', auth, async (req, res) => {
         res.status(500).send({ msg: 'Something Went Wrong' });
     }
 });
-router.get('/api/profile/search/:searchTerm', auth, async (req, res) => {
-
+router.get('/api/search/profile', auth, async (req, res) => {
     try {
-        let searchTerm = req.params.searchTerm;
-        searchTerm.trim();
+        let searchTerm = req.query.searchTerm;
+        searchTerm = searchTerm.replace(/\s+/g, '');
         if (searchTerm.length === 1)
             return res.status(200).json({
                 msg: 'Users Found', users: [],
             });
         searchTerm = searchTerm.replace('_', ' ');
-        console.log(searchTerm);
+        console.log(searchTerm + "a");
         const users = await User.fuzzySearch({ query: searchTerm, exact: true }).select({ _id: 1, username: 1, avatar_url: 1 }).exec();
         console.log('came here');
         res.status(200).json({
-            msg: 'Users Found', users,
+            msg: 'sexc profiles  Found', users,
         });
     } catch (error) {
         console.log(error);
