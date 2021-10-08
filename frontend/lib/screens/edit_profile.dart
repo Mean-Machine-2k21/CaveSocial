@@ -19,7 +19,9 @@ import '../services/api_handling.dart';
 
 class EditProfile extends StatefulWidget {
   static const routeName = '/editProfile';
-  const EditProfile({Key? key}) : super(key: key);
+  final String bioUrl, avatarUrl;
+  const EditProfile({Key? key, required this.bioUrl, required this.avatarUrl})
+      : super(key: key);
 
   @override
   _EditProfileState createState() => _EditProfileState();
@@ -37,24 +39,23 @@ class _EditProfileState extends State<EditProfile> {
   String bioUrl = "";
   File? image;
   bool loading = false;
+  bool pageLoading = false;
 
   String currentProfile = "";
   String currentBio = "";
 
+  // void initState() {
+  //   currentBio = widget.bioUrl;
+  //   logger.i(currentBio);
+  // }
+
   @override
   Future<void> didChangeDependencies() async {
-    setState(() {
-      loading = true;
-    });
     currentProfile = await localRead('avatar_url');
     currentBio = await localRead('bio_url');
     print('bioooo0000000000000000000000000000000000000000 $currentBio');
     bioUrl = currentBio;
 
-    setState(() {
-      loading = false;
-    });
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
   }
 
@@ -74,10 +75,11 @@ class _EditProfileState extends State<EditProfile> {
     });
 
     String username = await localRead('username');
+    String time = DateTime.now().toString();
     //String fileName = basename(_image.path);
     final firebaseStorageRef = FirebaseStorage.instance
         .ref()
-        .child('uploads/profileImages/${username}');
+        .child('uploads/profileImages/${username}/${time}');
     final uploadTask = firebaseStorageRef.putFile(image!);
     await uploadTask.whenComplete(() => print('File Uploaded'));
     firebaseStorageRef.getDownloadURL().then((fileURL) {
@@ -110,6 +112,13 @@ class _EditProfileState extends State<EditProfile> {
     var muralBloc = BlocProvider.of<MuralBloc>(context);
     return BlocBuilder<ThemeBloc, ThemeData>(
       builder: (context, state) {
+        // return Center(
+        //   child: CircularProgressIndicator(),
+        // );
+        // return pageLoading
+        //     ? Center(
+        //         child: CircularProgressIndicator(),
+        //       )
         return Scaffold(
           backgroundColor: themeBloc.main,
           body: SingleChildScrollView(
@@ -246,21 +255,22 @@ class _EditProfileState extends State<EditProfile> {
                                 ),
                               )
                             : Container(
-                                height: 95,
-                                width: 95,
+                                width: 96,
+                                height: 96,
                                 decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: Colors.red, width: 2),
                                   shape: BoxShape.circle,
                                   color: Colors.blue,
-                                  image: DecorationImage(
-                                    image: NetworkImage(currentProfile),
-                                    fit: BoxFit.cover,
+                                  border:
+                                      Border.all(color: Colors.red, width: 2),
+                                ),
+                                child: ClipOval(
+                                  child: Container(
+                                    width: 95,
+                                    height: 95,
+                                    child:
+                                        ShimmerNetworkImage(widget.avatarUrl),
                                   ),
                                 ),
-                                // child: ShimmerNetworkImage(
-                                //   currentProfile,
-                                // ),
                               ),
                       ],
                     ),
@@ -327,19 +337,33 @@ class _EditProfileState extends State<EditProfile> {
                 SizedBox(
                   height: 10,
                 ),
-                Container(
-                  width: double.infinity,
-                  height: 173,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.red, width: 2),
-                    color: themeBloc.materialStyle.shade800,
-                    // image: DecorationImage(
-                    //   image: NetworkImage(bioUrl),
-                    //   fit: BoxFit.cover,
-                    // ),
-                  ),
-                  child: ShimmerNetworkImage(bioUrl),
-                ),
+                bioUrl == ""
+                    ? Container(
+                        width: double.infinity,
+                        height: 173,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.red, width: 2),
+                          color: themeBloc.materialStyle.shade800,
+                          // image: DecorationImage(
+                          //   image: NetworkImage(bioUrl),
+                          //   fit: BoxFit.cover,
+                          // ),
+                        ),
+                        child: ShimmerNetworkImage(widget.bioUrl),
+                      )
+                    : Container(
+                        width: double.infinity,
+                        height: 173,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.red, width: 2),
+                          color: themeBloc.materialStyle.shade800,
+                          // image: DecorationImage(
+                          //   image: NetworkImage(bioUrl),
+                          //   fit: BoxFit.cover,
+                          // ),
+                        ),
+                        child: ShimmerNetworkImage(bioUrl),
+                      ),
                 SizedBox(
                   height: 10,
                 ),
@@ -360,7 +384,6 @@ class _EditProfileState extends State<EditProfile> {
                         padding: const EdgeInsets.all(8.0),
                         child: Toggle(
                           value: themeBloc.isDarkMode,
-                          
                           onToggle: (val) async {
                             // if (value) {
                             //   // color.themeModeSwitch(colorMode: ColorMode.dark);

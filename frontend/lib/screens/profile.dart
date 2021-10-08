@@ -137,6 +137,8 @@ class _ProfileState extends State<Profile> {
                                                   value: muralBloc,
                                                   child: EditProfile(
                                                     key: widget.key,
+                                                    avatarUrl: user!.avatarUrl,
+                                                    bioUrl: user!.bioUrl,
                                                   ),
                                                 ),
                                               ),
