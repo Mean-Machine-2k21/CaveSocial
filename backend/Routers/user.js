@@ -11,8 +11,8 @@ router.post('/api/signup', async (req, res, next) => {
         const user = new User(
             {
                 ...req.body,
-                avatar_url: 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png',
-                bio_url: 'https://empire-s3-production.bobvila.com/articles/wp-content/uploads/2020/04/Types-of-Wall-Texture-sand-swirl.jpg'
+                avatar_url: process.env.DEFAULT_AVATAR_URL,
+                bio_url: process.env.DEFAULT_BIO_URL
             });
         await user.save();
         const token = await user.generateAuthToken();
