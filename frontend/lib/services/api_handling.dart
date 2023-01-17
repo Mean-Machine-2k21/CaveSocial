@@ -95,12 +95,12 @@ class ApiHandling {
 
     try {
       final token = await localRead('jwt');
-      //final token =
-      //'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGQ2M2NlMzk2YjdiODNjNzgzY2M3YjQiLCJpYXQiOjE2MjQ2NTcwODZ9.FvPveb4RpYtHshxKZdzArrOr5n9pHMkJQaX4XPC-zYg';
-
+      
       Map<String, dynamic> data = {
         'content': content,
       };
+      
+
       if (flipbook != null) {
         data['flipbook'] = {
           'frames': flipbook.frames,

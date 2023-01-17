@@ -24,8 +24,7 @@ class CreateMural extends MuralEvent {
   CreateMural({required this.content, this.flipbook});
 }
 
-class LikeMural extends MuralEvent {
-  //no state
+class LikeMural extends MuralEvent {  
   String muralid;
   LikeMural({required this.muralid});
 }

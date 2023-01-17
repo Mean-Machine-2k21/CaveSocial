@@ -4,6 +4,7 @@ import 'package:frontend/bloc/mural_bloc/mural_bloc.dart';
 import 'package:frontend/models/search_result.dart';
 import 'package:frontend/repository/mural_repository.dart';
 import 'package:frontend/screens/profile.dart';
+import 'package:frontend/services/logger.dart';
 import 'package:frontend/services/movie_search_service.dart';
 import 'package:frontend/services/search_api.dart';
 
@@ -217,12 +218,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                     var jwt =
                                         await attemptLogIn(email, password);
 
+                                    logger.i("JWT-> ${jwt}");
+
                                     setState(() {
                                       isloading = false;
                                     });
 
                                     if (jwt.length != 0) {
-                                      localInsertLoginIn(jwt);
+                                      await localInsertLoginIn(jwt);
                                       // storage.write(key: key, value: value)
 
                                       Navigator.pushReplacement(

@@ -31,9 +31,9 @@ class MuralBloc extends Bloc<MuralEvent, MuralState> {
           murals = await muralRepository.fetchFollowingMurals(event.page);
           yield FetchedFollowingMurals(FollowingMurals: murals);
         }
-      } else if (event is FetchProfileMurals) {
-        yield FetchingProfileMurals();
-        //var username = await localRead('username');
+
+      } else if (event is FetchProfileMurals){
+        yield FetchingProfileMurals();        
         List<Mural> murals = [];
         User user = await muralRepository.fetchProfileMurals(
             murals: murals,
@@ -55,9 +55,7 @@ class MuralBloc extends Bloc<MuralEvent, MuralState> {
         yield FetchingMuralLikeList();
         List<LikedUsers> usernames = [];
         usernames = await muralRepository.fetchMuralLikeList(
-            muralid: event.muralid, page: event.page);
-        //print('commmmmmmmmmmmiiiiiiiinnnnnnnnnnnnnnnnnngggggggggggggg');
-        //print(usernames.length);
+            muralid: event.muralid, page: event.page);       
         yield FetchedMuralLikeList(usernames: usernames);
       } else if (event is FetchUserList) {
         yield FetchingUserList();
