@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/bloc/theme_bloc.dart';
+import 'package:frontend/services/logger.dart';
 
 import 'models/app_text_style.dart';
 
@@ -7,19 +8,22 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 ThemeBloc color = ThemeBloc();
 AppTextStyle style = AppTextStyle();
-const SERVER_IP = 'https://cave-social.herokuapp.com';
+const SERVER_IP = 'https://cavesocial.onrender.com';
 final storage = FlutterSecureStorage();
 String colorString(Color colorValue) {
   return colorValue.toString().substring(10, 16);
 }
 
-void localInsertLoginIn(Map jwt) async {
+Future<void> localInsertLoginIn(Map jwt) async {
+  logger.i("JWT TOKEN: " + jwt['token']);
   await storage.write(key: "jwt", value: jwt['token']);
   await storage.write(key: "userid", value: jwt['user']['_id']);
   await storage.write(key: "username", value: jwt['user']['username']);
   await storage.write(key: "avatar_url", value: jwt['user']['avatar_url']);
   await storage.write(key: "bio_url", value: jwt['user']['bio_url']);
   await storage.write(key: "darkThemeOn", value: "false");
+
+  logger.i("local insert login ");
 }
 
 void localInsertSignUp(Map jwt) {
@@ -36,7 +40,9 @@ void localDelete() async {
 }
 
 Future<String> localRead(keyname) async {
-  return await storage.read(key: keyname);
+  // return await storage.read(key: keyname);
+
+  return await storage.read(key: keyname) ?? "";
 }
 
 Future<void> localWrite(keyname, value) async {

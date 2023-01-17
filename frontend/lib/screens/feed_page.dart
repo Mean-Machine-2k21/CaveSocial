@@ -52,25 +52,12 @@ class _FeedPageState extends State<FeedPage> {
     //NetworkToFileImage(url: "https://example.com/someFile.png", file: myFile);
 
     final box = context.findRenderObject() as RenderBox?;
-    // String? result = await FlutterSocialContentShare.shareOnWhatsapp(
-    //     "0000000", "Text Appear hear");
-
+    
     logger.i(imageUrl);
     logger.i(myFile.path);
     Share.shareFiles([myFile.path],
         text:
-            'Follow @${username} and come hangout with me on CaveSocial. #letsGetPrimitiveTogether');
-    //Share.share('CaveSocial');
-    // Share.share('check out my website https://example.com',
-    //     sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
-
-    // await FlutterSocialContentShare.share(
-    //     type: ShareType.instagramWithImageUrl,
-    //     imageName: username,
-    //     imageUrl: imageUrl,
-    //     quote: "Download CaveSocial",
-    //     url: "https://github.com/Mean-Machine-2k21/CaveSocial");
-    //logger.i(result);
+            'Follow @${username} and come hangout with me on CaveSocial. #letsGetPrimitiveTogether');    
   }
 
   @override

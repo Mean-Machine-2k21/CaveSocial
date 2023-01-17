@@ -18,6 +18,7 @@ class MyHomePage extends StatelessWidget {
     try {
       tokenValue = await localRead("jwt");
       logger.i("jadu hua jadu hua" + tokenValue);
+      // throw Exception("error");
 
       // try {
       //   darkThemeOn = await localRead("darkThemeOn");
